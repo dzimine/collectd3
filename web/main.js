@@ -8,6 +8,8 @@ angular.module('main', []).
             {templateUrl: 'apps/d3raw.html', controller: 'D3rawCtrl'})
          .when('/dangle',
             {templateUrl: 'apps/d3dangle.html', controller: 'D3DangleCtrl'})
+         .when('/nvd3',
+            {templateUrl: 'apps/nvd3.html', controller: 'Nvd3Ctrl'})
          .otherwise({redirectTo: '/d3'});
 }]);
 

@@ -1,0 +1,19 @@
+<div style="overflow-y:scroll">
+  <h2>
+    Line chart
+  </h2>
+  <div class="btn-group">
+    <button type="button" class="btn btn-mini" ng-class="{active:useMock}" ng-click="useMock=!useMock; fetch()")>Mock</button>
+    <button type="button" class="btn btn-mini" ng-class="{active:!useMock}" ng-click="useMock=!useMock; fetch()">Real</button>
+  </div>
+  <span>{{status}}</span>
+  <div id="load">
+    <svg style="height: 500px;display:block;min-width:100px;min-height: 100px;"></svg>
+  </div>
+</div>
+
+<!-- TODO: think about this way of loading app specific scripts
+    this solves script lazy load problem but obscures the scripts loaded by browser -->
+<script src="lib/nvd3/nv.d3.js"></script>
+
+

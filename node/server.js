@@ -2,7 +2,7 @@
 var express = require('express');
 
 // TODO: wire the stats
-//var stats = require("./stats.js");
+var stats = require("./stats.js");
 
 var app = express();
 var port = 9000;
@@ -25,7 +25,7 @@ app.use(express.static(static_dir));
 
 app.use(express.errorHandler({dumpExceptions: true }));
 
-//app.get('/data/stats', stats.getAll);
+app.get('/data/stats', stats.getAll);
 
 
 app.listen(port);
