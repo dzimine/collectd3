@@ -25,7 +25,8 @@ app.use(express.static(static_dir));
 
 app.use(express.errorHandler({dumpExceptions: true }));
 
-app.get('/data/stats', stats.getAll);
+app.get('/data/:id/load', stats.getCpuLoad);
+app.get('/data/:id/memory', stats.getMemory);
 
 
 app.listen(port);
