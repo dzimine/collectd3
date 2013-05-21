@@ -4,6 +4,7 @@ function Nvd3Ctrl($s, $http) {
 
    $s.x=0;
    $s.data = [];
+   $s.useMock = true;
    var chartLoad;
    var chartMemory;
 
