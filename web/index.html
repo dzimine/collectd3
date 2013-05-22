@@ -24,12 +24,10 @@
    <script src="lib/angular/angular.js"></script>
    <!--script src="lib/d3.v3/d3.v3.js"></script-->
    <script src="lib/d3.v2/d3.v2.js"></script>
-   <script src="lib/dangle/dangle.js"></script>
    <!-- Application scripts  -->
    <script src="main.js"></script>
-   <script src="apps/d3raw.js"></script>
-   <script src="apps/d3dangle.js"></script>
-   <script src="apps/nvd3.js"></script>
+   <script src="apps/dashboard.js"></script>
+   <script src="apps/details.js"></script>
 </head>
 
 <body ng-app="main" ng-controller="NavCtrl">
@@ -39,9 +37,8 @@
       <div class="container-fluid">
          <a class="brand" href="#">Stats</a>
          <ul class="nav">
-            <li ng-class="{active:isActiveLocation('/d3')}"><a href="#/d3">d3 raw</a></li>
-            <li ng-class="{active:isActiveLocation('/dangle')}"><a href="#/dangle">dangle</a></li>
-            <li ng-class="{active:isActiveLocation('/nvd3')}"><a href="#/nvd3">nvd3</a></li>
+            <li ng-class="{active:isActiveLocation('/dashboard')}"><a href="#/dashboard">Dashboard</a></li>
+            <li ng-class="{active:isActiveLocation('/details')}"><a href="#/details">Details</a></li>
          </ul>
       </div>
    </div>

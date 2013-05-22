@@ -1,6 +1,6 @@
 'use strict';
 
-function D3rawCtrl($s, $http) {
+function DashboardCtrl($s, $http) {
 
    d3.select("svg").selectAll("circle")
       .data([5,10,15,20,25,30])
@@ -28,7 +28,7 @@ function D3rawCtrl($s, $http) {
 
    d3.select("p").insert("p","p").text('say what');
 
-} D3rawCtrl.$inject = ['$scope', '$http'];
+} DashboardCtrl.$inject = ['$scope', '$http'];
 
 
 

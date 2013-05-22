@@ -1,6 +1,6 @@
 'use strict';
 
-function Nvd3Ctrl($s, $http) {
+function DetailsCtrl($s, $http) {
 
    $s.x=0;
    $s.data = [];
@@ -111,7 +111,7 @@ function Nvd3Ctrl($s, $http) {
    $s.fetch();
  
 
-} Nvd3Ctrl.$inject = ['$scope', '$http'];
+} DetailsCtrl.$inject = ['$scope', '$http'];
 
 
 
