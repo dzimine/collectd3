@@ -3,8 +3,9 @@
 function DetailsCtrl($s, $http) {
 
    $s.x=0;
-   $s.data = [];
-   $s.useMock = true;
+   $s.dataLoad = [];
+   $s.dataMemory = [];
+   $s.useMock = false;
    var chartLoad;
    var chartMemory;
 
@@ -30,7 +31,7 @@ function DetailsCtrl($s, $http) {
              .tickFormat(d3.format(',.2f'));
 
          d3.select('#load svg')
-             .datum($s.data)
+             .datum($s.dataLoad)
              .transition().duration(200)
              .call(chartLoad);
 
@@ -79,17 +80,17 @@ function DetailsCtrl($s, $http) {
 
    $s.fetch = function  (){
       var t1 = new Date();
-      //TODO: form the parameters.
+      // TODO: get the parameters from hour/3 hours/day/week/year selector
       var params = {"from":1367470900, "to":1367477900, "r":100};
       $s.status = "Loading..."
       var urlLoad = $s.useMock ? "/load.json" : "/data/localhost/load"; 
       $http.get(urlLoad, {params : params})
          .success(function(res) {
-            $s.data = res;
+            $s.dataLoad = res;
             $s.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
-            $s.data =[];
+            $s.dataLoad =[];
             $s.status = "Error getting data. Check the log.";
             render();
          });
@@ -103,7 +104,7 @@ function DetailsCtrl($s, $http) {
            $s.status = "Done in " + (new Date() - t1) + " ms";
            render();
         }).error(function(err) {
-           $s.data =[];
+           $s.dataMemory =[];
            render();
         });
    }
