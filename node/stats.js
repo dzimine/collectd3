@@ -1,5 +1,7 @@
+var fs = require('fs');
 var execFile = require('child_process').execFile;
 var async = require('async');
+var rrdtool= "rrdtool"; 
 
 /******************************************************************************/
 //  CONFIGURATION 
@@ -64,21 +66,33 @@ var fetchRRD = function (rrd_file, cf, req, callback) {
    if (req.query.from) { params.push("--start", req.query.from); }
    if (req.query.to) { params.push("--end", req.query.to); }
    if (req.query.r) { params.push("-r", req.query.r); }
-   
-   var rrdtool= "rrdtool"; 
+  
    var args = ["fetch", rrd_file_path, cf].concat(params);
    console.log("Running: ", rrdtool, args.join(" "));      
 
    var child = execFile(rrdtool, args, function(err, stdout, stderr) {
           if (err) {
-            // console.log("Error:  ", err);
-            // console.log("stderr: ", stderr);
             callback(err);
+         } else { 
+            callback(null, stdout);
          }
-         callback(null, stdout);
       });
 }
 
+var infoRRD = function (rrd_file, host, callback) {
+   
+   var rrd_file_path = collectDataRoot + "/" + host + "/" + rrd_file;
+   var args = ["info", rrd_file_path];
+   console.log("Running: ", rrdtool, args.join(" "));   
+
+   var child = execFile(rrdtool, args, function(err, stdout, stderr) {
+          if (err) {
+            callback(err);
+         } else {
+            callback(null, stdout);
+         }
+      });
+}
 /**
 * Takes rrdtool outpoot and transforms it to d3 data
 *  rrdtool output: time: value[0],value[1],value[2]... (see output.txt for a sample)
@@ -109,15 +123,73 @@ var formatOutput = function (data) {
    return res;
 };
 
+/**
+* Iterates all 'host' folders under collectd data root, and calls info on the specified rrd file,
+* and returns an array of results [{host:hostname,info:data}...]
+* @param path - path to the .rrd file in collectd structure, relative to "host" directory
+* @param callback(err, data) - calls with (err, null) on error, and (null, data)
+* where data is an array of info outputs. 
+*/
+var getInfoForAllHosts = function (path, callback) {
+   fs.readdir(collectDataRoot, function(err, filenames){
+      if (err) {
+         callback(err);
+      } else {
+         var d =[];
+         // CAREFUL! make sure cb() is called for each item!
+         // Using async.each is prone to missing cb() call on some code paths,
+         // which results in no call to a final callback 
+         async.each(filenames, function(host, cb) {
+            var dir = collectDataRoot + "/" + host;
+            var filepath = [collectDataRoot, host, path].join("/");
+
+            fs.stat(dir, function(err, stat){
+               if(stat.isFile()) {
+                  console.log("WARNING: [%s] not a directory, ignoring...", host);
+                  cb();
+               } else {
+                  fs.exists(filepath, function(exists){
+                     if (!exists) {
+                        console.log("WARNING: %s doesn't exist", filepath);
+                        cb();
+                     } else {
+                        infoRRD(path, host, function(err, output) {
+                           if (err) { 
+                              cb(err); 
+                           } else {
+                              //console.log(output);
+                              d.push({host:"host", info: output});
+                              cb();
+                           }
+                        });
+                     }
+                  });
+               }
+            })
+         }, function (err, data) {
+            callback(err, d);
+         });
+      }
+   });
+}
+
 /* Quick & dirty testing */
 
-// testRRDOutput = "                      shortterm             midterm            longterm\n\n1367470930:     1.2895508000e+00      9.0195340000e-01    7.9726560000e-01\n1367471000:   9.5126940000e-01 8.6943340000e-01 7.8945340000e-01\n1367471070: 9.8281240000e-01     8.6503940000e-01 7.9101580000e-01\n1367471140: 9.6640640000e-01 8.6582020000e-01 7.9179720000e-01\n1367471210: 1.0945312000e+00 9.0048840000e-01 8.0937520000e-01\n1367471280: 8.1669900000e-01 8.5703120000e-01 7.9570320000e-01\n1367471350: 9.3115220000e-01 8.6093720000e-01 8.0019540000e-01\n1367471420: 1.0118160000e+00 8.8808600000e-01 8.1308620000e-01\n1367471490: 9.2900380000e-01 8.7529340000e-01 8.1191440000e-01\n1367471560: 1.1000974000e+00 9.1171840000e-01 8.2949240000e-01\n1367471630: 1.2575198000e+00 9.7070300000e-01 8.5576160000e-01\n1367471700: 1.5767576000e+00 1.0979492000e+00 9.0634780000e-01\n1367471770: 1.3041992000e+00 1.0753906000e+00 9.1201180000e-01\n1367471840: 1.1031252000e+00 1.0546874000e+00 9.1025380000e-01\n1367471910: 1.1807616000e+00 1.0236332000e+00 9.1240260000e-01\n1367471980: 1.1753904000e+00 1.0338864000e+00 9.2382800000e-01\n1367472050: 1.1268554000e+00 1.0296876000e+00 9.2382800000e-01\n1367472120: nan nan nan";
 // var resmock = { json: function (data) {
 //    console.log(JSON.stringify(data, null, 2));
 // }};
 // var nextmock = function(err) { console.log(err); }
-// var reqmock = { params: { id:"localhost"}, query:{from: 1367470900, to: 1367477900, r:1000} };
+// var reqmock = { params: { id:"localhost_fucked"}, query:{from: 1367470900, to: 1367477900, r:1000} };
 // getMemory(reqmock,resmock, nextmock);
+
+// getInfoForAllHosts("load/load.rrd", function(err, data) {
+//    if (!err) {
+//       console.log(data);
+//       console.log(data.length);
+//    } else {
+//       console.log("ERROR: ", err);
+//    }
+// });
 
 
 
