@@ -2,13 +2,14 @@
 
 ## Install dependencies: 
 
-Get dependencies: 
+1. Install [rrdtool](http://oss.oetiker.ch/rrdtool). On Mac, [homebrew](http://mxcl.github.io/homebrew/) works. On Linux, use apt-get rrdtool. On Windows, figure this out yourself (and add instructions here). Make sure rrdtool is on the path (try $which rrdtool, $rrdtool).
+
+1. Get dependencies: 
 
 		$cd node, npm install
 		    
-Install [rrdtool](http://oss.oetiker.ch/rrdtool). On Mac, [homebrew](http://mxcl.github.io/homebrew/) works. On Linux, use apt-get rrdtool. On Windows, figure this out yourself. Make sure rrdtool is on the path (try $which rrdtool, $rrdtool).
 
-If rrdtool is not installed, the "mock" data will still work.
+If rrdtool is not installed, the node_rrd will fail to build. The "mock" data should still work.
 
 ## Unit tests
 Node unit tests - see node/README.md.
@@ -23,15 +24,11 @@ From collectd3 root:
 ## Ongoing
 
 
-# Statistics
+### Statistics
 * The meaning of the metric is defined on the node backend. E.g., given MIN,MAX,AVE, shortterm/medterm/longterm on CPU load, it decides what to return when frontend is querying for "load". It also forms the data into d3 friendly data structre. 
 
-# Shelfed - node_rrd
-I tried to use node_rrd module first, but decided to switch to launch rrdtool via execFile, before we know performance IS a problem. If/when we get back to using node_rrd: it's not in npm registry yet, so here are instructions:
-
-2. get and build [node_rrd](https://github.com/Orion98MC/node_rrd). Follow instructions! It needs rrdtool properly installed and configured to compile the bindings.
-3. Place a compiled version of node_rrd under node, as node/node_rrd.
-NOTE: I will need to add a compiled version to the repo till it is in npm.
+### Use of node_rrd
+Looks like node_rrd gets installed right once rrdtool is properly installed and it's headers and lib files are on the path. I use node_rrd for info - when calling multiple files many times, saving on parsing. I use rrdtool via execFile for fetch - may switch to rrd_tool when it implements a single callback with all the data parsed and done. 
 
 
 

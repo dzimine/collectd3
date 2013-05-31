@@ -1,6 +1,7 @@
 var fs = require('fs');
 var execFile = require('child_process').execFile;
 var async = require('async');
+var rrd = require("rrd");
 var rrdtool= "rrdtool"; 
 
 /******************************************************************************/
@@ -35,7 +36,7 @@ var getMemory = exports.getMemory = function(req, res, next) {
          if (err) { 
             next(err);
          } else {
-            keyLabels = ["active", "free"];
+            var keyLabels = ["active", "free"];
             var results = [];
             for (var i = 0; i < data.length; i++) {
                var record = formatOutput(data[i]);
@@ -46,6 +47,18 @@ var getMemory = exports.getMemory = function(req, res, next) {
          }
       }
    );
+}
+
+var getCpuHeatmap = exports.getCpuHeatmap = function(req, res, next) {
+   getInfoForAllHosts("load/load.rrd", 
+      ["ds[shortterm].value", "last_update"], 
+      function(err, data) {
+         if (err) {
+            next(err);
+         } else {
+            res.json(data);
+         }
+      });
 }
 
 /**
@@ -82,16 +95,10 @@ var fetchRRD = function (rrd_file, cf, req, callback) {
 var infoRRD = function (rrd_file, host, callback) {
    
    var rrd_file_path = collectDataRoot + "/" + host + "/" + rrd_file;
-   var args = ["info", rrd_file_path];
-   console.log("Running: ", rrdtool, args.join(" "));   
-
-   var child = execFile(rrdtool, args, function(err, stdout, stderr) {
-          if (err) {
-            callback(err);
-         } else {
-            callback(null, stdout);
-         }
-      });
+   //TODO: handle 'file doesn't exist'. rrd.info calls back with info={} on errors.
+   rrd.info(rrd_file_path, function(info) {
+      callback(null, info);
+   }); 
 }
 /**
 * Takes rrdtool outpoot and transforms it to d3 data
@@ -127,10 +134,11 @@ var formatOutput = function (data) {
 * Iterates all 'host' folders under collectd data root, and calls info on the specified rrd file,
 * and returns an array of results [{host:hostname,info:data}...]
 * @param path - path to the .rrd file in collectd structure, relative to "host" directory
+* @param info - list of rrd info keys which we need values for
 * @param callback(err, data) - calls with (err, null) on error, and (null, data)
 * where data is an array of info outputs. 
 */
-var getInfoForAllHosts = function (path, callback) {
+var getInfoForAllHosts = function (path, keys, callback) {
    fs.readdir(collectDataRoot, function(err, filenames){
       if (err) {
          callback(err);
@@ -153,12 +161,17 @@ var getInfoForAllHosts = function (path, callback) {
                         console.log("WARNING: %s doesn't exist", filepath);
                         cb();
                      } else {
-                        infoRRD(path, host, function(err, output) {
+                        infoRRD(path, host, function(err, info) {
                            if (err) { 
                               cb(err); 
                            } else {
-                              //console.log(output);
-                              d.push({host:"host", info: output});
+                              var data = [host];
+                              keys.forEach(function(key, i) {
+                                 if (info.hasOwnProperty(key)) {
+                                    data.push(info[key]);
+                                 }
+                              });
+                              d.push(data);
                               cb();
                            }
                         });
@@ -173,8 +186,11 @@ var getInfoForAllHosts = function (path, callback) {
    });
 }
 
-/* Quick & dirty testing */
 
+/* Quick & dirty testing */
+// infoRRD("crap", "localhost", function(info) {
+//    console.log(info);
+// });
 // var resmock = { json: function (data) {
 //    console.log(JSON.stringify(data, null, 2));
 // }};
@@ -182,7 +198,7 @@ var getInfoForAllHosts = function (path, callback) {
 // var reqmock = { params: { id:"localhost_fucked"}, query:{from: 1367470900, to: 1367477900, r:1000} };
 // getMemory(reqmock,resmock, nextmock);
 
-// getInfoForAllHosts("load/load.rrd", function(err, data) {
+// getInfoForAllHosts("load/load.rrd", ["ds[shortterm].value", "last_update"], function(err, data) {
 //    if (!err) {
 //       console.log(data);
 //       console.log(data.length);

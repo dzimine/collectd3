@@ -27,7 +27,7 @@ app.use(express.errorHandler({dumpExceptions: true }));
 
 app.get('/data/:id/load', stats.getCpuLoad);
 app.get('/data/:id/memory', stats.getMemory);
-
+app.get('/data/load', stats.getCpuHeatmap);
 
 app.listen(port);
 console.log('Express listening on port ' + port);
