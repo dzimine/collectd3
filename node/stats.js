@@ -61,6 +61,18 @@ var getCpuHeatmap = exports.getCpuHeatmap = function(req, res, next) {
       });
 }
 
+var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
+   getInfoForAllHosts("memory/memory-active.rrd", 
+      ["ds[value].value", "last_update"], 
+      function(err, data) {
+         if (err) {
+            next(err);
+         } else {
+            res.json(data);
+         }
+      });
+}
+
 /**
 * fetchRRD: Calls rrdtool and returns the data. 
 * rrd_file - relative path to rrd file collectDataRoot/{host_id} 
@@ -76,6 +88,7 @@ var fetchRRD = function (rrd_file, cf, req, callback) {
    var host = req.params.id;
    var rrd_file_path = collectDataRoot + "/" + host + "/" + rrd_file;
    var params = [];
+   //TODO: set good defaults to avoid buffer overflow
    if (req.query.from) { params.push("--start", req.query.from); }
    if (req.query.to) { params.push("--end", req.query.to); }
    if (req.query.r) { params.push("-r", req.query.r); }
@@ -93,15 +106,16 @@ var fetchRRD = function (rrd_file, cf, req, callback) {
 }
 
 var infoRRD = function (rrd_file, host, callback) {
-   
    var rrd_file_path = collectDataRoot + "/" + host + "/" + rrd_file;
    //TODO: handle 'file doesn't exist'. rrd.info calls back with info={} on errors.
+   //or remove err from callback all together
    rrd.info(rrd_file_path, function(info) {
       callback(null, info);
    }); 
 }
+
 /**
-* Takes rrdtool outpoot and transforms it to d3 data
+*  Takes rrdtool outpoot and transforms it to d3 data
 *  rrdtool output: time: value[0],value[1],value[2]... (see output.txt for a sample)
 *  d3 data [{key:key, value[]}...] (see d3 or nvd3 samples)
 */
@@ -186,17 +200,17 @@ var getInfoForAllHosts = function (path, keys, callback) {
    });
 }
 
-
 /* Quick & dirty testing */
-// infoRRD("crap", "localhost", function(info) {
+// infoRRD("memory/memory-active.rrd", "localhost", function(err, info) {
 //    console.log(info);
 // });
 // var resmock = { json: function (data) {
 //    console.log(JSON.stringify(data, null, 2));
 // }};
+
 // var nextmock = function(err) { console.log(err); }
 // var reqmock = { params: { id:"localhost_fucked"}, query:{from: 1367470900, to: 1367477900, r:1000} };
-// getMemory(reqmock,resmock, nextmock);
+// getMemoryHeatmap(reqmock, resmock, nextmock);
 
 // getInfoForAllHosts("load/load.rrd", ["ds[shortterm].value", "last_update"], function(err, data) {
 //    if (!err) {
@@ -206,6 +220,3 @@ var getInfoForAllHosts = function (path, keys, callback) {
 //       console.log("ERROR: ", err);
 //    }
 // });
-
-
-

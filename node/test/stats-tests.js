@@ -56,6 +56,19 @@ exports['test getCpuHeatmap'] = function(done) {
 
 }
 
+exports['test getMemoryHeatmap'] = function(done) {
+   resmock.assertCallback = function(data) {
+     try {
+       assert.equal(3, data.length);
+       assert.equal(data[2][0], "localhost");
+       assert.equal(data[2][1], 2750562304);
+       done();
+     } catch (err) { done (err); }
+   }
+   stats.getMemoryHeatmap(reqmock, resmock, nextmock);
+
+}
+
 /////////////////////////////////////
 // Mocks 
 
