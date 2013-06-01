@@ -105,12 +105,14 @@ var fetchRRD = function (rrd_file, cf, req, callback) {
       });
 }
 
+/**
+ * Runs node_rrd rrd.info for a given path and host.
+ * On any error (e.g file doesn't exist, returns empty data set 
+ */
 var infoRRD = function (rrd_file, host, callback) {
    var rrd_file_path = collectDataRoot + "/" + host + "/" + rrd_file;
-   //TODO: handle 'file doesn't exist'. rrd.info calls back with info={} on errors.
-   //or remove err from callback all together
    rrd.info(rrd_file_path, function(info) {
-      callback(null, info);
+      callback(info);
    }); 
 }
 
@@ -175,19 +177,16 @@ var getInfoForAllHosts = function (path, keys, callback) {
                         console.log("WARNING: %s doesn't exist", filepath);
                         cb();
                      } else {
-                        infoRRD(path, host, function(err, info) {
-                           if (err) { 
-                              cb(err); 
-                           } else {
-                              var data = [host];
-                              keys.forEach(function(key, i) {
-                                 if (info.hasOwnProperty(key)) {
-                                    data.push(info[key]);
-                                 }
-                              });
-                              d.push(data);
-                              cb();
-                           }
+                        infoRRD(path, host, function(info) {
+                           var data = [host];
+                           // infoRRD returns empty data on error - ingore and send no-data
+                           keys.forEach(function(key, i) {
+                              if (info.hasOwnProperty(key)) {
+                                 data.push(info[key]);
+                              }
+                           });
+                           d.push(data);
+                           cb();
                         });
                      }
                   });
@@ -201,13 +200,12 @@ var getInfoForAllHosts = function (path, keys, callback) {
 }
 
 /* Quick & dirty testing */
-// infoRRD("memory/memory-active.rrd", "localhost", function(err, info) {
+// infoRRD("memory/memory-active.rrd", "localhost", function(info) {
 //    console.log(info);
 // });
 // var resmock = { json: function (data) {
 //    console.log(JSON.stringify(data, null, 2));
 // }};
-
 // var nextmock = function(err) { console.log(err); }
 // var reqmock = { params: { id:"localhost_fucked"}, query:{from: 1367470900, to: 1367477900, r:1000} };
 // getMemoryHeatmap(reqmock, resmock, nextmock);
