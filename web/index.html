@@ -1,62 +1,55 @@
 <!doctype html>
 <html lang="en">
-<head>
-   <meta charset="utf-8">
-   <title>Stats</title>
+   <head>
+      <meta charset="utf-8">
+      <title>Stats</title>
 
-   <!-- Le styles -->
-   <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-   <style type="text/css">
-      body {
-         padding-top: 60px;
-         padding-bottom: 40px;
-      }
-      .sidebar-nav {
-         padding: 9px 0;
-      }
-   </style>
-   <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-   <link rel="stylesheet" href="lib/nvd3/nv.d3.css">
-   <link rel="stylesheet" href="main.css">
-   <!-- libraries  -->
-   <script src="lib/jquery/jquery.js"></script>
-   <script src="lib/bootstrap/js/bootstrap.js"></script>
-   <script src="lib/angular/angular.js"></script>
-   <!--script src="lib/d3.v3/d3.v3.js"></script-->
-   <script src="lib/d3.v2/d3.v2.js"></script>
-   <!-- Application scripts  -->
-   <script src="main.js"></script>
-   <script src="apps/dashboard.js"></script>
-   <script src="apps/details.js"></script>
-</head>
+      <!-- Le styles -->
+      <link href="lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+      <style type="text/css">
+         body {
+            padding-top: 40px;
+         }
+         .sidebar-nav {
+            padding: 9px 0;
+         }
+      </style> 
+      <link href="lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+      <link rel="stylesheet" href="lib/nvd3/nv.d3.css">
+      <link rel="stylesheet" href="main.css">
+      <!-- libraries  -->
+      <script src="lib/jquery/jquery.js"></script>
+      <script src="lib/bootstrap/js/bootstrap.js"></script>
+      <script src="lib/angular/angular.js"></script>
+      <!--script src="lib/d3.v3/d3.v3.js"></script-->
+      <script src="lib/d3.v2/d3.v2.js"></script>
+      <!-- Application scripts  -->
+      <script src="main.js"></script>
+      <script src="apps/dashboard.js"></script>
+      <script src="apps/details.js"></script>
+   </head>
 
-<body ng-app="main" ng-controller="NavCtrl">
+   <body ng-app="main" ng-controller="NavCtrl">
 
-<div class="navbar navbar-inverse navbar-fixed-top" >
-   <div class="navbar-inner">
-      <div class="container-fluid">
-         <a class="brand" href="#">Stats</a>
-         <ul class="nav">
-            <li ng-class="{active:isActiveLocation('/dashboard')}"><a href="#/dashboard">Dashboard</a></li>
-            <li ng-class="{active:isActiveLocation('/details')}"><a href="#/details">Details</a></li>
-         </ul>
+   <div class="navbar navbar-inverse navbar-fixed-top" >
+      <div class="navbar-inner">
+         <div class="container-fluid">
+            <a class="brand" href="#">StackStorm</a>
+            <ul class="nav">
+               <li ng-class="{active:isActiveLocation('/dashboard')}"><a href="#/dashboard">Dashboard</a></li>
+               <li ng-class="{active:isActiveLocation('/details')}"><a href="#/details">Details</a></li>
+            </ul>
+         </div>
       </div>
    </div>
-</div>
-
-<div class="container-fluid" >
-
-   <div class="row-fluid" ng-view>
-      <!-- Angular views GO HERE -->
+   <div id="body_area">
+         <div class="row-fluid" ng-view>
+            <!-- Angular views GO HERE -->
+         </div>
    </div>
-
-   <hr>
-
+   </body>
+<!--   <hr>
    <footer>
       <p>&copy; DZ 2013</p>
-   </footer>
-
-</div><!--/.fluid-container-->
-
-</body>
+   </footer> -->
 </html>

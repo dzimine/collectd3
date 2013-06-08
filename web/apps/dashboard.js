@@ -9,7 +9,9 @@ function DashboardCtrl($s, $http) {
 
       var cellSize = 70; // default size when space is adequate
           
-      if ($("#heatmap").width() < minWidth) { cellSize = Math.ceil($("#heatmap").width() / 12); } 
+      if ($("#heatmap").width() < minWidth) { 
+         cellSize = Math.ceil($("#heatmap").width() / 10); 
+      } 
       
       var width = $("#heatmap").width() - cellSize, //leave padding space for one cell
           nColumns = Math.floor(width / cellSize); //number of columns
@@ -25,7 +27,7 @@ function DashboardCtrl($s, $http) {
          .style("z-index", "10")
          .style("visibility", "hidden");
 
-      d3.select("svg").remove(); // clear content area
+      d3.select("#heatmap").select("svg").remove(); // clear content area
 
       var svg = d3.select("#heatmap")
          .append("svg")

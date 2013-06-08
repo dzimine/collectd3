@@ -1,7 +1,136 @@
-<div style="overflow-y:scroll">
-   <h2>Heat Map</h2>
-   <span>{{status}}</span>
-   <div id="heatmap"></div>
+<div>
+<!--	<h2>Dashboard</h2> -->
+	<div id="cardgroup">
+		<div class="card_area">
+			<div id="cpu_card" class="card">
+				<div class="card_header">
+					<div class="card_name">
+						<p>Load</p>
+					</div>
+					<div class="status_area">
+						<div class="status_icon">
+							<svg>
+								<circle class="warning" cx="7" cy="7" r="7"></circle>
+							</svg>						
+						</div>
+						<p class="status">busy</p>
+					</div>
+				</div>
+				<div class="card_body">
+					<div class="stat_big">
+						<p class="warning">55<span class="unit">%</span></p>
+						<p class="kpi_label">average load</p>
+					</div>
+					<div class="stat_small">
+						<p class="normal">86<span class="unit">%</span></p>
+						<p class="kpi_label">peak load</p>
+					</div>
+				</div>
+				<div class="trend">
+					<img src="/img/trend1.png" alt="trend chart"/>
+				</div>
+			</div>
+		</div>
+		<div class="card_area">
+			<div id="memory_card" class="card">
+				<div class="card_header">
+					<div class="card_name">
+						<p>Memory</p>
+					</div>
+					<div class="status_area">
+						<div class="status_icon">
+							<svg>
+								<circle class="normal" cx="7" cy="7" r="7"></circle>
+							</svg>						
+						</div>
+						<p class="status"></p>
+					</div>
+				</div>
+				<div class="card_body">
+					<div class="stat_big">
+						<p class="normal">28<span class="unit">%</span></p>
+						<p class="kpi_label">capacity allocated</p>
+					</div>
+					<div class="stat_small">
+						<p class="normal">19<span class="unit">%</span></p>
+						<p class="kpi_label">committed</p>
+					</div>
+				</div>
+				<div class="trend">
+					<img src="/img/trend2.png" alt="trend chart"/>
+				</div>				
+			</div>
+		</div>
+		<div class="card_area">
+			<div id="storage_card" class="card">
+				<div class="card_header">
+					<div class="card_name">
+						<p>Storage</p>
+					</div>
+					<div class="status_area">
+						<div class="status_icon">
+							<svg>
+								<circle class="normal" cx="7" cy="7" r="7"></circle>
+							</svg>						
+						</div>
+						<p class="status"></p>
+					</div>
+				</div>
+				<div class="card_body">
+					<div class="stat_big">
+						<p class="normal">79<span class="unit">%</span></p>
+						<p class="kpi_label">capacity allocated</p>
+					</div>
+					<div class="stat_small">
+						<p class="normal">56<span class="unit">%</span></p>
+						<p class="kpi_label">committed</p>
+					</div>
+				</div>
+				<div class="trend">
+					<img src="/img/trend3.png" alt="trend chart"/>
+				</div>				
+			</div>
+		</div>
+		<div class="card_area">
+			<div id="ip_card" class="card">
+				<div class="card_header">
+					<div class="card_name">
+						<p>IPs</p>
+					</div>
+					<div class="status_area">
+						<div class="status_icon">
+							<svg>
+								<circle class="attention" cx="7" cy="7" r="7"></circle>
+							</svg>						
+						</div>
+						<p class="status">running out</p>
+					</div>
+				</div>
+				<div class="card_body">
+					<div class="stat_big">
+						<p class="attention">95<span class="unit">%</span></p>
+						<p class="kpi_label">addresses allocated</p>
+					</div>
+					<div class="stat_small">
+						<p class="normal">88<span class="unit">%</span></p>
+						<p class="kpi_label">committed</p>
+					</div>
+				</div>
+				<div class="trend">
+					<img src="/img/trend4.png" alt="trend chart"/>
+				</div>				
+			</div>
+		</div>
+	</div>
+	<div id="card_nav">	
+		<div id="triangle_pointer">
+		</div>	
+	</div>
+	
+	<div id="content">
+		<span class="timestamp">{{status}}</span>
+		<div id="heatmap"></div>
+	</div>
 </div>
 <script src="lib/nvd3/nv.d3.js"></script>
 

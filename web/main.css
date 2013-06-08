@@ -1,6 +1,22 @@
-svg {
-	min-height: 100px;
-	min-width: 100px;
+#body_area {
+  background-color: white;
+}
+
+.row-fluid {
+  padding-top: 10px;
+  display: block;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  width: 1320px;
+  margin: 20px auto 20px auto;
+  font-family: Century Gothic, sans-serif;
+  border-top: 1px solid #CCCCCC;
+  border-left: 1px solid #CCCCCC;
+  border-top-left-radius: 20px;
+  border-right: 1px solid #CCCCCC;
+  border-top-right-radius: 20px;
+  box-shadow: 0px 0px 35px 5px #CCCCCC;
 }
 
 footer p {
@@ -8,8 +24,208 @@ footer p {
 }
 
 body {
-  font: 14px sans-serif;
+  font-size: 14px;
   shape-rendering: crispEdges;
+}
+
+#cardgroup {
+  height: 230px;
+  background-color: white;
+}
+
+.card_area {
+  width: 25%;
+  height: 100%;
+  float: left;
+}
+
+.card {
+  padding: none;
+  float: left;
+  background-color: rgba(255,255,255,0.5);
+  width: 100%;
+  height: 100%;
+  min-width: 300px;
+  border-width: 1px;
+  -o-border-image: -o-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
+  -moz-border-image: -moz-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
+  -ms-border-image: -ms-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
+  -webkit-border-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
+  border-right-width: 0px;
+  border-top-width: 0px;
+  border-bottom: 0px;
+/*  
+  background-image: linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #FFFFFF 50%);
+  background-image: -o-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #FFFFFF 50%);
+  background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #FFFFFF 50%);
+  background-image: -ms-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #FFFFFF 50%);
+  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #FFFFFF 50%);
+*/
+}
+
+.card:hover {
+  cursor: pointer;
+  background-image: linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
+  background-image: -o-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
+  background-image: -moz-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
+  background-image: -ms-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
+  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
+  box-shadow: 0px 15px 25px -10px #00ffff;
+}
+
+#cpu_card {
+  border: none;
+  background-image: linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
+  background-image: -o-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
+  background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
+  background-image: -ms-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
+  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
+  box-shadow: 0px 15px 25px -10px #00ffff;
+}
+
+
+.card_header {
+  height: 80px;
+}
+
+.card_name {
+  float: left;
+  font-size: 2em;
+  width: 40%;
+  height: 100%;
+
+}
+
+.card_name p {
+  color: #777777;
+  margin-top: 22px;
+  margin-left: 25px;
+}
+
+.status_area {
+  float: right;
+  font-size: 1.5em;
+  color: #AAAAAA;
+  width: 60%;
+  height: 100%;
+}
+
+.status {
+  margin-top: 22px;
+  margin-right: 5px;
+  float: right;
+}
+
+.status_icon {
+  margin-top: 25px;
+  margin-right: 25px;
+  width: 16px;
+  float: right;
+}
+
+.status_icon .warning {
+  fill: #FF7000;
+}
+
+.status_icon .normal {
+  fill: #3AFF00;
+}
+
+.status_icon .attention {
+  fill: #FFE300;
+}
+
+.card_body {
+  height: 90px;
+  margin: 0px 15px;
+
+}
+
+.stat_big {
+  width: 60%;
+  float: left;
+  text-align: right;
+  height: 50%;
+  display: table;
+}
+
+.stat_small {
+  width: 40%;
+  float: right;
+  text-align: right;
+  height: 50%;
+}
+
+.stat_big p {
+  font-size: 5em;
+  font-weight: bold;
+  margin: 0px;
+  height: 40px;
+}
+
+.stat_small p {
+  font-size: 3em;
+  margin: 0px 20px 0px 0px;
+  height: 40px;
+  vertical-align: bottom;
+}
+
+.card_body .warning {
+  color: #FF7000;
+  font-weight: bold;
+}
+
+.card_body .normal {
+  color: #999999;
+}
+
+.card_body .attention {
+  color: #FFE300;
+}
+
+.card_body .kpi_label {
+  font-size: 1em;
+  font-weight: normal;
+  color: #AAAAAA;
+  font-style: italic;
+}
+
+.card_body .unit {
+  font-size: 0.4em;
+  font-weight: normal;
+  color: #AAAAAA;
+}
+
+.card .trend {
+  height: 60px;
+}
+
+.card .trend img {
+  width: 200px;
+  height: 40px;
+  vertical-align: middle;
+  margin-left: 60px;
+}
+
+#card_nav {
+  float: left;
+  margin-left: 120px;
+  height: 40px;
+  width: 80px;
+  background-color: transparent;
+}
+
+#triangle_pointer {
+  height: 0;
+  width: 0;
+  border-top: 20px solid #EEEEEE;
+  border-left: 40px solid transparent;
+  border-right: 40px solid transparent;
+}
+
+#content {
+  background-color: #333333;
+  padding: 50px 30px;
 }
 
 .heatmap rect {
@@ -43,8 +259,8 @@ body {
 .heatmap .cell0 {fill:rgb(26,152,80)}
 
 #heatmap {
-  padding: 20px 20px 20px 20px;
-  height: 100%;
+  padding: 20px;
+  height: 500px;
 }
 
 .mytooltip {
@@ -52,7 +268,16 @@ body {
   opacity: 0.8;
   border-radius: 5px;
   font-family: "Arial Black", Gadget, sans-serif;
-  font-size: 20px;
-  padding: 10px 10px 10px 10px; 
+  font-size: 16px;
+  padding: 10px; 
   box-shadow: 0px 0px 15px 5px #888888;
 }
+
+.timestamp {
+  font-family: "Arial", Gadget, sans-serif;
+  font-size: 1em;
+  color: #AAAAAA;
+  padding: 10px;
+  float: right;
+}
+
