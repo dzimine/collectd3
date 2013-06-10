@@ -1,11 +1,12 @@
 #body_area {
   background-color: white;
+  line-height: 135%;
 }
 
 .row-fluid {
   padding-top: 10px;
   display: block;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
   height: 100%;
   width: 1320px;
@@ -29,7 +30,7 @@ body {
 }
 
 #cardgroup {
-  height: 230px;
+  height: 280px;
   background-color: white;
 }
 
@@ -47,10 +48,10 @@ body {
   height: 100%;
   min-width: 300px;
   border-width: 1px;
-  -o-border-image: -o-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
-  -moz-border-image: -moz-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
-  -ms-border-image: -ms-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
-  -webkit-border-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0) 0%, #777777 15%, rgba(0,0,0,0) 90%) 1 100%;
+  -o-border-image: -o-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  -moz-border-image: -moz-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  -ms-border-image: -ms-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  -webkit-border-image: -webkit-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
   border-right-width: 0px;
   border-top-width: 0px;
   border-bottom: 0px;
@@ -70,7 +71,6 @@ body {
   background-image: -moz-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
   background-image: -ms-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
   background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
-  box-shadow: 0px 15px 25px -10px #00ffff;
 }
 
 #cpu_card {
@@ -80,20 +80,19 @@ body {
   background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
   background-image: -ms-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
   background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
-  box-shadow: 0px 15px 25px -10px #00ffff;
 }
 
 
 .card_header {
   height: 80px;
+  padding-bottom: 20px;
 }
 
 .card_name {
   float: left;
-  font-size: 2em;
+  font-size: 1.5em;
   width: 40%;
   height: 100%;
-
 }
 
 .card_name p {
@@ -104,7 +103,7 @@ body {
 
 .status_area {
   float: right;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: #AAAAAA;
   width: 60%;
   height: 100%;
@@ -128,51 +127,47 @@ body {
 }
 
 .status_icon .normal {
-  fill: #3AFF00;
+  fill: #18E000;
 }
 
 .status_icon .attention {
-  fill: #FFE300;
+  fill: #FFD717;
 }
 
 .card_body {
-  height: 90px;
-  margin: 0px 15px;
-
+  height: 30%;
+  margin-left: 15px;
 }
 
 .stat_big {
   width: 60%;
   float: left;
   text-align: right;
-  height: 50%;
-  display: table;
 }
 
 .stat_small {
   width: 40%;
   float: right;
   text-align: right;
-  height: 50%;
+  padding-top: 13px; /* hard coded padding to push the text down. need a better way. */
 }
 
 .stat_big p {
-  font-size: 5em;
-  font-weight: bold;
-  margin: 0px;
-  height: 40px;
+  font-size: 5.5em;
+  margin-right: 15px;
+  margin-bottom: 10px;
 }
 
 .stat_small p {
   font-size: 3em;
-  margin: 0px 20px 0px 0px;
-  height: 40px;
-  vertical-align: bottom;
+  margin-right: 40px;
+  margin-bottom: 10px;
 }
 
 .card_body .warning {
   color: #FF7000;
   font-weight: bold;
+  font-size: 6em;
 }
 
 .card_body .normal {
@@ -180,7 +175,7 @@ body {
 }
 
 .card_body .attention {
-  color: #FFE300;
+  color: #FFD717;
 }
 
 .card_body .kpi_label {
@@ -191,13 +186,13 @@ body {
 }
 
 .card_body .unit {
-  font-size: 0.4em;
+  font-size: 20px;
   font-weight: normal;
   color: #AAAAAA;
 }
 
 .card .trend {
-  height: 60px;
+  padding-top: 20px;
 }
 
 .card .trend img {
@@ -209,9 +204,9 @@ body {
 
 #card_nav {
   float: left;
-  margin-left: 120px;
+  margin-left: 105px;
   height: 40px;
-  width: 80px;
+  width: 120px;
   background-color: transparent;
 }
 
@@ -219,8 +214,8 @@ body {
   height: 0;
   width: 0;
   border-top: 20px solid #EEEEEE;
-  border-left: 40px solid transparent;
-  border-right: 40px solid transparent;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
 }
 
 #content {
