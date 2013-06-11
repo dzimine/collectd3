@@ -167,7 +167,7 @@ body {
 .card_body .warning {
   color: #FF7000;
   font-weight: bold;
-  font-size: 6em;
+  /* font-size: 6em; /* break card when inside .stat_small */
 }
 
 .card_body .normal {

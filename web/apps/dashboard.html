@@ -10,19 +10,19 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="warning" cx="7" cy="7" r="7"></circle>
-							</svg>						
+								<circle class="{{ statusOf( 'load', cluster.load.average ).status }}" cx="7" cy="7" r="7"></circle>
+							</svg>
 						</div>
-						<p class="status">busy</p>
+						<p class="status">{{ statusOf( 'load', cluster.load.average ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="warning">75<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'load', cluster.load.average ).status }}">{{ cluster.load.average | number:2 }}<span class="unit"></span><!-- KI2Sui: this prevents style from falling apart. Need you to alter styles. --></p>
 						<p class="kpi_label">average load</p>
 					</div>
 					<div class="stat_small">
-						<p class="normal">96<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'load', cluster.load.peak ).status }}">{{ cluster.load.peak | number:2 }}<span class="unit"></span></p>
 						<p class="kpi_label">peak load</p>
 					</div>
 				</div>
@@ -40,25 +40,25 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="normal" cx="7" cy="7" r="7"></circle>
-							</svg>						
+								<circle class="{{ statusOf( 'memory', cluster.memory.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+							</svg>
 						</div>
-						<p class="status"></p>
+						<p class="status">{{ statusOf( 'memory', cluster.memory.allocated ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="normal">28<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'memory', cluster.memory.allocated ).status }}">{{ cluster.memory.allocated | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">capacity allocated</p>
 					</div>
 					<div class="stat_small">
-						<p class="normal">19<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'memory', cluster.memory.committed ).status }}">{{ cluster.memory.committed | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">committed</p>
 					</div>
 				</div>
 				<div class="trend">
 					<img src="/img/trend2.png" alt="trend chart"/>
-				</div>				
+				</div>
 			</div>
 		</div>
 		<div class="card_area">
@@ -70,25 +70,25 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="normal" cx="7" cy="7" r="7"></circle>
-							</svg>						
+								<circle class="{{ statusOf( 'storage', cluster.storage.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+							</svg>
 						</div>
-						<p class="status"></p>
+						<p class="status">{{ statusOf( 'storage', cluster.storage.allocated ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="normal">79<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'storage', cluster.storage.allocated ).status }}">{{ cluster.storage.allocated | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">capacity allocated</p>
 					</div>
 					<div class="stat_small">
-						<p class="normal">56<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'storage', cluster.storage.committed ).status }}">{{ cluster.storage.committed | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">committed</p>
 					</div>
 				</div>
 				<div class="trend">
 					<img src="/img/trend3.png" alt="trend chart"/>
-				</div>				
+				</div>
 			</div>
 		</div>
 		<div class="card_area">
@@ -100,25 +100,25 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="attention" cx="7" cy="7" r="7"></circle>
-							</svg>						
+								<circle class="{{ statusOf( 'ips', cluster.ips.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+							</svg>
 						</div>
-						<p class="status">running out</p>
+						<p class="status">{{ statusOf( 'ips', cluster.ips.allocated ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="attention">95<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'ips', cluster.ips.allocated ).status }}">{{ cluster.ips.allocated | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">addresses allocated</p>
 					</div>
 					<div class="stat_small">
-						<p class="normal">88<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'ips', cluster.ips.committed ).status }}">{{ cluster.ips.committed | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">committed</p>
 					</div>
 				</div>
 				<div class="trend">
 					<img src="/img/trend4.png" alt="trend chart"/>
-				</div>				
+				</div>
 			</div>
 		</div>
 	</div>

@@ -1,9 +1,24 @@
+/*jshint globalstrict:true, jquery:true, browser:true */
+/*global d3*/
 'use strict';
 
 function DashboardCtrl($s, $http) {
 
    var dataset = [],
        minWidth = 800; // minimal width to maintain default cell size
+       
+   $s.statusOf = function (type, value) {
+      switch (type) {
+         case 'load':
+            if ( value > 1    ) return { status: 'warning', text: 'busy' };
+            if ( value > 0.7  ) return { status: 'attention', text: 'warming' };
+            return { status: 'normal' };
+         default:
+            if ( value > 95   ) return { status: 'warning', text: 'run out' };
+            if ( value > 80   ) return { status: 'attention', text: 'running out' };
+            return { status: 'normal' };
+      }
+   };
    
    function render() {
 
@@ -47,7 +62,7 @@ function DashboardCtrl($s, $http) {
           .attr("y", function(d, i) { return (Math.floor(i / nColumns)) * cellSize; })
           .attr("rx", 5)
           .attr("ry", 5)
-          .on("mouseover", function(d) { return tooltip.text("Host ID: " + d[0] + " | CPU Usage: " + Math.round(100 * d[1]) + "%").style("visibility", "visible"); })
+          .on("mouseover", function(d) { return tooltip.text("Host ID: " + d[0] + " | Load Average: " + d[1].toFixed(2)).style("visibility", "visible"); })
 //          .on("mouseover", function(d) { return tooltip.style("visibility", "visible").append("p").text("Host ID: " + d[0]).append("p").text("CPU Usage: " + Math.round(100 * d[1]) + " %"); })
           .on("mousemove", function() { return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
           .on("mouseout", function() { return tooltip.style("visibility", "hidden"); });      
@@ -56,8 +71,8 @@ function DashboardCtrl($s, $http) {
    $s.fetch = function(){
       var t1 = new Date();
       $s.status = "Loading...";
-      var urlLoad = "/heatmap.json";
-      $http.get(urlLoad)
+
+      $http.get("/data/load")
          .success(function(res) {
             dataset = res;
             $s.status = "Done in " + (new Date() - t1) + " ms";
@@ -67,7 +82,18 @@ function DashboardCtrl($s, $http) {
             $s.status = "Error getting data. Check the log.";
             render();
          });
-   }
+         
+      $http.get("/data/cluster")
+         .success(function(res) {
+            $s.cluster = res;
+            $s.status = "Done in " + (new Date() - t1) + " ms";
+            render();
+         }).error(function(err) {
+            $s.cluster = {};
+            $s.status = "Error getting data. Check the log.";
+            render();
+         });
+   };
    
    $s.fetch();
    
@@ -76,7 +102,3 @@ function DashboardCtrl($s, $http) {
    }); 
 
 } DashboardCtrl.$inject = ['$scope', '$http'];
-
-
-
-
