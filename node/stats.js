@@ -7,7 +7,7 @@ var rrdtool= "rrdtool";
 /******************************************************************************/
 //  CONFIGURATION 
 //   The root of rrd data, collected by collectd
-var collectDataRoot = __dirname + "/sampledata2";
+var collectDataRoot = __dirname + "/sampledata";
 
 
 /******************************************************************************/
@@ -56,7 +56,13 @@ var getCpuHeatmap = exports.getCpuHeatmap = function(req, res, next) {
          if (err) {
             next(err);
          } else {
-            res.json(data);
+            normalizeLoad(data, function (err, data) {
+               if (err) {
+                  next(err);
+               } else {
+                  res.json(data);
+               }
+            });
          }
       });
 }
@@ -199,22 +205,50 @@ var getInfoForAllHosts = function (path, keys, callback) {
    });
 }
 
+var normalizeLoad = function (data, callback) {
+   async.each(data, function (server, cb) {
+      var dir = collectDataRoot + '/' + server[0]
+      var str = "cpu-";
+      
+      fs.readdir(dir, function (err, filenames) {
+         if (err) {
+            cb(err);
+         } else {
+            var numberOfCpus = filenames.filter(function (e) { return e.slice(0, str.length) === str;}).length;
+            server[1] = server[1] / numberOfCpus;
+            cb();
+         }
+      });
+   }, function (err) {
+      callback(err, data)
+   });
+};
+
 /* Quick & dirty testing */
 // infoRRD("memory/memory-active.rrd", "localhost", function(info) {
 //    console.log(info);
 // });
-var resmock = { json: function (data) {
-   console.log(JSON.stringify(data, null, 2));
-}};
-var nextmock = function(err) { console.log(err); }
-var reqmock = { params: { id:"localhost"}, query:{from: 1370556816, to: 1370643216, r:1000} };
-getMemoryHeatmap(reqmock, resmock, nextmock);
+// var resmock = { json: function (data) {
+//    console.log(JSON.stringify(data, null, 2));
+// }};
+// var nextmock = function(err) { console.log(err); }
+// var reqmock = { params: { id:"localhost"}, query:{from: 1370556816, to: 1370643216, r:1000} };
+// getMemoryHeatmap(reqmock, resmock, nextmock);
 
 // getInfoForAllHosts("load/load.rrd", ["ds[shortterm].value", "last_update"], function(err, data) {
 //    if (!err) {
-//       console.log(data);
-//       console.log(data.length);
+//       normalizeLoad(data, function (err, data) {
+//          if (err) {
+//             console.log("ERROR: ", err);
+//          } else {
+//             console.log(data);
+//          }
+//       });
 //    } else {
 //       console.log("ERROR: ", err);
 //    }
+// });
+
+// fs.readdir(collectDataRoot, function (err, filenames) {
+//    console.log(filenames);
 // });
