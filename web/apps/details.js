@@ -81,9 +81,9 @@ function DetailsCtrl($s, $http) {
    $s.fetch = function  (){
       var t1 = new Date();
       // TODO: get the parameters from hour/3 hours/day/week/year selector
-      var params = {"from":1367470900, "to":1367477900, "r":100};
+      var params = {"from":1370556000, "to":1370643000, "r":2000};
       $s.status = "Loading..."
-      var urlLoad = $s.useMock ? "/load.json" : "/data/localhost/load"; 
+      var urlLoad = $s.useMock ? "/load.json" : "/data/ua-c01.tir.example.com/load"; 
       $http.get(urlLoad, {params : params})
          .success(function(res) {
             $s.dataLoad = res;
@@ -96,7 +96,7 @@ function DetailsCtrl($s, $http) {
          });
 
       //TODO better nicer way to show second chart...
-      var urlMemory = $s.useMock ? "/memory.json" : "/data/localhost/memory"; 
+      var urlMemory = $s.useMock ? "/memory.json" : "/data/ua-c01.tir.example.com/memory"; 
       $http.get(urlMemory, {params : params})
         .success(function(res) {
            $s.dataMemory = res;

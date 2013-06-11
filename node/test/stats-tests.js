@@ -8,14 +8,15 @@ var stats = rewire("../stats");
 // 2) use tests for testing private methods (rewire)
 // TODO: consider a better assert library.
 
+stats.__set__("collectDataRoot", __dirname + "/../testdata");
 
 exports['test getInfoForAllHosts'] = function(done) {
   var keys = ["ds[shortterm].value", "last_update"];
   stats.__get__('getInfoForAllHosts')("load/load.rrd", keys, function(err, data) {
       if (err) return done(err);
-      assert.equal(3, data.length, "Must have 3 datasets");
-      assert.equal(keys.length+1, data[1].length);
-      assert.equal(2.229492, data[0][1]);
+      assert.equal(3, data.length, "Should have 3 datasets");
+      assert.equal(keys.length+1, data[1].length, "Should fetch all keys");
+      assert.equal(4.38, data[0][1], "Should get correct value");
       done();
   });
 }
@@ -34,10 +35,10 @@ exports['test formatOutput (from rrdtool fetch)'] = function(done) {
 
 exports['test getMemory'] = function(done) {
    resmock.assertCallback = function(data) {
-      //console.log(JSON.stringify(resmock.data, null, 3));
-      assert.equal(data[0].key, 'active', 'should fetch active memory');
-      assert.equal(data[0].values.length, 14, 'active should have 14 data points');
-      assert.equal(data[1].key, 'free', 'should get active free');
+      //console.log(JSON.stringify(data, null, 3));
+      assert.equal(data[0].key, 'used', 'should fetch used memory');
+      assert.equal(data[0].values.length, 39, 'active should have 39 data points');
+      assert.equal(data[1].key, 'free', 'should fetch free memory');
       done();
    }
    stats.getMemory(reqmock, resmock, nextmock);
@@ -46,24 +47,34 @@ exports['test getMemory'] = function(done) {
 
 exports['test getCpuHeatmap'] = function(done) {
    resmock.assertCallback = function(data) {
-     try {
-       assert.equal(3, data.length);
-       assert.equal(data[2][0], "localhost");
-       done();
-     } catch (err) { done (err); }
+      try {
+         assert.equal(3, data.length);
+         assert.ok(data
+            .reduce(function(a, b){
+               return (b[0] == "localhost") ?  true : a;
+            }, false), 
+            "Data should contain 'localhost'"
+         );
+         done();
+      } catch (err) { done (err); }
    }
    stats.getCpuHeatmap(reqmock, resmock, nextmock);
-
 }
 
 exports['test getMemoryHeatmap'] = function(done) {
    resmock.assertCallback = function(data) {
-     try {
-       assert.equal(3, data.length);
-       assert.equal(data[2][0], "localhost");
-       assert.equal(data[2][1], 2750562304);
-       done();
-     } catch (err) { done (err); }
+      try {
+         //console.log(JSON.stringify(data, null, 3));
+         assert.equal(3, data.length);
+         //check if data contains array with a giveh host host name
+         assert.ok(data
+            .reduce(function(a, b){
+               return (b[0] == "localhost") ?  true : a;
+            }, false), 
+            "Data should contain 'localhost'");
+         assert.equal(data[2][1], 121649971200, "Should have correct value");
+         done();
+      } catch (err) { done (err); }
    }
    stats.getMemoryHeatmap(reqmock, resmock, nextmock);
 
@@ -72,9 +83,10 @@ exports['test getMemoryHeatmap'] = function(done) {
 /////////////////////////////////////
 // Mocks 
 
+
 var reqmock = { 
    params: { id:"localhost"}, 
-   query:{from: 1367470900, to: 1367477900, r:1000} 
+   query:{from: 1370556816, to: 1370643216, r:10000} 
 };
 
 var resmock = { 

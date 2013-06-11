@@ -7,7 +7,7 @@ var rrdtool= "rrdtool";
 /******************************************************************************/
 //  CONFIGURATION 
 //   The root of rrd data, collected by collectd
-var collectDataRoot = __dirname + "/sampledata";
+var collectDataRoot = __dirname + "/sampledata2";
 
 
 /******************************************************************************/
@@ -26,7 +26,7 @@ var getCpuLoad = exports.getCpuLoad = function(req, res, next) {
 var getMemory = exports.getMemory = function(req, res, next) {
    async.parallel([
          function (callback) {
-               fetchRRD("memory/memory-active.rrd", "AVERAGE", req, callback);
+               fetchRRD("memory/memory-used.rrd", "AVERAGE", req, callback);
          }, 
          function (callback) {
                fetchRRD("memory/memory-free.rrd", "AVERAGE", req, callback);
@@ -36,7 +36,7 @@ var getMemory = exports.getMemory = function(req, res, next) {
          if (err) { 
             next(err);
          } else {
-            var keyLabels = ["active", "free"];
+            var keyLabels = ["used", "free"];
             var results = [];
             for (var i = 0; i < data.length; i++) {
                var record = formatOutput(data[i]);
@@ -62,7 +62,7 @@ var getCpuHeatmap = exports.getCpuHeatmap = function(req, res, next) {
 }
 
 var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
-   getInfoForAllHosts("memory/memory-active.rrd", 
+   getInfoForAllHosts("memory/memory-used.rrd", 
       ["ds[value].value", "last_update"], 
       function(err, data) {
          if (err) {
@@ -203,12 +203,12 @@ var getInfoForAllHosts = function (path, keys, callback) {
 // infoRRD("memory/memory-active.rrd", "localhost", function(info) {
 //    console.log(info);
 // });
-// var resmock = { json: function (data) {
-//    console.log(JSON.stringify(data, null, 2));
-// }};
-// var nextmock = function(err) { console.log(err); }
-// var reqmock = { params: { id:"localhost_fucked"}, query:{from: 1367470900, to: 1367477900, r:1000} };
-// getMemoryHeatmap(reqmock, resmock, nextmock);
+var resmock = { json: function (data) {
+   console.log(JSON.stringify(data, null, 2));
+}};
+var nextmock = function(err) { console.log(err); }
+var reqmock = { params: { id:"localhost"}, query:{from: 1370556816, to: 1370643216, r:1000} };
+getMemoryHeatmap(reqmock, resmock, nextmock);
 
 // getInfoForAllHosts("load/load.rrd", ["ds[shortterm].value", "last_update"], function(err, data) {
 //    if (!err) {
