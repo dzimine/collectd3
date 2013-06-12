@@ -73,8 +73,8 @@ body {
   background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
 }
 
-#cpu_card {
-  border: none;
+.card.active {
+  /*border: none;*/
   background-image: linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
   background-image: -o-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
   background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
@@ -202,15 +202,15 @@ body {
   margin-left: 60px;
 }
 
-#card_nav {
+.card_nav {
   float: left;
-  margin-left: 105px;
+  margin: 0 105px;
   height: 40px;
   width: 120px;
   background-color: transparent;
 }
 
-#triangle_pointer {
+.triangle_pointer {
   height: 0;
   width: 0;
   border-top: 20px solid #EEEEEE;
@@ -218,9 +218,18 @@ body {
   border-right: 60px solid transparent;
 }
 
-#content {
+.content {
   background-color: #333333;
   padding: 50px 30px;
+}
+
+.content:empty:after {
+   content: "Nothing to show yet =(";
+   color: #adadad;
+   text-align: center;
+   display: block;
+   font-size: 5em;
+   padding: 5em 3em;
 }
 
 .heatmap rect {

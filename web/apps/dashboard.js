@@ -2,9 +2,22 @@
 /*global d3*/
 'use strict';
 
-function DashboardCtrl($s, $http) {
+function DashboardCtrl($s, $http, $location) {
 
-   var minWidth = 800; // minimal width to maintain default cell size
+   var tab = '',
+       minWidth = 800; // minimal width to maintain default cell size
+   
+   $s.switchTab = function (name) {
+      tab = name;
+   };
+   
+   $s.isTab = function (name) {
+      var current = tab;
+      if (current === '' && name === "load") {
+         return true;
+      }
+      return current === name;
+   }
    
    $s.statusOf = function (type, value) {
       switch (type) {
@@ -100,4 +113,4 @@ function DashboardCtrl($s, $http) {
       render();
    }); 
 
-} DashboardCtrl.$inject = ['$scope', '$http'];
+} DashboardCtrl.$inject = ['$scope', '$http', '$location'];
