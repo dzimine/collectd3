@@ -45,11 +45,11 @@ exports['test getMemory'] = function(done) {
 
 }
 
-exports['test getCpuHeatmap'] = function(done) {
+exports['test getLoadInfo'] = function(done) {
    resmock.assertCallback = function(data) {
       try {
-         assert.equal(3, data.length);
-         assert.ok(data
+         assert.equal(3, data.heatmap.length);
+         assert.ok(data.heatmap
             .reduce(function(a, b){
                return (b[0] == "localhost") ?  true : a;
             }, false), 
@@ -58,7 +58,7 @@ exports['test getCpuHeatmap'] = function(done) {
          done();
       } catch (err) { done (err); }
    }
-   stats.getCpuHeatmap(reqmock, resmock, nextmock);
+   stats.getLoadInfo(reqmock, resmock, nextmock);
 }
 
 exports['test getMemoryHeatmap'] = function(done) {

@@ -4,9 +4,8 @@
 
 function DashboardCtrl($s, $http) {
 
-   var dataset = [],
-       minWidth = 800; // minimal width to maintain default cell size
-       
+   var minWidth = 800; // minimal width to maintain default cell size
+   
    $s.statusOf = function (type, value) {
       switch (type) {
          case 'load':
@@ -53,7 +52,7 @@ function DashboardCtrl($s, $http) {
 //        .attr("filter", "url(#effectFilter)")
 
       var rect = svg.selectAll("rect")
-          .data(dataset)
+          .data($s.load && $s.load.heatmap || [])
           .enter().append("rect")
           .attr("class", function(d) { return colorScale(d[1]); }) 
           .attr("width", cellSize - 2) 
@@ -74,11 +73,11 @@ function DashboardCtrl($s, $http) {
 
       $http.get("/data/load")
          .success(function(res) {
-            dataset = res;
+            $s.load = res;
             $s.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
-            dataset =[];
+            $s.load = {};
             $s.status = "Error getting data. Check the log.";
             render();
          });

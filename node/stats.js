@@ -49,22 +49,33 @@ var getMemory = exports.getMemory = function(req, res, next) {
    );
 }
 
-var getCpuHeatmap = exports.getCpuHeatmap = function(req, res, next) {
-   getInfoForAllHosts("load/load.rrd", 
-      ["ds[shortterm].value", "last_update"], 
-      function(err, data) {
-         if (err) {
-            next(err);
-         } else {
-            normalizeLoad(data, function (err, data) {
-               if (err) {
-                  next(err);
-               } else {
-                  res.json(data);
-               }
-            });
-         }
-      });
+var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
+   async.waterfall([
+      wrap(getInfoForAllHosts, ["load/load.rrd", ["ds[shortterm].value", "ds[midterm].value", "ds[longterm].value", "last_update"]]),
+      wrap(normalizeLoad, [[1,2,3]])
+   ], function (err, data) {
+      if (err) {
+         next(err);
+      } else {
+         var output = {
+            heatmap: data.map(function (e) { return [e[0], e[1], e[4]]; }),
+            average: {
+               shortterm: data
+                  .map(function (e) { return e[1]; })
+                  .reduce(function(a, b) { return a + b }) / data.length,
+                  
+               midterm: data
+                  .map(function (e) { return e[2]; })
+                  .reduce(function(a, b) { return a + b }) / data.length,
+                  
+               longterm: data
+                  .map(function (e) { return e[3]; })
+                  .reduce(function(a, b) { return a + b }) / data.length
+            }
+         };
+         res.json(output);
+      }
+   });
 }
 
 var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
@@ -222,11 +233,18 @@ var getInfoForAllHosts = function (path, keys, callback) {
 
 /**
 * Normalizes Load Average based on a number of cores.
+* @param cols - array of indices of columns to normalize
 * @param data - array of data to normalize
 * @param callback - calls with (err, null) on error, and (null, data)
 * where data is an array of info outputs.
 */
-var normalizeLoad = function (data, callback) {
+var normalizeLoad = function (cols, data, callback) {
+   if (!callback) {
+      callback = data;
+      data = cols;
+      cols = [1]
+   }
+   
    async.each(data, function (server, cb) {
       var dir = collectDataRoot + '/' + server[0]
       var str = "cpu-";
@@ -236,7 +254,7 @@ var normalizeLoad = function (data, callback) {
             cb(err);
          } else {
             var numberOfCpus = filenames.filter(function (e) { return e.slice(0, str.length) === str;}).length;
-            server[1] = server[1] / numberOfCpus;
+            cols.forEach(function (i) { server[i] = server[i] / numberOfCpus });
             cb();
          }
       });
@@ -334,7 +352,52 @@ var aggregateIPs = function (cb) {
 * @args - array of arguments
 */
 var wrap = function (func, args) {
-   return function (cb) {
-      return func.apply(this, args.concat(cb));
+   if (!args) { 
+      args = []; 
+   }
+   
+   return function () {
+      return func.apply(this, args.concat(Array.prototype.slice.call(arguments)));
    }
 }
+
+
+
+// async.waterfall([
+//    wrap(getInfoForAllHosts, ["load/load.rrd", ["ds[shortterm].value", "ds[midterm].value", "ds[longterm].value", "last_update"]]),
+//    wrap(normalizeLoad, [[1,2,3]])
+// ], function (err, data) {
+//    var output = {
+//       heatmap: data.map(function (e) { return [e[0], e[1], e[4]]; }),
+//       average: {
+//          shortterm: data
+//             .map(function (e) { return e[1]; })
+//             .reduce(function(a, b) { return a + b }) / data.length,
+//          midterm: data
+//             .map(function (e) { return e[2]; })
+//             .reduce(function(a, b) { return a + b }) / data.length,
+//          longterm: data
+//             .map(function (e) { return e[3]; })
+//             .reduce(function(a, b) { return a + b }) / data.length
+//       }
+//    };
+//    console.log(err, output);
+// });
+
+// getInfoForAllHosts("load/load.rrd", 
+//    ["ds[shortterm].value", "last_update"], 
+//    function(err, data) {
+//       if (err) {
+//          console.log(err);
+//       } else {
+//          normalizeLoad(data, function (err, data) {
+//             if (err) {
+//                console.log(err);
+//             } else {
+//                console.log(data);
+//             }
+//          });
+//       }
+//    });
+
+

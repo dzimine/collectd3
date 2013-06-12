@@ -276,3 +276,17 @@ body {
   float: right;
 }
 
+.average {
+   color: #adadad;
+   text-align: center;
+   font-family: 'Century Gothic', sans-serif;
+}
+
+.average p {
+   font-size: 3em;
+}
+
+.average .kpi-label {
+   font-size: 1em;
+}
+
