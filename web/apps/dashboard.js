@@ -74,6 +74,7 @@ function DashboardCtrl($s, $http, $location) {
           .attr("y", function(d, i) { return (Math.floor(i / nColumns)) * cellSize; })
           .attr("rx", 5)
           .attr("ry", 5)
+          .on("click", function (d) { $location.path('/details/' + d[0]); $s.$apply(); })
           .on("mouseover", function(d) { return tooltip.text("Host ID: " + d[0] + " | Load Average: " + d[1].toFixed(2)).style("visibility", "visible"); })
 //          .on("mouseover", function(d) { return tooltip.style("visibility", "visible").append("p").text("Host ID: " + d[0]).append("p").text("CPU Usage: " + Math.round(100 * d[1]) + " %"); })
           .on("mousemove", function() { return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})

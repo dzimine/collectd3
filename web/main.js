@@ -6,7 +6,7 @@ angular.module('main', []).
    $routeProvider
          .when('/dashboard',
             {templateUrl: 'apps/dashboard.html', controller: 'DashboardCtrl'})
-         .when('/details',
+         .when('/details/:host',
             {templateUrl: 'apps/details.html', controller: 'DetailsCtrl'})
          .otherwise({redirectTo: '/dashboard'});
 }]);

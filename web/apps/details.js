@@ -1,6 +1,8 @@
 'use strict';
 
-function DetailsCtrl($s, $http) {
+function DetailsCtrl($s, $http, $routeParams) {
+
+   $s.$routeParams = $routeParams;
 
    $s.x=0;
    $s.dataLoad = [];
@@ -112,7 +114,7 @@ function DetailsCtrl($s, $http) {
    $s.fetch();
  
 
-} DetailsCtrl.$inject = ['$scope', '$http'];
+} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams'];
 
 
 
