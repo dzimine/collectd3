@@ -79,12 +79,12 @@ var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
       });
 }
 
-var getClusterInfo = exports.getClusterInfo = function (req, res, next) {
+var aggregateInfo = exports.aggregateInfo = function (req, res, next) {
    async.parallel({
-      load: getClusterLoad,
-      memory: getClusterMemory,
-      storage: getClusterStorage,
-      ips: getClusterIPs
+      load: aggregateLoad,
+      memory: aggregateMemory,
+      storage: aggregateStorage,
+      ips: aggregateIPs
    }, function (err, data) {
       if (err) {
          next(err);
@@ -246,9 +246,9 @@ var normalizeLoad = function (data, callback) {
 };
 
 /**
-* Collects and calculates specific types of stats for a whole cluster.
+* Collects and calculates specific types of stats for a whole system.
 */
-var getClusterLoad = function (cb) {
+var aggregateLoad = function (cb) {
    getInfoForAllHosts("load/load.rrd", 
       ["ds[shortterm].value", "last_update"], 
       function(err, data) {
@@ -271,7 +271,7 @@ var getClusterLoad = function (cb) {
       });
 };
 
-var getClusterMemory = function (cb) {
+var aggregateMemory = function (cb) {
    async.parallel([
       wrap(getInfoForAllHosts, ["memory/memory-used.rrd", ["ds[value].value", "last_update"]]),
       wrap(getInfoForAllHosts, ["memory/memory-free.rrd", ["ds[value].value", "last_update"]]),
@@ -299,7 +299,7 @@ var getClusterMemory = function (cb) {
    
 };
 
-var getClusterStorage = function (cb) {
+var aggregateStorage = function (cb) {
   getInfoForAllHosts( "df/df-var-lib-nova-instances.rrd", ['ds[used].value', 'ds[free].value'], function (err, data) {
     if (err) {
       cb(err);
@@ -320,7 +320,7 @@ var getClusterStorage = function (cb) {
   });
 };
 
-var getClusterIPs = function (cb) {
+var aggregateIPs = function (cb) {
    cb(null, {
       allocated: 95,
       committed: 88
@@ -338,72 +338,3 @@ var wrap = function (func, args) {
       return func.apply(this, args.concat(cb));
    }
 }
-
-/* Quick & dirty testing */
-// infoRRD("memory/memory-active.rrd", "localhost", function(info) {
-//    console.log(info);
-// });
-// var resmock = { json: function (data) {
-//    console.log(JSON.stringify(data, null, 2));
-// }};
-// var nextmock = function(err) { console.log(err); }
-// var reqmock = { params: { id:"localhost"}, query:{from: 1370556816, to: 1370643216, r:1000} };
-// getMemoryHeatmap(reqmock, resmock, nextmock);
-
-// getInfoForAllHosts("load/load.rrd", ["ds[shortterm].value", "last_update"], function(err, data) {
-//    if (!err) {
-//       normalizeLoad(data, function (err, data) {
-//          if (err) {
-//             console.log("ERROR: ", err);
-//          } else {
-//             var load = data.map(function (e) { return e[1]});
-//             var sum = load.reduce(function(a, b) { return a + b });
-//             var ave = sum / load.length;
-//             var max = Math.max.apply(this, load)
-//             
-//             console.log( ave, max );
-//          }
-//       });
-//    } else {
-//       console.log("ERROR: ", err);
-//    }
-// });
-
-// async.parallel({
-//    load: getClusterLoad,
-//    memory: getClusterMemory,
-//    storage: getClusterStorage,
-//    ips: getClusterIPs
-// }, function (err, data) {
-//    console.log(err, data);
-// });
-
-// async.parallel([
-//    wrap(getInfoForAllHosts, ["memory/memory-used.rrd", ["ds[value].value", "last_update"]]),
-//    wrap(getInfoForAllHosts, ["memory/memory-free.rrd", ["ds[value].value", "last_update"]]),
-//    wrap(getInfoForAllHosts, ["memory/memory-cached.rrd", ["ds[value].value", "last_update"]]),
-//    wrap(getInfoForAllHosts, ["memory/memory-buffered.rrd", ["ds[value].value", "last_update"]])
-// ], function (err, data) {
-//    // data = data.map(function (e) {
-//    //    var o = {}
-//    //    e.forEach(function (e) {
-//    //       o[e[0]] = e[1];
-//    //    });
-//    //    return o;
-//    // })
-//    // Flattening the array
-//    var total = []
-//       .concat.apply([], data) // flattening all results into one array
-//       .map(function (e) { return e[1] }) // extract values
-//       .reduce(function(a, b) { return a + b }); // sum all values
-//       
-//    var used = data[0]
-//       .map(function (e) { return e[1] }) // extract values
-//       .reduce(function(a, b) { return a + b }); // sum all values
-//    
-//    console.log(err, total, used, used/total);
-// })
-
-// fs.readdir(collectDataRoot, function (err, filenames) {
-//    console.log(filenames);
-// });

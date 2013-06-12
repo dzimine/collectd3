@@ -10,19 +10,19 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="{{ statusOf( 'load', cluster.load.average ).status }}" cx="7" cy="7" r="7"></circle>
+								<circle class="{{ statusOf( 'load', aggregate.load.average ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
 						</div>
-						<p class="status">{{ statusOf( 'load', cluster.load.average ).text }}</p>
+						<p class="status">{{ statusOf( 'load', aggregate.load.average ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="{{ statusOf( 'load', cluster.load.average ).status }}">{{ cluster.load.average | number:2 }}<span class="unit"></span><!-- KI2Sui: this prevents style from falling apart. Need you to alter styles. --></p>
+						<p class="{{ statusOf( 'load', aggregate.load.average ).status }}">{{ aggregate.load.average | number:2 }}<span class="unit"></span><!-- KI2Sui: this prevents style from falling apart. Need you to alter styles. --></p>
 						<p class="kpi_label">average load</p>
 					</div>
 					<div class="stat_small">
-						<p class="{{ statusOf( 'load', cluster.load.peak ).status }}">{{ cluster.load.peak | number:2 }}<span class="unit"></span></p>
+						<p class="{{ statusOf( 'load', aggregate.load.peak ).status }}">{{ aggregate.load.peak | number:2 }}<span class="unit"></span></p>
 						<p class="kpi_label">peak load</p>
 					</div>
 				</div>
@@ -40,19 +40,19 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="{{ statusOf( 'memory', cluster.memory.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+								<circle class="{{ statusOf( 'memory', aggregate.memory.allocated ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
 						</div>
-						<p class="status">{{ statusOf( 'memory', cluster.memory.allocated ).text }}</p>
+						<p class="status">{{ statusOf( 'memory', aggregate.memory.allocated ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="{{ statusOf( 'memory', cluster.memory.allocated ).status }}">{{ cluster.memory.allocated | number:0 }}<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'memory', aggregate.memory.allocated ).status }}">{{ aggregate.memory.allocated | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">capacity allocated</p>
 					</div>
 					<div class="stat_small">
-						<p class="{{ statusOf( 'memory', cluster.memory.committed ).status }}">{{ cluster.memory.committed | number:0 }}<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'memory', aggregate.memory.committed ).status }}">{{ aggregate.memory.committed | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">committed</p>
 					</div>
 				</div>
@@ -70,19 +70,19 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="{{ statusOf( 'storage', cluster.storage.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+								<circle class="{{ statusOf( 'storage', aggregate.storage.allocated ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
 						</div>
-						<p class="status">{{ statusOf( 'storage', cluster.storage.allocated ).text }}</p>
+						<p class="status">{{ statusOf( 'storage', aggregate.storage.allocated ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="{{ statusOf( 'storage', cluster.storage.allocated ).status }}">{{ cluster.storage.allocated | number:0 }}<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'storage', aggregate.storage.allocated ).status }}">{{ aggregate.storage.allocated | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">capacity allocated</p>
 					</div>
 					<div class="stat_small">
-						<p class="{{ statusOf( 'storage', cluster.storage.committed ).status }}">{{ cluster.storage.committed | number:0 }}<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'storage', aggregate.storage.committed ).status }}">{{ aggregate.storage.committed | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">committed</p>
 					</div>
 				</div>
@@ -100,19 +100,19 @@
 					<div class="status_area">
 						<div class="status_icon">
 							<svg>
-								<circle class="{{ statusOf( 'ips', cluster.ips.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+								<circle class="{{ statusOf( 'ips', aggregate.ips.allocated ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
 						</div>
-						<p class="status">{{ statusOf( 'ips', cluster.ips.allocated ).text }}</p>
+						<p class="status">{{ statusOf( 'ips', aggregate.ips.allocated ).text }}</p>
 					</div>
 				</div>
 				<div class="card_body">
 					<div class="stat_big">
-						<p class="{{ statusOf( 'ips', cluster.ips.allocated ).status }}">{{ cluster.ips.allocated | number:0 }}<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'ips', aggregate.ips.allocated ).status }}">{{ aggregate.ips.allocated | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">addresses allocated</p>
 					</div>
 					<div class="stat_small">
-						<p class="{{ statusOf( 'ips', cluster.ips.committed ).status }}">{{ cluster.ips.committed | number:0 }}<span class="unit">%</span></p>
+						<p class="{{ statusOf( 'ips', aggregate.ips.committed ).status }}">{{ aggregate.ips.committed | number:0 }}<span class="unit">%</span></p>
 						<p class="kpi_label">committed</p>
 					</div>
 				</div>

@@ -83,13 +83,13 @@ function DashboardCtrl($s, $http) {
             render();
          });
          
-      $http.get("/data/cluster")
+      $http.get("/data/aggregate")
          .success(function(res) {
-            $s.cluster = res;
+            $s.aggregate = res;
             $s.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
-            $s.cluster = {};
+            $s.aggregate = {};
             $s.status = "Error getting data. Check the log.";
             render();
          });
