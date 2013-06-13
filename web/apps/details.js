@@ -114,6 +114,14 @@ function DetailsCtrl($s, $http, $routeParams) {
            $s.dataMemory =[];
            render();
         });
+        
+      $http.get('/data/' + $routeParams.host + '/info')
+         .success(function (res) {
+            console.log(res);
+         })
+         .error(function (err) {
+            console.log(err);
+         })
    }
 
    $s.fetch();

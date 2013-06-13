@@ -110,6 +110,71 @@ var getAggregateInfo = exports.getAggregateInfo = function (req, res, next) {
    });
 }
 
+var getHostInfo = exports.getHostInfo = function (req, res, next) {
+   
+   var host = req.route.params.id;
+   
+   async.parallel({
+      load: wrap(async.waterfall, [[
+         extractRRD(host, "load/load.rrd", {
+            shortterm: "ds[shortterm].value", 
+            midterm: "ds[midterm].value", 
+            longterm: "ds[longterm].value", 
+            last_update: "last_update"
+         }),
+         // KI: Quite unpleasant workaround. Haven't figured out a way to overcome few 
+         // bad design decisions we made earlier.
+         function (data, cb) {
+            cb(null, [[
+               host, 
+               data.shortterm, 
+               data.midterm, 
+               data.longterm, 
+               data.last_update
+            ]]);
+         },
+         wrap(normalizeLoad, [[1,2,3]]),
+         function (data, cb) {
+            cb(null, {
+               shortterm: data[0][1],
+               midterm: data[0][2],
+               longterm: data[0][3],
+               last_update: data[0][4]
+            });
+         }
+      ]]),
+      memory: wrap(async.parallel, [{
+         used: extractRRD(host, "memory/memory-used.rrd", {
+            value: "ds[value].value", 
+            last_update: "last_update"
+         }),
+         free: extractRRD(host, "memory/memory-free.rrd", {
+            value: "ds[value].value", 
+            last_update: "last_update"
+         }),
+         cached: extractRRD(host, "memory/memory-cached.rrd", {
+            value: "ds[value].value", 
+            last_update: "last_update"
+         }),
+         buffered: extractRRD(host, "memory/memory-buffered.rrd", {
+            value: "ds[value].value", 
+            last_update: "last_update"
+         })
+      }]),
+      storage: extractRRD(host, "df/df-var-lib-nova-instances.rrd", {
+         used: 'ds[used].value', 
+         free: 'ds[free].value',
+         last_update: 'last_update'
+      })
+   }, function (err, data) {
+      if (err) {
+         next(err);
+      } else {
+         res.json(data);
+      }
+   });
+}
+
 /**
 * fetchRRD: Calls rrdtool and returns the data. 
 * rrd_file - relative path to rrd file collectDataRoot/{host_id} 
@@ -152,6 +217,27 @@ var infoRRD = function (rrd_file, host, callback) {
       callback(info);
    }); 
 }
+
+/**
+ * Async-compatible wrapper around infoRRD to extract only specific set of keys.
+ * @param host - name of host to extract
+ * @param file - relative path to the .rrd file in collectd structure
+ * @param keys - set of keys to extract
+ */
+var extractRRD = function (host, file, keys) {
+   return function (cb) {
+      infoRRD(file, host, function(info) {
+         var data = {};
+
+         Object.keys(keys).forEach(function(key, i) {
+            if (info.hasOwnProperty(keys[key])) {
+               data[key] = info[keys[key]];
+            }
+         });
+         cb(null, data);
+      });
+   };
+};
 
 /**
 *  Takes rrdtool outpoot and transforms it to d3 data
