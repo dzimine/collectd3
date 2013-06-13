@@ -165,7 +165,66 @@ var getHostInfo = exports.getHostInfo = function (req, res, next) {
          used: 'ds[used].value', 
          free: 'ds[free].value',
          last_update: 'last_update'
-      })
+      }),
+      vcpu: function (cb) {
+         var dir = collectDataRoot + '/' + host
+         var str = "cpu-";
+   
+         fs.readdir(dir, function (err, filenames) {
+            if (err) {
+               cb(err);
+            } else {
+               var listCpus = filenames.filter(function (e) { 
+                  return e.slice(0, str.length) === str;
+               });
+
+               async.parallel(listCpus.map(function (e) {
+                  return wrap(async.parallel, [{
+                     idle: extractRRD(host, e + '/cpu-idle.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     interrupt: extractRRD(host, e + '/cpu-interrupt.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     nice: extractRRD(host, e + '/cpu-nice.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     softirq: extractRRD(host, e + '/cpu-softirq.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     steal: extractRRD(host, e + '/cpu-steal.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     system: extractRRD(host, e + '/cpu-system.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     user: extractRRD(host, e + '/cpu-user.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     }),
+                     wait: extractRRD(host, e + '/cpu-wait.rrd', {
+                        value: "ds[value].value",
+                        last_update: "last_update"
+                     })
+                  }]);
+               }), function (err, data) {
+                  cb(err, data.map(function (e) {
+                     var total = Object.keys(e)
+                        .map(function (k) { return e[k].value; })
+                        .reduce(function(a, b) { return a + b });
+                     
+                     return (1 - (e.idle.value / total)) * 100;
+                  }));
+               })
+            }
+         });
+      }
    }, function (err, data) {
       if (err) {
          next(err);
