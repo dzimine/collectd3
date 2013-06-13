@@ -29,7 +29,7 @@ app.get('/data/:id/load', stats.getCpuLoad);
 app.get('/data/:id/memory', stats.getMemory);
 app.get('/data/load', stats.getLoadInfo);
 app.get('/data/memory', stats.getMemoryHeatmap);
-app.get('/data/aggregate', stats.aggregateInfo);
+app.get('/data/aggregate', stats.getAggregateInfo);
 
 app.listen(port);
 console.log('Express listening on port ' + port);
