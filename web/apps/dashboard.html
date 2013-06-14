@@ -1,14 +1,19 @@
 <div>
-<!--	<h2>Dashboard</h2> -->
+	<div class="sub-header">
+		<p class="host-url center">Datacenter Overview</p> 
+		<div class="right">
+		  <span class="timestamp">{{status}}</span>
+		</div>
+	</div>
 	<div id="cardgroup">
-		<div class="card_area" ng-click="switchCard('load')">
-			<div id="cpu_card" class="card" ng-class="isCard('load') && 'active'">
-				<div class="card_header">
-					<div class="card_name">
+		<div class="card-area" ng-click="switchCard('load')">
+			<div id="cpu-card" class="card" ng-class="isCard('load') && 'active'">
+				<div class="card-header">
+					<div class="card-name">
 						<p>Load</p>
 					</div>
-					<div class="status_area">
-						<div class="status_icon">
+					<div class="status-area">
+						<div class="status-icon">
 							<svg>
 								<circle class="{{ statusOf( 'load', aggregate.load.average ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
@@ -16,20 +21,20 @@
 						<p class="status">{{ statusOf( 'load', aggregate.load.average ).text }}</p>
 					</div>
 				</div>
-				<div class="card_body">
-					<div class="stat_big">
+				<div class="card-body">
+					<div class="stat-big">
 						<p class="{{ statusOf( 'load', aggregate.load.average ).status }}">
 							{{ aggregate.load.average | number:2 }}<span class="unit"></span>
 							<!-- KI2Sui: this prevents style from falling apart. 
 								Need you to alter styles. -->
 						</p>
-						<p class="kpi_label">average load</p>
+						<p class="kpi-label">average load</p>
 					</div>
-					<div class="stat_small">
+					<div class="stat-small">
 						<p class="{{ statusOf( 'load', aggregate.load.peak ).status }}">
 							{{ aggregate.load.peak | number:2 }}<span class="unit"></span>
 						</p>
-						<p class="kpi_label">peak load</p>
+						<p class="kpi-label">peak</p>
 					</div>
 				</div>
 				<div class="trend">
@@ -37,14 +42,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="card_area" ng-click="switchCard('memory')">
-			<div id="memory_card" class="card" ng-class="isCard('memory') && 'active'">
-				<div class="card_header">
-					<div class="card_name">
+		<div class="card-area" ng-click="switchCard('memory')">
+			<div id="memory-card" class="card" ng-class="isCard('memory') && 'active'">
+				<div class="card-header">
+					<div class="card-name">
 						<p>Memory</p>
 					</div>
-					<div class="status_area">
-						<div class="status_icon">
+					<div class="status-area">
+						<div class="status-icon">
 							<svg>
 								<circle class="{{ statusOf( 'memory', aggregate.memory.allocated ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
@@ -54,18 +59,18 @@
 						</p>
 					</div>
 				</div>
-				<div class="card_body">
-					<div class="stat_big">
+				<div class="card-body">
+					<div class="stat-big">
 						<p class="{{ statusOf( 'memory', aggregate.memory.allocated ).status }}">
 							{{ aggregate.memory.allocated | number:0 }}<span class="unit">%</span>
 						</p>
-						<p class="kpi_label">capacity allocated</p>
+						<p class="kpi-label">capacity allocated</p>
 					</div>
-					<div class="stat_small">
+					<div class="stat-small">
 						<p class="{{ statusOf( 'memory', aggregate.memory.committed ).status }}">
 							{{ aggregate.memory.committed | number:0 }}<span class="unit">%</span>
 						</p>
-						<p class="kpi_label">committed</p>
+						<p class="kpi-label">committed</p>
 					</div>
 				</div>
 				<div class="trend">
@@ -73,14 +78,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="card_area" ng-click="switchCard('storage')">
-			<div id="storage_card" class="card" ng-class="isCard('storage') && 'active'">
-				<div class="card_header">
-					<div class="card_name">
+		<div class="card-area" ng-click="switchCard('storage')">
+			<div id="storage-card" class="card" ng-class="isCard('storage') && 'active'">
+				<div class="card-header">
+					<div class="card-name">
 						<p>Storage</p>
 					</div>
-					<div class="status_area">
-						<div class="status_icon">
+					<div class="status-area">
+						<div class="status-icon">
 							<svg>
 								<circle class="{{ statusOf( 'storage', aggregate.storage.allocated ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
@@ -90,18 +95,18 @@
 						</p>
 					</div>
 				</div>
-				<div class="card_body">
-					<div class="stat_big">
+				<div class="card-body">
+					<div class="stat-big">
 						<p class="{{ statusOf( 'storage', aggregate.storage.allocated ).status }}">
 							{{ aggregate.storage.allocated | number:0 }}<span class="unit">%</span>
 						</p>
-						<p class="kpi_label">capacity allocated</p>
+						<p class="kpi-label">capacity allocated</p>
 					</div>
-					<div class="stat_small">
+					<div class="stat-small">
 						<p class="{{ statusOf( 'storage', aggregate.storage.committed ).status }}">
 							{{ aggregate.storage.committed | number:0 }}<span class="unit">%</span>
 						</p>
-						<p class="kpi_label">committed</p>
+						<p class="kpi-label">committed</p>
 					</div>
 				</div>
 				<div class="trend">
@@ -109,14 +114,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="card_area" ng-click="switchCard('ip')">
-			<div id="ip_card" class="card" ng-class="isCard('ip') && 'active'">
-				<div class="card_header">
-					<div class="card_name">
+		<div class="card-area" ng-click="switchCard('ip')">
+			<div id="ip-card" class="card" ng-class="isCard('ip') && 'active'">
+				<div class="card-header">
+					<div class="card-name">
 						<p>IPs</p>
 					</div>
-					<div class="status_area">
-						<div class="status_icon">
+					<div class="status-area">
+						<div class="status-icon">
 							<svg>
 								<circle class="{{ statusOf( 'ips', aggregate.ips.allocated ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
@@ -124,18 +129,18 @@
 						<p class="status">{{ statusOf( 'ips', aggregate.ips.allocated ).text }}</p>
 					</div>
 				</div>
-				<div class="card_body">
-					<div class="stat_big">
+				<div class="card-body">
+					<div class="stat-big">
 						<p class="{{ statusOf( 'ips', aggregate.ips.allocated ).status }}">
 							{{ aggregate.ips.allocated | number:0 }}<span class="unit">%</span>
 						</p>
-						<p class="kpi_label">addresses allocated</p>
+						<p class="kpi-label">addresses allocated</p>
 					</div>
-					<div class="stat_small">
+					<div class="stat-small">
 						<p class="{{ statusOf( 'ips', aggregate.ips.committed ).status }}">
 							{{ aggregate.ips.committed | number:0 }}<span class="unit">%</span>
 						</p>
-						<p class="kpi_label">committed</p>
+						<p class="kpi-label">committed</p>
 					</div>
 				</div>
 				<div class="trend">
@@ -144,17 +149,17 @@
 			</div>
 		</div>
 	</div>
-	<div class="card_nav" ng-style="{ visibility: isCard('load') && 'visible' || 'hidden' }">	
-		<div class="triangle_pointer"></div>
+	<div class="card-nav" ng-style="{ visibility: isCard('load') && 'visible' || 'hidden' }">	
+		<div class="triangle-pointer"></div>
 	</div>
-	<div class="card_nav" ng-style="{ visibility: isCard('memory') && 'visible' || 'hidden' }">	
-		<div class="triangle_pointer"></div>
+	<div class="card-nav" ng-style="{ visibility: isCard('memory') && 'visible' || 'hidden' }">	
+		<div class="triangle-pointer"></div>
 	</div>
-	<div class="card_nav" ng-style="{ visibility: isCard('storage') && 'visible' || 'hidden' }">	
-		<div class="triangle_pointer"></div>
+	<div class="card-nav" ng-style="{ visibility: isCard('storage') && 'visible' || 'hidden' }">	
+		<div class="triangle-pointer"></div>
 	</div>
-	<div class="card_nav" ng-style="{ visibility: isCard('ip') && 'visible' || 'hidden' }">	
-		<div class="triangle_pointer"></div>
+	<div class="card-nav" ng-style="{ visibility: isCard('ip') && 'visible' || 'hidden' }">	
+		<div class="triangle-pointer"></div>
 	</div>
 	
 	<div class="content" ng-show="isCard('load')">

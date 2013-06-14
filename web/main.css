@@ -1,23 +1,24 @@
-#body_area {
+@import url(details.css);
+
+#body-area {
   background-color: white;
   line-height: 135%;
 }
 
 .main {
-  padding-top: 10px;
   display: block;
   overflow-y: hidden;
   overflow-x: hidden;
   height: 100%;
-  width: 1320px;
-  margin: 20px auto 20px auto;
+  width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
   font-family: Century Gothic, sans-serif;
-  border-top: 1px solid #CCCCCC;
-  border-left: 1px solid #CCCCCC;
-  border-top-left-radius: 20px;
-  border-right: 1px solid #CCCCCC;
-  border-top-right-radius: 20px;
   box-shadow: 0px 0px 35px 5px #CCCCCC;
+}
+
+p {
+  margin: 0px; 
 }
 
 footer p {
@@ -30,11 +31,12 @@ body {
 }
 
 #cardgroup {
-  height: 280px;
+  height: 260px;
   background-color: white;
+  font-size: 0.8em;
 }
 
-.card_area {
+.card-area {
   width: 25%;
   height: 100%;
   float: left;
@@ -46,7 +48,6 @@ body {
   background-color: rgba(255,255,255,0.5);
   width: 100%;
   height: 100%;
-  min-width: 300px;
   border-width: 1px;
   -o-border-image: -o-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
   -moz-border-image: -moz-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
@@ -83,25 +84,25 @@ body {
 }
 
 
-.card_header {
+.card-header {
   height: 80px;
   padding-bottom: 20px;
 }
 
-.card_name {
+.card-name {
   float: left;
   font-size: 1.5em;
   width: 40%;
   height: 100%;
 }
 
-.card_name p {
+.card-name p {
   color: #777777;
   margin-top: 22px;
   margin-left: 25px;
 }
 
-.status_area {
+.status-area {
   float: right;
   font-size: 1.2em;
   color: #AAAAAA;
@@ -115,77 +116,77 @@ body {
   float: right;
 }
 
-.status_icon {
+.status-icon {
   margin-top: 25px;
   margin-right: 25px;
   width: 16px;
   float: right;
 }
 
-.status_icon .warning {
+.status-icon .warning {
   fill: #FF7000;
 }
 
-.status_icon .normal {
+.status-icon .normal {
   fill: #18E000;
 }
 
-.status_icon .attention {
+.status-icon .attention {
   fill: #FFD717;
 }
 
-.card_body {
+.card-body {
   height: 30%;
   margin-left: 15px;
 }
 
-.stat_big {
+.stat-big {
   width: 60%;
   float: left;
   text-align: right;
 }
 
-.stat_small {
+.stat-small {
   width: 40%;
   float: right;
   text-align: right;
-  padding-top: 13px; /* hard coded padding to push the text down. need a better way. */
+  padding-top: 11px; /* hard coded padding to push the text down. need a better way. */
 }
 
-.stat_big p {
+.stat-big p {
   font-size: 5.5em;
   margin-right: 15px;
   margin-bottom: 10px;
 }
 
-.stat_small p {
+.stat-small p {
   font-size: 3em;
   margin-right: 40px;
   margin-bottom: 10px;
 }
 
-.card_body .warning {
+.card-body .warning {
   color: #FF7000;
   font-weight: bold;
-  /* font-size: 6em; /* break card when inside .stat_small */
+  /* font-size: 6em; /* break card when inside .stat-small */
 }
 
-.card_body .normal {
+.card-body .normal {
   color: #999999;
 }
 
-.card_body .attention {
+.card-body .attention {
   color: #FFD717;
 }
 
-.card_body .kpi_label {
+.card-body .kpi-label {
   font-size: 1em;
   font-weight: normal;
   color: #AAAAAA;
   font-style: italic;
 }
 
-.card_body .unit {
+.card-body .unit {
   font-size: 20px;
   font-weight: normal;
   color: #AAAAAA;
@@ -196,15 +197,15 @@ body {
 }
 
 .card .trend img {
-  width: 200px;
-  height: 40px;
+  width: 150px;
+  height: 30px;
   vertical-align: middle;
-  margin-left: 60px;
+  margin-left: 50px;
 }
 
 .card_nav {
   float: left;
-  margin: 0 105px;
+  margin: 0 70px;
   height: 40px;
   width: 120px;
   background-color: transparent;
@@ -282,20 +283,61 @@ body {
   font-size: 1em;
   color: #AAAAAA;
   padding: 10px;
+}
+
+.sub-header {
+  background-color: #EEEEEE;
+  padding: 10px;
+  font-size: 0.8em;
+  text-align: center;
+  position: relative;
+}
+
+.right {
+  position: absolute;
+  right: 15px;
   float: right;
+  display: inline;
+  height: 100%;
+}
+
+.left {
+  position: absolute;
+  left: 15px;
+  float: left;
+  display: inline;
+  height: 100%;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 15px;
+  clear: both;
+}
+
+.host-url { 
+  font-size: 1.5em;
+}
+
+.center { 
+  display: inline;
 }
 
 .average {
-   color: #adadad;
-   text-align: center;
-   font-family: 'Century Gothic', sans-serif;
+  color: #adadad;
+  text-align: center;
+  font-family: 'Century Gothic', sans-serif;
 }
 
 .average p {
-   font-size: 3em;
+  font-size: 3em;
 }
 
 .average .kpi-label {
-   font-size: 1em;
+  font-size: 1em;
 }
 
+svg text {
+    font-family: Century Gothic, sans-serif;
+    color: #CCCCCC;
+}

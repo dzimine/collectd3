@@ -81,7 +81,7 @@ function DetailsCtrl($s, $http, $routeParams) {
          });
 
          return chartMemory;
-      });        
+      });     
    }
 
    $s.fetch = function  (){

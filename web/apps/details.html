@@ -1,18 +1,89 @@
 <div style="overflow-y:scroll">
-  <h2>
-    Single host usage - {{ $routeParams.host }}
-  </h2>
-  <div class="btn-group">
-    <button type="button" class="btn btn-mini" ng-class="{active:useMock}" ng-click="useMock=!useMock; fetch()")>Mock</button>
-    <button type="button" class="btn btn-mini" ng-class="{active:!useMock}" ng-click="useMock=!useMock; fetch()">Real</button>
+  <div class="sub-header">
+    <p class="host-url center">{{ $routeParams.host }}</p> 
+    <div class="right">
+      <div class="btn-group">
+        <button type="button" class="btn btn-mini" ng-class="{active:useMock}" ng-click="useMock=!useMock; fetch()")>Mock</button>
+        <button type="button" class="btn btn-mini" ng-class="{active:!useMock}" ng-click="useMock=!useMock; fetch()">Real</button>
+      </div>
+      <span class="timestamp">{{status}}</span>
+    </div>
   </div>
-  <span class="timestamp">{{status}}</span>
-  <div id="load">
-    <svg style="height: 500px;display:block;min-width:100px;min-height: 100px;"></svg>
+  <div class="canvas">
+    <div class="left-canvas left">
+      <div class="top-canvas">
+        <p class="canvas-label">Load</p>
+        <div class="donut-chart left">
+          <svg width="220" height="220"><g class="arcGrp" transform="translate(110,110)"><path class="load-0 svg-warning" d="M4.31673739722388e-15,-70.5A70.5,70.5 0 1,1 -57.03569810343377,-41.438860286619395L-78.87915695155733,-57.309062098516186A97.5,97.5 0 1,0 5.969955974884089e-15,-97.5Z"></path><path class="load-1" d="M-57.03569810343377,-41.438860286619395A70.5,70.5 0 0,1 4.966636639718719e-14,-70.5L6.868752799610994e-14,-97.5A97.5,97.5 0 0,0 -78.87915695155733,-57.309062098516186Z"></path></g><g class="ctrGroup" transform="translate(110,110)"><text dy=".15em" dx="-0.1em" text-anchor="middle" class="chart-kpi svg-warning">85</text><text dy=".4em" dx="1.9em" text-anchor="middle" class="chart-label">%</text><text dy="2em" text-anchor="middle" class="chart-label">Average</text></g></svg>
+        </div>
+        <div class="right">
+          <div class="kpi-group">
+            <div class="bottom">
+              <p>17<span class="stat-label"> % Min</span></p>
+              <p>98<span class="stat-label"> % Max</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-canvas">
+        <div class="vcpu-stats">
+            <p class="left">24<span class="stat-label"> vCPUs</span></p>
+            <p class="sub-stats right">18<span class="stat-label"> hot</span> 2<span class="stat-label"> warm</span> 3<span class="stat-label"> cold</span></p>
+        </div>
+        <svg class="vcpus">
+          <g class="heatmap"><rect class="cell6" width="43" height="45" x="0" y="0"></rect><rect class="cell7" width="43" height="45" x="45" y="0"></rect><rect class="cell0" width="43" height="45" x="90" y="0"></rect><rect class="cell7" width="43" height="45" x="135" y="0"></rect><rect class="cell8" width="43" height="45" x="180" y="0"></rect><rect class="cell2" width="43" height="45" x="225" y="0"></rect><rect class="cell6" width="43" height="45" x="270" y="0"></rect><rect class="cell7" width="43" height="45" x="315" y="0"></rect>
+          <rect class="cell8" width="43" height="45" x="0" y="47"></rect><rect class="cell6" width="43" height="45" x="45" y="47"></rect><rect class="cell7" width="43" height="45" x="90" y="47"></rect><rect class="cell5" width="43" height="45" x="135" y="47"></rect><rect class="cell8" width="43" height="45" x="180" y="47"></rect><rect class="cell6" width="43" height="45" x="225" y="47"></rect><rect class="cell6" width="43" height="45" x="270" y="47"></rect><rect class="cell7" width="43" height="45" x="315" y="47"></rect>
+          <rect class="cell8" width="43" height="45" x="0" y="94"></rect><rect class="cell7" width="43" height="45" x="45" y="94"></rect><rect class="cell7" width="43" height="45" x="90" y="94"></rect><rect class="cell7" width="43" height="45" x="135" y="94"></rect><rect class="cell5" width="43" height="45" x="180" y="94"></rect><rect class="cell6" width="43" height="45" x="225" y="94"></rect><rect class="cell6" width="43" height="45" x="270" y="94"></rect><rect class="cell6" width="43" height="45" x="315" y="94"></rect>
+        </svg>
+      </div>
+    </div>
+    <div class="right-canvas right">
+      <div class="top-canvas">
+        <p class="canvas-label">Memory</p>
+        <div class="donut-chart left">
+          <svg width="220" height="220"><g class="arcGrp" transform="translate(110,110)"><path class="load-0 svg-attention" d="M4.31673739722388e-15,-70.5A70.5,70.5 0 1,1 -28.674933336843893,64.40495476380337L-39.65682269989049,89.0706821201536A97.5,97.5 0 1,0 5.969955974884089e-15,-97.5Z"></path><path class="load-1" d="M-28.674933336843893,64.40495476380337A70.5,70.5 0 0,1 -1.295021219167164e-14,-70.5L-1.7909867924652267e-14,-97.5A97.5,97.5 0 0,0 -39.65682269989049,89.0706821201536Z"></path></g><g class="ctrGroup" transform="translate(110,110)"><text dy=".15em" dx="-0.1em" text-anchor="middle" class="chart-kpi svg-attention">17</text><text dy=".4em" dx="1.9em" text-anchor="middle" class="chart-label">GB</text><text dy="2em" text-anchor="middle" class="chart-label">Used</text></g></svg>
+        </div>
+        <div class="right">
+          <div class="kpi-group">
+            <div class="bottom">
+              <p>13<span class="stat-label"> GB Free</span></p>
+              <p class="sub-stats">8<span class="stat-label"> GB Buffered</span></p>
+              <p class="sub-stats">5<span class="stat-label"> GB Cached</span></p>
+            </div>
+          </div>
+        </div>         
+      </div>
+      <div class="bottom-canvas">
+         <p class="canvas-label">Storage</p>
+         <div class="storage-stats">
+           <p class="right"><span class="stat-label">Capacity </span> 1<span class="stat-label"> TB</span></p>
+         </div>
+         <div class="storage-bar">
+          <div class="storage-bar-usage"><p>772<span class="unit"> GB</span></p><p class="bar-label">Committed</p></div>
+          <div class="storage-bar-free"><p>234<span class="unit"> GB</span></p><p class="bar-label">Free</p></div>
+         </div>
+         <div class="storage-stats">
+           <p class="left">936<span class="stat-label"> GB Allocated</span></p>
+         </div>
+         <div class="storage-allocation">
+          <div class="storage-allocation-usage"></div>
+          <div class="storage-allocation-free"></div>
+         </div>         
+      </div>
+    </div>
   </div>
-  <div id="memory">
-    <svg style="height: 500px;display:block;min-width:100px;min-height: 100px;padding-bottom: 1em"></svg>
+  <div class="timeline">
+    <div id="load">
+      <svg style="height: 50px;display:block;min-width:100px;min-height: 100px;"></svg>
+    </div>
+    <div id="memory">
+      <svg style="height: 50px;display:block;min-width:100px;min-height: 100px;padding-bottom: 1em"></svg>
+    </div>
   </div>
+
+
+
+
 </div>
 
 <!-- TODO: think about this way of loading app specific scripts
