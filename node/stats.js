@@ -12,6 +12,10 @@ var collectDataRoot = __dirname + "/sampledata";
 
 /******************************************************************************/
 
+/**
+ * Load Card Interface
+ */
+
 var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
    async.waterfall([
       wrap(getInfoForAllHosts, ["load/load.rrd", [
@@ -46,6 +50,10 @@ var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
    });
 }
 
+/**
+ * Memory Card Interface
+ */
+
 var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
    getInfoForAllHosts("memory/memory-used.rrd", 
       ["ds[value].value", "last_update"], 
@@ -57,6 +65,10 @@ var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
          }
       });
 }
+
+/**
+ * Dashboard Info Interface
+ */
 
 var getAggregateInfo = exports.getAggregateInfo = function (req, res, next) {
    async.parallel({
@@ -73,12 +85,146 @@ var getAggregateInfo = exports.getAggregateInfo = function (req, res, next) {
    });
 }
 
+/**
+ * Aggregate Load info.
+ * @return Set of average and peak parameters.
+ */
+var aggregateLoad = function (cb) {
+   getInfoForAllHosts("load/load.rrd", 
+      ["ds[shortterm].value", "last_update"], 
+      function(err, data) {
+         if (err) {
+            cb(err);
+         } else {
+            normalizeLoad(data, function (err, data) {
+               if (err) {
+                  cb(err);
+               } else {
+                  var load = data.map(function (e) { return e[1]});
+                  var sum = load.reduce(function(a, b) { return a + b });
+                  var ave = sum / load.length;
+                  var max = Math.max.apply(this, load)
+                  
+                  cb( null, { average: ave, peak: max } );
+               }
+            });
+         }
+      });
+};
+
+/**
+ * Aggregate Memory info.
+ * @return Set of allocated and committed parameters.
+ */
+var aggregateMemory = function (cb) {
+   async.parallel([
+      wrap(getInfoForAllHosts, ["memory/memory-used.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]]),
+      wrap(getInfoForAllHosts, ["memory/memory-free.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]]),
+      wrap(getInfoForAllHosts, ["memory/memory-cached.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]]),
+      wrap(getInfoForAllHosts, ["memory/memory-buffered.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]])
+   ], function (err, data) {
+      if (err) {
+         cb(err)
+      } else {
+         var total = []
+            .concat.apply([], data)                   // flattening all results into one array
+            .map(function (e) { return e[1] })        // extract values
+            .reduce(function(a, b) { return a + b }); // sum all values
+      
+         var used = data[0]
+            .map(function (e) { return e[1] })        // extract values
+            .reduce(function(a, b) { return a + b }); // sum all values
+   
+         cb(null, {
+            allocated: 28,                            // not enough information for that, mock
+            committed: used / total * 100
+         });
+      }
+   });
+   
+};
+
+/**
+ * Aggregate Storage info.
+ * @return Set of allocated and committed parameters.
+ */
+var aggregateStorage = function (cb) {
+   getInfoForAllHosts( "df/df-var-lib-nova-instances.rrd", [
+      'ds[used].value', 
+      'ds[free].value'
+   ], function (err, data) {
+      if (err) {
+         cb(err);
+      } else {
+         var total = data
+            .map(function (e) { return e[1] + e[2] })
+            .reduce(function(a, b) { return a + b });
+
+         var used = data
+            .map(function (e) { return e[1] })
+            .reduce(function(a, b) { return a + b });
+
+         cb(null, {
+            allocated: 79,
+            committed: used / total * 100
+         });
+      }
+   });
+};
+
+/**
+ * Aggregate IP info.
+ * @return Set of allocated and committed parameters.
+ */
+var aggregateIPs = function (cb) {
+   cb(null, {
+      allocated: 95,
+      committed: 88
+   });
+} 
+
+/**
+ * Single Host Info Interface
+ */
+
 var getHostInfo = exports.getHostInfo = function (req, res, next) {
    
    var host = req.route.params.id;
    
    async.parallel({
-      load: wrap(async.waterfall, [[
+      load: hostInfoLoad(host),
+      memory: hostInfoMemory(host),
+      storage: hostInfoStorage(host),
+      vcpu: hostInfoVcpu(host)
+   }, function (err, data) {
+      if (err) {
+         next(err);
+      } else {
+         res.json(data);
+      }
+   });
+}
+
+/**
+ * Extract Load data of specific host.
+ * @param host - name of the host to fetch
+ * @return Set of shortterm, midterm, longterm and last_update
+ */
+var hostInfoLoad = function (host) {
+   return function (cb) {
+      async.waterfall([
          extractRRD(host, "load/load.rrd", {
             shortterm: "ds[shortterm].value", 
             midterm: "ds[midterm].value", 
@@ -96,17 +242,27 @@ var getHostInfo = exports.getHostInfo = function (req, res, next) {
                data.last_update
             ]]);
          },
-         wrap(normalizeLoad, [[1,2,3]]),
-         function (data, cb) {
-            cb(null, {
-               shortterm: data[0][1],
-               midterm: data[0][2],
-               longterm: data[0][3],
-               last_update: data[0][4]
-            });
-         }
-      ]]),
-      memory: wrap(async.parallel, [{
+         wrap(normalizeLoad, [[1,2,3]])
+      ], function (err, data) {
+         cb(null, {
+            shortterm: data[0][1],
+            midterm: data[0][2],
+            longterm: data[0][3],
+            last_update: data[0][4]
+         });
+      });
+   };
+};
+
+/**
+ * Extract Memory data of specific host.
+ * @param host - name of the host to fetch
+ * @return Set of used, free, cached and buffered objects. 
+ *         Each of them consist of value and last_update.
+ */
+var hostInfoMemory = function (host) {
+   return function (cb) {
+      async.parallel({
          used: extractRRD(host, "memory/memory-used.rrd", {
             value: "ds[value].value", 
             last_update: "last_update"
@@ -123,79 +279,93 @@ var getHostInfo = exports.getHostInfo = function (req, res, next) {
             value: "ds[value].value", 
             last_update: "last_update"
          })
-      }]),
-      storage: extractRRD(host, "df/df-var-lib-nova-instances.rrd", {
-         used: 'ds[used].value', 
-         free: 'ds[free].value',
-         last_update: 'last_update'
-      }),
-      vcpu: function (cb) {
-         var dir = collectDataRoot + '/' + host
-         var str = "cpu-";
-   
-         fs.readdir(dir, function (err, filenames) {
-            if (err) {
-               cb(err);
-            } else {
-               var listCpus = filenames.filter(function (e) { 
-                  return e.slice(0, str.length) === str;
-               });
+      }, cb);
+   };
+};
 
-               async.parallel(listCpus.map(function (e) {
-                  return wrap(async.parallel, [{
-                     idle: extractRRD(host, e + '/cpu-idle.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     interrupt: extractRRD(host, e + '/cpu-interrupt.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     nice: extractRRD(host, e + '/cpu-nice.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     softirq: extractRRD(host, e + '/cpu-softirq.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     steal: extractRRD(host, e + '/cpu-steal.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     system: extractRRD(host, e + '/cpu-system.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     user: extractRRD(host, e + '/cpu-user.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     }),
-                     wait: extractRRD(host, e + '/cpu-wait.rrd', {
-                        value: "ds[value].value",
-                        last_update: "last_update"
-                     })
-                  }]);
-               }), function (err, data) {
-                  cb(err, data.map(function (e) {
-                     var total = Object.keys(e)
-                        .map(function (k) { return e[k].value; })
-                        .reduce(function(a, b) { return a + b });
-                     
-                     return (1 - (e.idle.value / total)) * 100;
-                  }));
-               })
-            }
-         });
-      }
-   }, function (err, data) {
-      if (err) {
-         next(err);
-      } else {
-         res.json(data);
-      }
+/**
+ * Extract Storage data of specific host.
+ * @param host - name of the host to fetch
+ * @return Set of used, free and last_update
+ */
+var hostInfoStorage = function (host) {
+   return extractRRD(host, "df/df-var-lib-nova-instances.rrd", {
+      used: 'ds[used].value', 
+      free: 'ds[free].value',
+      last_update: 'last_update'
    });
-}
+};
+
+/**
+ * Extract VCPU data of specific host.
+ * @param host - name of the host to fetch
+ * @return Array of %used for each VCPU
+ */
+var hostInfoVcpu = function (host) {
+   return function (cb) {
+      var dir = collectDataRoot + '/' + host
+      var str = "cpu-";
+
+      fs.readdir(dir, function (err, filenames) {
+         if (err) {
+            cb(err);
+         } else {
+            var listCpus = filenames.filter(function (e) { 
+               return e.slice(0, str.length) === str;
+            });
+
+            async.parallel(listCpus.map(function (e) {
+               return wrap(async.parallel, [{
+                  idle: extractRRD(host, e + '/cpu-idle.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  interrupt: extractRRD(host, e + '/cpu-interrupt.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  nice: extractRRD(host, e + '/cpu-nice.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  softirq: extractRRD(host, e + '/cpu-softirq.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  steal: extractRRD(host, e + '/cpu-steal.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  system: extractRRD(host, e + '/cpu-system.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  user: extractRRD(host, e + '/cpu-user.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  }),
+                  wait: extractRRD(host, e + '/cpu-wait.rrd', {
+                     value: "ds[value].value",
+                     last_update: "last_update"
+                  })
+               }]);
+            }), function (err, data) {
+               cb(err, data.map(function (e) {
+                  var total = Object.keys(e)
+                     .map(function (k) { return e[k].value; })
+                     .reduce(function(a, b) { return a + b });
+                  
+                  return (1 - (e.idle.value / total)) * 100;
+               }));
+            })
+         }
+      });
+   };
+};
+
+/**
+ * Single Host Graph Interface
+ */
 
 var getHostGraph = exports.getHostGraph = function (req, res, next) {
    var host = req.params.id;
@@ -296,6 +466,10 @@ var hostGraphStorage = function (host, query) {
       });
    };
 };
+
+/**
+ * Helpers
+ */
 
 /**
  * fetchRRD: Calls rrdtool and returns the data.
@@ -477,103 +651,6 @@ var normalizeLoad = function (cols, data, callback) {
       callback(err, data)
    });
 };
-
-/**
-* Collects and calculates specific types of stats for a whole system.
-*/
-var aggregateLoad = function (cb) {
-   getInfoForAllHosts("load/load.rrd", 
-      ["ds[shortterm].value", "last_update"], 
-      function(err, data) {
-         if (err) {
-            cb(err);
-         } else {
-            normalizeLoad(data, function (err, data) {
-               if (err) {
-                  cb(err);
-               } else {
-                  var load = data.map(function (e) { return e[1]});
-                  var sum = load.reduce(function(a, b) { return a + b });
-                  var ave = sum / load.length;
-                  var max = Math.max.apply(this, load)
-                  
-                  cb( null, { average: ave, peak: max } );
-               }
-            });
-         }
-      });
-};
-
-var aggregateMemory = function (cb) {
-   async.parallel([
-      wrap(getInfoForAllHosts, ["memory/memory-used.rrd", [
-         "ds[value].value", 
-         "last_update"
-      ]]),
-      wrap(getInfoForAllHosts, ["memory/memory-free.rrd", [
-         "ds[value].value", 
-         "last_update"
-      ]]),
-      wrap(getInfoForAllHosts, ["memory/memory-cached.rrd", [
-         "ds[value].value", 
-         "last_update"
-      ]]),
-      wrap(getInfoForAllHosts, ["memory/memory-buffered.rrd", [
-         "ds[value].value", 
-         "last_update"
-      ]])
-   ], function (err, data) {
-      if (err) {
-         cb(err)
-      } else {
-         var total = []
-            .concat.apply([], data)                   // flattening all results into one array
-            .map(function (e) { return e[1] })        // extract values
-            .reduce(function(a, b) { return a + b }); // sum all values
-      
-         var used = data[0]
-            .map(function (e) { return e[1] })        // extract values
-            .reduce(function(a, b) { return a + b }); // sum all values
-   
-         cb(null, {
-            allocated: 28,                            // not enough information for that, mock
-            committed: used / total * 100
-         });
-      }
-   });
-   
-};
-
-var aggregateStorage = function (cb) {
-   getInfoForAllHosts( "df/df-var-lib-nova-instances.rrd", [
-      'ds[used].value', 
-      'ds[free].value'
-   ], function (err, data) {
-      if (err) {
-         cb(err);
-      } else {
-         var total = data
-            .map(function (e) { return e[1] + e[2] })
-            .reduce(function(a, b) { return a + b });
-
-         var used = data
-            .map(function (e) { return e[1] })
-            .reduce(function(a, b) { return a + b });
-
-         cb(null, {
-            allocated: 79,
-            committed: used / total * 100
-         });
-      }
-   });
-};
-
-var aggregateIPs = function (cb) {
-   cb(null, {
-      allocated: 95,
-      committed: 88
-   });
-} 
 
 /**
 * Helper function. Wraps up function and passes all necessary arguments, 
