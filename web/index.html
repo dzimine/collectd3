@@ -36,14 +36,18 @@
          <div class="container-fluid">
             <a class="brand" href="#">StackStorm</a>
             <ul class="nav">
-               <li ng-class="{active:isActiveLocation('/dashboard')}"><a href="#/dashboard">Dashboard</a></li>
-               <li ng-class="{active:isActiveLocation('/details')}"><a href="#/details">Details</a></li>
+               <li ng-class="{active:isActiveLocation('/dashboard')}">
+                  <a href="#/dashboard">Dashboard</a>
+               </li>
+               <li ng-class="{active:isActiveLocation('/details')}">
+                  <a href="#/details">Details</a>
+               </li>
             </ul>
          </div>
       </div>
    </div>
    <div id="body_area">
-         <div class="row-fluid" ng-view>
+         <div class="row-fluid main" ng-view>
             <!-- Angular views GO HERE -->
          </div>
    </div>

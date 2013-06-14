@@ -5,7 +5,7 @@
   line-height: 135%;
 }
 
-.row-fluid {
+.main {
   display: block;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -74,8 +74,8 @@ body {
   background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #C4FFF8 50%, #C4FFF8 100%);
 }
 
-#cpu-card {
-  border: none;
+.card.active {
+  /*border: none;*/
   background-image: linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
   background-image: -o-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
   background-image: -moz-linear-gradient(top, #FFFFFF 0%, #EEEEEE 10%, #EEEEEE 100%);
@@ -203,15 +203,15 @@ body {
   margin-left: 50px;
 }
 
-#card-nav {
+.card_nav {
   float: left;
-  margin-left: 70px;
+  margin: 0 70px;
   height: 40px;
   width: 120px;
   background-color: transparent;
 }
 
-#triangle-pointer {
+.triangle_pointer {
   height: 0;
   width: 0;
   border-top: 20px solid #EEEEEE;
@@ -219,9 +219,18 @@ body {
   border-right: 60px solid transparent;
 }
 
-#content {
+.content {
   background-color: #333333;
   padding: 50px 30px;
+}
+
+.content:empty:after {
+   content: "Nothing to show yet =(";
+   color: #adadad;
+   text-align: center;
+   display: block;
+   font-size: 5em;
+   padding: 5em 3em;
 }
 
 .heatmap rect {
@@ -312,6 +321,20 @@ body {
 
 .center { 
   display: inline;
+}
+
+.average {
+  color: #adadad;
+  text-align: center;
+  font-family: 'Century Gothic', sans-serif;
+}
+
+.average p {
+  font-size: 3em;
+}
+
+.average .kpi-label {
+  font-size: 1em;
 }
 
 svg text {

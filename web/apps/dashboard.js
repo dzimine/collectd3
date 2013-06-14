@@ -2,11 +2,23 @@
 /*global d3*/
 'use strict';
 
-function DashboardCtrl($s, $http) {
+function DashboardCtrl($s, $http, $location) {
 
-   var dataset = [],
+   var tab = '',
        minWidth = 800; // minimal width to maintain default cell size
-       
+   
+   $s.switchCard = function (name) {
+      tab = name;
+   };
+   
+   $s.isCard = function (name) {
+      var current = tab;
+      if (current === '' && name === "load") {
+         return true;
+      }
+      return current === name;
+   }
+   
    $s.statusOf = function (type, value) {
       switch (type) {
          case 'load':
@@ -53,7 +65,7 @@ function DashboardCtrl($s, $http) {
 //        .attr("filter", "url(#effectFilter)")
 
       var rect = svg.selectAll("rect")
-          .data(dataset)
+          .data($s.load && $s.load.heatmap || [])
           .enter().append("rect")
           .attr("class", function(d) { return colorScale(d[1]); }) 
           .attr("width", cellSize - 2) 
@@ -62,9 +74,18 @@ function DashboardCtrl($s, $http) {
           .attr("y", function(d, i) { return (Math.floor(i / nColumns)) * cellSize; })
           .attr("rx", 5)
           .attr("ry", 5)
-          .on("mouseover", function(d) { return tooltip.text("Host ID: " + d[0] + " | Load Average: " + d[1].toFixed(2)).style("visibility", "visible"); })
+          .on("click", function (d) { $location.path('/details/' + d[0]); $s.$apply(); })
+          .on("mouseover", function(d) { 
+             return tooltip
+                .text("Host ID: " + d[0] + " | Load Average: " + d[1].toFixed(2))
+                .style("visibility", "visible"); 
+          })
 //          .on("mouseover", function(d) { return tooltip.style("visibility", "visible").append("p").text("Host ID: " + d[0]).append("p").text("CPU Usage: " + Math.round(100 * d[1]) + " %"); })
-          .on("mousemove", function() { return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+          .on("mousemove", function() { 
+             return tooltip
+                .style("top", (event.pageY-10)+"px")
+                .style("left",(event.pageX+10)+"px");
+          })
           .on("mouseout", function() { return tooltip.style("visibility", "hidden"); });      
    }
 
@@ -74,11 +95,11 @@ function DashboardCtrl($s, $http) {
 
       $http.get("/data/load")
          .success(function(res) {
-            dataset = res;
+            $s.load = res;
             $s.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
-            dataset =[];
+            $s.load = {};
             $s.status = "Error getting data. Check the log.";
             render();
          });
@@ -101,4 +122,4 @@ function DashboardCtrl($s, $http) {
       render();
    }); 
 
-} DashboardCtrl.$inject = ['$scope', '$http'];
+} DashboardCtrl.$inject = ['$scope', '$http', '$location'];

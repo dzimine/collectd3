@@ -1,6 +1,8 @@
 'use strict';
 
-function DetailsCtrl($s, $http) {
+function DetailsCtrl($s, $http, $routeParams) {
+
+   $s.$routeParams = $routeParams;
 
    $s.x=0;
    $s.dataLoad = [];
@@ -41,7 +43,9 @@ function DetailsCtrl($s, $http) {
          //DZ: the next line works with both d3v3 and d3v2
          //nv.utils.windowResize(function() { d3.select('#load svg').call(chartLoad) });
 
-         chartLoad.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+         chartLoad.dispatch.on('stateChange', function(e) { 
+            nv.log('New State:', JSON.stringify(e)); 
+         });
 
          return chartLoad;
       });
@@ -72,7 +76,9 @@ function DetailsCtrl($s, $http) {
              .call(chartMemory);
 
          nv.utils.windowResize(chartMemory.update);
-         chartMemory.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
+         chartMemory.dispatch.on('stateChange', function(e) { 
+            nv.log('New State:', JSON.stringify(e)); 
+         });
 
          return chartMemory;
       });     
@@ -96,7 +102,8 @@ function DetailsCtrl($s, $http) {
          });
 
       //TODO better nicer way to show second chart...
-      var urlMemory = $s.useMock ? "/memory.json" : "/data/ua-c01.tir.example.com/memory"; 
+      var urlMemory = $s.useMock ? "/memory.json" 
+                    : "/data/ua-c01.tir.example.com/memory"; 
       $http.get(urlMemory, {params : params})
         .success(function(res) {
            $s.dataMemory = res;
@@ -107,12 +114,28 @@ function DetailsCtrl($s, $http) {
            $s.dataMemory =[];
            render();
         });
+        
+      $http.get('/data/' + $routeParams.host + '/info')
+         .success(function (res) {
+            console.log(res);
+         })
+         .error(function (err) {
+            console.log(err);
+         })
+         
+      $http.get('/data/' + $routeParams.host + '/graph')
+         .success(function (res) {
+            console.log(res);
+         })
+         .error(function (err) {
+            console.log(err);
+         })
    }
 
    $s.fetch();
  
 
-} DetailsCtrl.$inject = ['$scope', '$http'];
+} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams'];
 
 
 

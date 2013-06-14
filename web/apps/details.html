@@ -1,6 +1,6 @@
 <div style="overflow-y:scroll">
   <div class="sub-header">
-    <p class="host-url center">abc.domain.com</p> 
+    <p class="host-url center">{{ $routeParams.host }}</p> 
     <div class="right">
       <div class="btn-group">
         <button type="button" class="btn btn-mini" ng-class="{active:useMock}" ng-click="useMock=!useMock; fetch()")>Mock</button>
