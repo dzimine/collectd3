@@ -104,6 +104,78 @@
 	margin-left: 60px;
 }
 
+
+.storage-stats {
+	position: relative;
+	margin-top: 20px;
+	margin-right: 55px;
+	margin-left: 45px;
+	font-size: 3.5em;
+	height: 45px;
+}
+
+.storage-bar {
+	margin-left: 60px;
+	padding-bottom: 20px;
+	height: 30px;
+	width: 100%;
+	text-align: center;
+	font-size: 1.2em;
+	color: white;
+}
+
+.storage-bar p {
+	padding-top: 4px; 
+}
+
+.storage-bar .unit{
+	font-size: 0.8em;
+}
+
+.storage-bar-usage {
+	width: 285px;
+	height: 100%;
+	background-color: #18E000;		
+	float: left;
+}
+
+.storage-bar-free {
+	width: 80px;
+	height: 100%;
+	background-color: #EEEEEE;
+	float: left;
+}
+
+.storage-bar-free p {
+	color: #CCCCCC;
+}
+
+.bar-label {
+	color: #CCCCCC;
+	font-size: 0.6em;
+}
+
+.storage-allocation {
+	margin-left: 60px;
+	height: 10px;
+	width: 100%;
+}
+
+.storage-allocation-usage {
+	width: 320px;
+	height: 100%;
+	background-color: #CCCCCC;		
+	float: left;
+}
+
+.storage-allocation-free {
+	width: 70px;
+	height: 100%;
+	background-color: #EEEEEE;
+	float: left;
+	border-right: 1px solid red;
+}
+
 .timeline {
 	background-color: #EEEEEE;
 }
