@@ -12,43 +12,6 @@ var collectDataRoot = __dirname + "/sampledata";
 
 /******************************************************************************/
 
-var getCpuLoad = exports.getCpuLoad = function(req, res, next) {
-   fetchRRD("load/load.rrd", "MAX", req, 
-      function(err, data) {
-         if (err) { 
-            next(err);
-         } else {
-            res.json(formatOutput(data)); 
-         }
-      });
-}
-
-var getMemory = exports.getMemory = function(req, res, next) {
-   async.parallel([
-         function (callback) {
-               fetchRRD("memory/memory-used.rrd", "AVERAGE", req, callback);
-         }, 
-         function (callback) {
-               fetchRRD("memory/memory-free.rrd", "AVERAGE", req, callback);
-         }
-      ],
-      function(err, data){ 
-         if (err) { 
-            next(err);
-         } else {
-            var keyLabels = ["used", "free"];
-            var results = [];
-            for (var i = 0; i < data.length; i++) {
-               var record = formatOutput(data[i]);
-               results = results.concat(formatOutput(data[i]));
-               results[i]["key"]=keyLabels[i];
-            }
-            res.json(results); 
-         }
-      }
-   );
-}
-
 var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
    async.waterfall([
       wrap(getInfoForAllHosts, ["load/load.rrd", [
@@ -234,25 +197,125 @@ var getHostInfo = exports.getHostInfo = function (req, res, next) {
    });
 }
 
-/**
-* fetchRRD: Calls rrdtool and returns the data. 
-* rrd_file - relative path to rrd file collectDataRoot/{host_id} 
-* cf - RRD Config Fucnction (AVERAGE, MIN, MAX, LAST) 
-* req - passthrough request parameters, must have host id, may have start/end/resolution.
-* 
-* Note: it uses execFile, thus will throw if rdtool output result > 200Mb
-* If the buffer is bigger, one can switch to spawn, 
-* but think again: why returning big data to the client?
-*/
-var fetchRRD = function (rrd_file, cf, req, callback) {
-
+var getHostGraph = exports.getHostGraph = function (req, res, next) {
    var host = req.params.id;
+   
+   var query = {
+      day: {
+         from: 1370557260,
+         to: 1370643660
+      },
+      week: {
+         from: 1370038860,
+         to: 1370643660
+      },
+      month: {
+         from: 1367965260,
+         to: 1370643660
+      }
+   }[ req.query.period || 'day' ];
+   
+   async.parallel({
+      load: hostGraphLoad(host, query),
+      memory: hostGraphMemory(host, query),
+      storage: hostGraphStorage(host, query)
+   }, function (err, data) {
+      if (err) {
+         next(err);
+      } else {
+         res.json(data)
+      }
+   })
+}
+
+/**
+ * Fetch Load graph data of specific host.
+ * @param host - name of the host to fetch
+ * @param query - set of request parameters (from, to, r)
+ * @return Array of [ time, load ]
+ */
+var hostGraphLoad = function (host, query) {
+   return function (cb) {
+      fetchRRD(host, "load/load.rrd", "MAX", query, function (err, data) {
+         cb(err, data.shortterm );
+      });
+   };
+}
+
+/**
+ * Fetch Memory graph data of specific host.
+ * @param host - name of the host to fetch
+ * @param query - set of request parameters (from, to, r)
+ * @return Array of [ time, %used ]
+ */
+var hostGraphMemory = function (host, query) {
+   return function (cb) {
+      async.parallel({
+         used: wrap(fetchRRD, [host, "memory/memory-used.rrd", "AVERAGE", query]),
+         free: wrap(fetchRRD, [host, "memory/memory-free.rrd", "AVERAGE", query]),
+         buffered: wrap(fetchRRD, [host, "memory/memory-buffered.rrd", "AVERAGE", query]),
+         cached: wrap(fetchRRD, [host, "memory/memory-cached.rrd", "AVERAGE", query])
+      }, function (err, data) {
+         var results = data.used.value.map(function (e, i) {
+            var total = data.used.value[i][1] + data.free.value[i][1];
+                      // + data.buffered.value[i][1] + data.cached.value[i][1];
+            return [ 
+               data.used.value[i][0],              // timestamp
+               data.used.value[i][1] / total * 100 // percentage used
+            ]; 
+         });
+   
+         cb(err, results);
+      });
+   };
+}
+
+/**
+ * Fetch Storage graph data of specific host.
+ * @param host - name of the host to fetch
+ * @param query - set of request parameters (from, to, r)
+ * @return Array of [ time, %used ]
+ */
+var hostGraphStorage = function (host, query) {
+   return function (cb) {
+      fetchRRD(host, "df/df-var-lib-nova-instances.rrd", "AVERAGE", query, function (err, data) {
+         if (err) {
+            cb(null, null); // do not throw an error when there is no file to parse
+         } else {
+            var results = data.used.map(function (e, i) {
+               var total = data.used[i][1] + data.free[i][1];
+
+               return [
+                  data.used[i][0],              // timestamp
+                  data.used[i][1] / total * 100 // percentage used
+               ];
+            });
+
+            cb(err, results);
+         }
+      });
+   };
+};
+
+/**
+ * fetchRRD: Calls rrdtool and returns the data.
+ * @param host - name of the host to fetch
+ * @param rrd_file - relative path to rrd file collectDataRoot/{host_id} 
+ * @param cf - RRD Config Function (AVERAGE, MIN, MAX, LAST) 
+ * @param query - set of request parameters (from, to, r)
+ * 
+ * Note: it uses execFile, thus will throw if rdtool output result > 200Mb
+ * If the buffer is bigger, one can switch to spawn, 
+ * but think again: why returning big data to the client?
+ */
+var fetchRRD = function (host, rrd_file, cf, query, callback) {
+
    var rrd_file_path = collectDataRoot + "/" + host + "/" + rrd_file;
    var params = [];
    //TODO: set good defaults to avoid buffer overflow
-   if (req.query.from) { params.push("--start", req.query.from); }
-   if (req.query.to) { params.push("--end", req.query.to); }
-   if (req.query.r) { params.push("-r", req.query.r); }
+   if (query.from) { params.push("--start", query.from); }
+   if (query.to) { params.push("--end", query.to); }
+   if (query.r) { params.push("-r", query.r); }
   
    var args = ["fetch", rrd_file_path, cf].concat(params);
    console.log("Running: ", rrdtool, args.join(" "));      
@@ -261,7 +324,7 @@ var fetchRRD = function (rrd_file, cf, req, callback) {
           if (err) {
             callback(err);
          } else { 
-            callback(null, stdout);
+            callback(null, formatOutput(stdout));
          }
       });
 }
@@ -307,11 +370,11 @@ var formatOutput = function (data) {
    // split by lines
    var lines = data.split('\n');
    // parse out the keys from the header line
-   var keys = lines[0].split(/[\s,]+/);
+   var keys = lines[0].split(/[\s,]+/).splice(1);
    // create d3 friendly output data structure
-   var res = [];
-   for (var k=1; k< keys.length; k++) {
-      res.push({ key: keys[k], values: []});
+   var res = {};
+   for (var k=0; k< keys.length; k++) {
+      res[keys[k]] = [];
    }
    // Loop lines and fill up the data points
    // TODO: figure better way to handle [nan, nan, nan]?
@@ -322,7 +385,7 @@ var formatOutput = function (data) {
       if (s1[1] == null) continue;
       var values = s1[1].split(/\s+/);
       for (var v=0; v<values.length; v++) {
-         res[v].values.push([t,values[v]]);
+         res[keys[v]].push([ parseInt(t), parseFloat(values[v].split(',').join('.')) ]);
       }
    }
    return res;

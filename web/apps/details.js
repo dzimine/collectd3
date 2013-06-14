@@ -122,6 +122,14 @@ function DetailsCtrl($s, $http, $routeParams) {
          .error(function (err) {
             console.log(err);
          })
+         
+      $http.get('/data/' + $routeParams.host + '/graph')
+         .success(function (res) {
+            console.log(res);
+         })
+         .error(function (err) {
+            console.log(err);
+         })
    }
 
    $s.fetch();
