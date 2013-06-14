@@ -1,0 +1,109 @@
+.canvas {
+	height: 600px;
+	display: block;
+	position: relative;
+}
+
+.left-canvas {
+  height:100%;
+  width: 494px;
+  border-width: 1px;
+  -o-border-image: -o-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  -moz-border-image: -moz-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  -ms-border-image: -ms-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  -webkit-border-image: -webkit-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+  border-left-width: 0px;
+  border-top-width: 0px;
+  border-bottom: 0px;
+}
+
+.right-canvas {
+  height:100%;
+  width: 495px;
+}
+
+.top-canvas {
+	height: 250px;
+	position: relative;
+}
+
+.bottom-canvas {
+	height: 280px;
+	position: relative;
+}
+
+.canvas-label {
+	font-size: 2em;
+	margin-left: 30px;
+	margin-top: 30px;
+	color: #CCCCCC;
+}
+
+.donut-chart {
+	width: 300px;
+}
+
+.kpi-group {
+	width: 180px;
+	height: 100%;
+	font-size: 3.5em;
+	line-height: 80%;
+	position: relative;
+}
+
+.sub-stats {
+	font-size: 0.5em;
+	color: #AAAAAA;
+	padding-top: 12px;
+}
+
+.donut-chart svg {
+	margin: 20px;
+}
+
+.stat-label { 
+	font-size: 18px;
+	color: #CCCCCC;
+}
+
+.chart-kpi {
+  font-size: 4em;
+}
+
+.chart-label {
+	font-size: 18px;
+	fill: #CCCCCC;
+}
+
+.svg-warning {
+    fill: #FF7000;
+}
+
+.svg-attention {
+    fill: #FFD717;
+}
+
+.svg-normal {
+    fill: #18E000;
+}
+
+.load-1 {
+    fill: #EEEEEE;
+}
+
+.vcpu-stats {
+	margin-top: 75px;
+	margin-left: 45px;
+	margin-right: 60px;
+	height: 40px;
+	position: relative;
+	font-size: 3.5em;
+}
+
+.vcpus {
+	margin-left: 60px;
+}
+
+.timeline {
+	background-color: #EEEEEE;
+}

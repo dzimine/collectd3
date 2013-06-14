@@ -75,7 +75,7 @@ function DetailsCtrl($s, $http) {
          chartMemory.dispatch.on('stateChange', function(e) { nv.log('New State:', JSON.stringify(e)); });
 
          return chartMemory;
-      });        
+      });     
    }
 
    $s.fetch = function  (){
