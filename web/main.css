@@ -156,13 +156,13 @@ body {
 .stat-big p {
   font-size: 5.5em;
   margin-right: 15px;
-  margin-bottom: 10px;
+  height: 45px;
 }
 
 .stat-small p {
   font-size: 3em;
   margin-right: 40px;
-  margin-bottom: 10px;
+  height: 34px;
 }
 
 .card-body .warning {
