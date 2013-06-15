@@ -203,17 +203,17 @@ body {
   margin-left: 50px;
 }
 
-.card_nav {
+.card-nav {
   float: left;
-  margin: 0 70px;
   height: 40px;
-  width: 120px;
+  width: 25%;
   background-color: transparent;
 }
 
-.triangle_pointer {
-  height: 0;
-  width: 0;
+.triangle-pointer {
+  margin: 0 70px;
+  height: 0px;
+  width: 0px;
   border-top: 20px solid #EEEEEE;
   border-left: 60px solid transparent;
   border-right: 60px solid transparent;
