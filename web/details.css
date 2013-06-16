@@ -118,7 +118,6 @@
 	margin-left: 60px;
 	padding-bottom: 20px;
 	height: 30px;
-	width: 100%;
 	text-align: center;
 	font-size: 1.2em;
 	color: white;
@@ -158,7 +157,6 @@
 .storage-allocation {
 	margin-left: 60px;
 	height: 10px;
-	width: 100%;
 }
 
 .storage-allocation-usage {
