@@ -39,8 +39,8 @@
                <li ng-class="{active:isActiveLocation('/dashboard')}">
                   <a href="#/dashboard">Dashboard</a>
                </li>
-               <li ng-class="{active:isActiveLocation('/details')}">
-                  <a href="#/details">Details</a>
+               <li ng-class="{active:isActiveLocation('/details/'+hostname)}">
+                  <a href={{"#/details/"+hostname}}> {{ hostname }}</a>
                </li>
             </ul>
          </div>
