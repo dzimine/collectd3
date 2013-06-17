@@ -98,11 +98,12 @@ function DetailsCtrl($s, $http, $routeParams) {
                 : "/data/" + $routeParams.host + "/info";
       $http.get(urlInfo)
          .success(function (res) {
-            console.log(res);
+            $s.info = res;
             $s.context.status = "Done in " + (new Date() - t1) + " ms";
          })
          .error(function (err) {
-            console.log(err);
+            $s.info = {}
+            $s.context.status = "Error getting data. Check the log.";
          });
 
       var urlGraph = $s.useMock ? "/graph.json" 

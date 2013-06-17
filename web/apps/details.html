@@ -4,13 +4,13 @@
       <div class="top-canvas">
         <p class="canvas-label">Load</p>
         <div class="donut-chart left">
-          <svg width="220" height="220"><g class="arcGrp" transform="translate(110,110)"><path class="load-0 svg-warning" d="M4.31673739722388e-15,-70.5A70.5,70.5 0 1,1 -57.03569810343377,-41.438860286619395L-78.87915695155733,-57.309062098516186A97.5,97.5 0 1,0 5.969955974884089e-15,-97.5Z"></path><path class="load-1" d="M-57.03569810343377,-41.438860286619395A70.5,70.5 0 0,1 4.966636639718719e-14,-70.5L6.868752799610994e-14,-97.5A97.5,97.5 0 0,0 -78.87915695155733,-57.309062098516186Z"></path></g><g class="ctrGroup" transform="translate(110,110)"><text dy=".15em" dx="-0.1em" text-anchor="middle" class="chart-kpi svg-warning">85</text><text dy=".4em" dx="1.9em" text-anchor="middle" class="chart-label">%</text><text dy="2em" text-anchor="middle" class="chart-label">Average</text></g></svg>
+          <d3-speedometer val="info.load.shortterm | number:2" title="Short"></d3-speedometer>
         </div>
         <div class="right">
           <div class="kpi-group">
             <div class="bottom">
-              <p>17<span class="stat-label"> % Min</span></p>
-              <p>98<span class="stat-label"> % Max</span></p>
+              <p>{{info.load.midterm | number:2}}<span class="stat-label"> Mid</span></p>
+              <p>{{info.load.longterm | number:2}}<span class="stat-label"> Long</span></p>
             </div>
           </div>
         </div>

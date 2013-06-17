@@ -2,7 +2,7 @@
 /*global d3*/
 'use strict';
 
-function DashboardCtrl($s, $http, $location) {
+function DashboardCtrl($s, $http, $location, statusOf) {
 
    var tab = '',
        minWidth = 800; // minimal width to maintain default cell size
@@ -19,18 +19,7 @@ function DashboardCtrl($s, $http, $location) {
       return current === name;
    }
    
-   $s.statusOf = function (type, value) {
-      switch (type) {
-         case 'load':
-            if ( value > 1    ) return { status: 'warning', text: 'busy' };
-            if ( value > 0.7  ) return { status: 'attention', text: 'warming' };
-            return { status: 'normal' };
-         default:
-            if ( value > 95   ) return { status: 'warning', text: 'run out' };
-            if ( value > 80   ) return { status: 'attention', text: 'running out' };
-            return { status: 'normal' };
-      }
-   };
+   $s.statusOf = statusOf;
    
    function render() {
 
@@ -122,4 +111,4 @@ function DashboardCtrl($s, $http, $location) {
       render();
    }); 
 
-} DashboardCtrl.$inject = ['$scope', '$http', '$location'];
+} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf'];
