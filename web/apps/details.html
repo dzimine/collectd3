@@ -1,14 +1,4 @@
-<div style="overflow-y:scroll">
-  <div class="sub-header">
-    <p class="host-url center">{{ $routeParams.host }}</p> 
-    <div class="right">
-      <div class="btn-group">
-        <button type="button" class="btn btn-mini" ng-class="{active:useMock}" ng-click="useMock=!useMock; fetch()")>Mock</button>
-        <button type="button" class="btn btn-mini" ng-class="{active:!useMock}" ng-click="useMock=!useMock; fetch()">Real</button>
-      </div>
-      <span class="timestamp">{{status}}</span>
-    </div>
-  </div>
+<div>
   <div class="canvas">
     <div class="left-canvas left">
       <div class="top-canvas">
