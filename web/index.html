@@ -29,7 +29,7 @@
       <script src="apps/details.js"></script>
    </head>
 
-   <body ng-app="main" ng-controller="NavCtrl">
+   <body ng-app="main" ng-controller="MainCtrl">
 
    <div class="navbar navbar-inverse navbar-fixed-top" >
       <div class="navbar-inner">
@@ -39,10 +39,11 @@
                <li ng-class="{active:isActiveLocation('/dashboard')}">
                   <a href="#/dashboard">Dashboard</a>
                </li>
-               <li ng-class="{active:isActiveLocation('/details/'+hostname)}">
-                  <a href={{"#/details/"+hostname}}> {{ hostname }}</a>
+               <li ng-class="{active:isActiveLocation('/details/'+context.host)}">
+                  <a href={{"#/details/"+context.host}}> {{ context.host }}</a>
                </li>
             </ul>
+            <p class="navbar-text pull-right">{{ context.status }}</p>
          </div>
       </div>
    </div>

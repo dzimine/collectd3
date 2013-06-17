@@ -88,16 +88,16 @@ function DetailsCtrl($s, $http, $routeParams) {
       var t1 = new Date();
       // TODO: get the parameters from hour/3 hours/day/week/year selector
       var params = {"from":1370556000, "to":1370643000, "r":2000};
-      $s.status = "Loading..."
+      $s.context.status = "Loading..."
       var urlLoad = $s.useMock ? "/load.json" : "/data/ua-c01.tir.example.com/load"; 
       $http.get(urlLoad, {params : params})
          .success(function(res) {
             $s.dataLoad = res;
-            $s.status = "Done in " + (new Date() - t1) + " ms";
+            $s.context.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
             $s.dataLoad =[];
-            $s.status = "Error getting data. Check the log.";
+            $s.context.status = "Error getting data. Check the log.";
             render();
          });
 
@@ -108,7 +108,7 @@ function DetailsCtrl($s, $http, $routeParams) {
         .success(function(res) {
            $s.dataMemory = res;
            //TODO: yeah, right, it overwrites the old status. Fine. 
-           $s.status = "Done in " + (new Date() - t1) + " ms";
+           $s.context.status = "Done in " + (new Date() - t1) + " ms";
            render();
         }).error(function(err) {
            $s.dataMemory =[];
