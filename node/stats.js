@@ -373,15 +373,18 @@ var getHostGraph = exports.getHostGraph = function (req, res, next) {
    var query = {
       day: {
          from: 1370557260,
-         to: 1370643660
+         to: 1370643660,
+         resolution: 300
       },
       week: {
          from: 1370038860,
-         to: 1370643660
+         to: 1370643660, 
+         resolution: 3600,
       },
       month: {
          from: 1367965260,
-         to: 1370643660
+         to: 1370643660, 
+         resolution: 43200,
       }
    }[ req.query.period || 'day' ];
    
@@ -489,7 +492,7 @@ var fetchRRD = function (host, rrd_file, cf, query, callback) {
    //TODO: set good defaults to avoid buffer overflow
    if (query.from) { params.push("--start", query.from); }
    if (query.to) { params.push("--end", query.to); }
-   if (query.r) { params.push("-r", query.r); }
+   if (query.resolution) { params.push("-r", query.resolution); }
   
    var args = ["fetch", rrd_file_path, cf].concat(params);
    console.log("Running: ", rrdtool, args.join(" "));      

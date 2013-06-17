@@ -5,9 +5,11 @@ function DetailsCtrl($s, $http, $routeParams) {
    $s.$routeParams = $routeParams;
 
    $s.x=0;
-   $s.dataLoad = [];
-   $s.dataMemory = [];
    $s.useMock = false;
+   //TODO: remove temp hack to fit ndv3 data structure for line chart. 
+   $s.dataLoad = [{key:"Load", values:[]}];
+   $s.dataMemory = [ {key:"Memory", values:[]} ];
+
    var chartLoad;
    var chartMemory;
 
@@ -16,16 +18,17 @@ function DetailsCtrl($s, $http, $routeParams) {
          //chartLoad = nv.models.multiBarChart();
          chartLoad = nv.models.lineChart();
          chartLoad
-             .x(function(d,i) {  return d[0]; })
+             .x(function(d,i) {  return d[0]*1000; })
              .y(function(d) { return d[1]; })
              //TODO: find better way to define domain: 1) start from 0 and 2) end at max.
              .forceY([0,1.5]);
          
+         //FIXME: xAxis labels are totally off. Never mind we'll dump ndv3
          chartLoad.xAxis 
             .axisLabel('Time')
             .showMaxMin(false)
             .tickFormat(function(d) { 
-               return d3.time.format('%H:%M')(new Date(d*1000)) 
+               return d3.time.format('%H:%M')(new Date(d)) 
             });
 
          chartLoad.yAxis
@@ -54,25 +57,26 @@ function DetailsCtrl($s, $http, $routeParams) {
          
          chartMemory = nv.models.multiBarChart();
          chartMemory
-             .x(function(d,i) {  return d[0]; })
+             .x(function(d,i) {  return d[0]*1000; })
              .y(function(d) { return d[1]/1073741824; })
-             .forceY([0,2.0]);
+             .forceY([0,1.0]);
              //TODO: Figure how to show up to TOTAL memory
          
+         //FIXME: xAxis labels are totally off. Never mind we'll dump ndv3
          chartMemory.xAxis 
             .axisLabel('Time')
             .showMaxMin(false)
             .tickFormat(function(d) { 
-               return d3.time.format('%H:%M')(new Date(d*1000)) 
+               return d3.time.format('%H:%M')(new Date(d)) 
             });
 
          chartMemory.yAxis
              .axisLabel('Memory')
-             .tickFormat(d3.format(',.2e'));
+             .tickFormat(d3.format(',.2'));
 
          d3.select('#memory svg')
              .datum($s.dataMemory)
-             .transition().duration(200)
+             .transition().duration(100)
              .call(chartMemory);
 
          nv.utils.windowResize(chartMemory.update);
@@ -87,49 +91,35 @@ function DetailsCtrl($s, $http, $routeParams) {
    $s.fetch = function  (){
       var t1 = new Date();
       // TODO: get the parameters from hour/3 hours/day/week/year selector
-      var params = {"from":1370556000, "to":1370643000, "r":2000};
+      var params = { period:"day" };
       $s.context.status = "Loading..."
-      var urlLoad = $s.useMock ? "/load.json" : "/data/ua-c01.tir.example.com/load"; 
-      $http.get(urlLoad, {params : params})
+
+      var urlInfo = $s.useMock ? "/host-info.json" 
+                : "/data/" + $routeParams.host + "/info";
+      $http.get(urlInfo)
+         .success(function (res) {
+            console.log(res);
+            $s.context.status = "Done in " + (new Date() - t1) + " ms";
+         })
+         .error(function (err) {
+            console.log(err);
+         });
+
+      var urlGraph = $s.useMock ? "/graph.json" 
+               : "/data/" + $routeParams.host + "/graph";
+      $http.get(urlGraph, {params : params})
          .success(function(res) {
-            $s.dataLoad = res;
+            $s.dataLoad[0].values = res.load;
+            $s.dataMemory[0].values = res.memory;
             $s.context.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
-            $s.dataLoad =[];
+            $s.dataLoad[0].values = [];
+            $s.dataMemory[0].values = [];
             $s.context.status = "Error getting data. Check the log.";
             render();
          });
-
-      //TODO better nicer way to show second chart...
-      var urlMemory = $s.useMock ? "/memory.json" 
-                    : "/data/ua-c01.tir.example.com/memory"; 
-      $http.get(urlMemory, {params : params})
-        .success(function(res) {
-           $s.dataMemory = res;
-           //TODO: yeah, right, it overwrites the old status. Fine. 
-           $s.context.status = "Done in " + (new Date() - t1) + " ms";
-           render();
-        }).error(function(err) {
-           $s.dataMemory =[];
-           render();
-        });
         
-      $http.get('/data/' + $routeParams.host + '/info')
-         .success(function (res) {
-            console.log(res);
-         })
-         .error(function (err) {
-            console.log(err);
-         })
-         
-      $http.get('/data/' + $routeParams.host + '/graph')
-         .success(function (res) {
-            console.log(res);
-         })
-         .error(function (err) {
-            console.log(err);
-         })
    }
 
    $s.fetch();
