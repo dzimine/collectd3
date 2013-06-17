@@ -232,12 +232,12 @@ body {
 }
 
 .content:empty:after {
-   content: "Nothing to show yet =(";
+   content: "Still working on it =(";
    color: #adadad;
    text-align: center;
    display: block;
    font-size: 5em;
-   padding: 5em 3em;
+   padding: 3em 2em;
 }
 
 .heatmap rect {
