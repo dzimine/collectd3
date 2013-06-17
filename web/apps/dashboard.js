@@ -91,16 +91,16 @@ function DashboardCtrl($s, $http, $location) {
 
    $s.fetch = function(){
       var t1 = new Date();
-      $s.status = "Loading...";
+      $s.context.status = "Loading...";
 
       $http.get("/data/load")
          .success(function(res) {
             $s.load = res;
-            $s.status = "Done in " + (new Date() - t1) + " ms";
+            $s.context.status = "Done in " + (new Date() - t1) + " ms";
             render();
          }).error(function(err) {
             $s.load = {};
-            $s.status = "Error getting data. Check the log.";
+            $s.context.status = "Error getting data. Check the log.";
             render();
          });
          
@@ -111,7 +111,7 @@ function DashboardCtrl($s, $http, $location) {
             render();
          }).error(function(err) {
             $s.aggregate = {};
-            $s.status = "Error getting data. Check the log.";
+            $s.context.status = "Error getting data. Check the log.";
             render();
          });
    };
