@@ -31,14 +31,14 @@
       <div class="top-canvas">
         <p class="canvas-label">Memory</p>
         <div class="donut-chart left">
-          <svg width="220" height="220"><g class="arcGrp" transform="translate(110,110)"><path class="load-0 svg-attention" d="M4.31673739722388e-15,-70.5A70.5,70.5 0 1,1 -28.674933336843893,64.40495476380337L-39.65682269989049,89.0706821201536A97.5,97.5 0 1,0 5.969955974884089e-15,-97.5Z"></path><path class="load-1" d="M-28.674933336843893,64.40495476380337A70.5,70.5 0 0,1 -1.295021219167164e-14,-70.5L-1.7909867924652267e-14,-97.5A97.5,97.5 0 0,0 -39.65682269989049,89.0706821201536Z"></path></g><g class="ctrGroup" transform="translate(110,110)"><text dy=".15em" dx="-0.1em" text-anchor="middle" class="chart-kpi svg-attention">17</text><text dy=".4em" dx="1.9em" text-anchor="middle" class="chart-label">GB</text><text dy="2em" text-anchor="middle" class="chart-label">Used</text></g></svg>
+          <d3-donut val="info.memory" title="Used"></d3-donut>
         </div>
         <div class="right">
           <div class="kpi-group">
             <div class="bottom">
-              <p>13<span class="stat-label"> GB Free</span></p>
-              <p class="sub-stats">8<span class="stat-label"> GB Buffered</span></p>
-              <p class="sub-stats">5<span class="stat-label"> GB Cached</span></p>
+              <p>{{bytesToSize(info.memory.free.value).value}}<span class="stat-label"> {{bytesToSize(info.memory.free.value).multi}} Free</span></p>
+              <p class="sub-stats">{{bytesToSize(info.memory.buffered.value).value}}<span class="stat-label"> {{bytesToSize(info.memory.buffered.value).multi}} Buffered</span></p>
+              <p class="sub-stats">{{bytesToSize(info.memory.cached.value).value}}<span class="stat-label"> {{bytesToSize(info.memory.cached.value).multi}} Cached</span></p>
             </div>
           </div>
         </div>         

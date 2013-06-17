@@ -1,8 +1,9 @@
 'use strict';
 
-function DetailsCtrl($s, $http, $routeParams) {
+function DetailsCtrl($s, $http, $routeParams, bytesToSize) {
 
    $s.$routeParams = $routeParams;
+   $s.bytesToSize = bytesToSize;
 
    $s.x=0;
    $s.useMock = false;
@@ -126,7 +127,7 @@ function DetailsCtrl($s, $http, $routeParams) {
    $s.fetch();
  
 
-} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams'];
+} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize'];
 
 
 
