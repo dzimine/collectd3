@@ -378,6 +378,10 @@ body {
   font-family: 'Century Gothic', sans-serif;
 }
 
+.average .load-1 {
+  fill: #555555;
+}
+
 .average p {
   font-size: 3em;
 }
