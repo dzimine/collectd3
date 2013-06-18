@@ -9,7 +9,11 @@ angular.module('main')
       return {
          restrict: 'E',
          scope: {
-           val: '='
+           val: '=',
+           d3Click: '&',
+           d3Mouseover: '&',
+           d3Mouseout: '&',
+           d3Mousemove: '&'
          },
          link: function postLink(scope, element, attrs) {
             var vis = d3.select(element[0]);
@@ -22,7 +26,21 @@ angular.module('main')
                if (!val) {
                  return;
                }
-               
+
+               //TODO: change output of vcpu to [{ key: 'cpu-1', value: 1.11}]
+               if (angular.isNumber(val[0])) {
+                  val = val.map(function (e, i) {
+                     return { key: i, value: e}
+                  })
+               }
+
+               //TODO: change output of heatmap to [{ key: 'localhost', value: 1.11}]
+               if (angular.isArray(val[0])) {
+                  val = val.map(function (e, i) {
+                     return { key: e[0], value: e[1]}
+                  })
+               }
+
                // ARC Group
                var heatmap = vis.append("div")
                    .attr("class", "heatmap");
@@ -31,7 +49,11 @@ angular.module('main')
                    .data(val);
 
                boxes.enter().append("div")
-                   .attr("class", function (d) { return "box "+colorScale(d); });
+                   .attr("class", function (d) { return "box "+colorScale(d.value); })
+                   .on("click", function (d) { scope.d3Click(d); })
+                   .on("mouseover", function (d) { scope.d3Mouseover(d); })
+                   .on("mouseout", function (d) { scope.d3Mouseout(d); })
+                   .on("mousemove", function (d) { scope.d3Mousemove({x: event.x, y: event.y}); });
 
             });
          }

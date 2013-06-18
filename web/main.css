@@ -312,24 +312,13 @@ body {
   cursor: pointer;
 }
 
-.heatmap .cell9 {fill:rgb(165,0,38)}
-.heatmap .cell8 {fill:rgb(215,48,39)}
-.heatmap .cell7 {fill:rgb(244,109,67)}
-.heatmap .cell6 {fill:rgb(253,174,97)}
-.heatmap .cell5 {fill:rgb(254,224,139)}
-.heatmap .cell4 {fill:rgb(255,255,191)}
-.heatmap .cell3 {fill:rgb(217,239,139)}
-.heatmap .cell2 {fill:rgb(166,217,106)}
-.heatmap .cell1 {fill:rgb(102,189,99)}
-.heatmap .cell0 {fill:rgb(26,152,80)}
-
 .box {
     width: 43px;
-    height: 45px;
+    height: 43px;
     display: block;
     background-color: gray;
     margin: 0 2px 2px 0;
-    float:left
+    float:left;
 }
 
 .heatmap .cell9 {background-color:rgb(165,0,38)}
@@ -348,6 +337,10 @@ body {
   height: 200px;
 }
 
+#heatmap .box {
+  cursor: pointer;
+}
+
 .mytooltip {
   background-color: white;
   opacity: 0.8;
@@ -356,6 +349,7 @@ body {
   font-size: 16px;
   padding: 10px; 
   box-shadow: 0px 0px 15px 5px #888888;
+  pointer-events: none;
 }
 
 .timestamp {
