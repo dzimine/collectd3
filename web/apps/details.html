@@ -17,14 +17,10 @@
       </div>
       <div class="bottom-canvas">
         <div class="vcpu-stats">
-            <p class="left">24<span class="stat-label"> vCPUs</span></p>
-            <p class="sub-stats right">18<span class="stat-label"> hot</span> 2<span class="stat-label"> warm</span> 3<span class="stat-label"> cold</span></p>
+            <p class="left">{{info.vcpu.length}}<span class="stat-label"> vCPUs</span></p>
+            <p class="sub-stats right">{{ countByTemp('hot', info.vcpu) }}<span class="stat-label"> hot</span> {{ countByTemp('warm', info.vcpu) }}<span class="stat-label"> warm</span> {{ countByTemp('cold', info.vcpu) }}<span class="stat-label"> cold</span></p>
         </div>
-        <svg class="vcpus">
-          <g class="heatmap"><rect class="cell6" width="43" height="45" x="0" y="0"></rect><rect class="cell7" width="43" height="45" x="45" y="0"></rect><rect class="cell0" width="43" height="45" x="90" y="0"></rect><rect class="cell7" width="43" height="45" x="135" y="0"></rect><rect class="cell8" width="43" height="45" x="180" y="0"></rect><rect class="cell2" width="43" height="45" x="225" y="0"></rect><rect class="cell6" width="43" height="45" x="270" y="0"></rect><rect class="cell7" width="43" height="45" x="315" y="0"></rect>
-          <rect class="cell8" width="43" height="45" x="0" y="47"></rect><rect class="cell6" width="43" height="45" x="45" y="47"></rect><rect class="cell7" width="43" height="45" x="90" y="47"></rect><rect class="cell5" width="43" height="45" x="135" y="47"></rect><rect class="cell8" width="43" height="45" x="180" y="47"></rect><rect class="cell6" width="43" height="45" x="225" y="47"></rect><rect class="cell6" width="43" height="45" x="270" y="47"></rect><rect class="cell7" width="43" height="45" x="315" y="47"></rect>
-          <rect class="cell8" width="43" height="45" x="0" y="94"></rect><rect class="cell7" width="43" height="45" x="45" y="94"></rect><rect class="cell7" width="43" height="45" x="90" y="94"></rect><rect class="cell7" width="43" height="45" x="135" y="94"></rect><rect class="cell5" width="43" height="45" x="180" y="94"></rect><rect class="cell6" width="43" height="45" x="225" y="94"></rect><rect class="cell6" width="43" height="45" x="270" y="94"></rect><rect class="cell6" width="43" height="45" x="315" y="94"></rect>
-        </svg>
+        <d3-heatmap val="info.vcpu" class="vcpus"></d3-heatmap>
       </div>
     </div>
     <div class="right-canvas right">

@@ -5,6 +5,21 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize) {
    $s.$routeParams = $routeParams;
    $s.bytesToSize = bytesToSize;
 
+   $s.countByTemp = function (temp, vcpus) {
+      var levels = {
+         hot: function (e) {
+            return e > 0.8;
+         },
+         warm: function (e) {
+            return e > 0.5 && e <= 0.8;
+         },
+         cold: function (e) {
+            return e <= 0.5;
+         }
+      }
+      return (vcpus || []).filter(levels[temp]).length;
+   }
+
    $s.x=0;
    $s.useMock = false;
    //TODO: remove temp hack to fit ndv3 data structure for line chart. 

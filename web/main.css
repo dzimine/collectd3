@@ -270,6 +270,26 @@ body {
 .heatmap .cell1 {fill:rgb(102,189,99)}
 .heatmap .cell0 {fill:rgb(26,152,80)}
 
+.box {
+    width: 43px;
+    height: 45px;
+    display: block;
+    background-color: gray;
+    margin: 0 2px 2px 0;
+    float:left
+}
+
+.heatmap .cell9 {background-color:rgb(165,0,38)}
+.heatmap .cell8 {background-color:rgb(215,48,39)}
+.heatmap .cell7 {background-color:rgb(244,109,67)}
+.heatmap .cell6 {background-color:rgb(253,174,97)}
+.heatmap .cell5 {background-color:rgb(254,224,139)}
+.heatmap .cell4 {background-color:rgb(255,255,191)}
+.heatmap .cell3 {background-color:rgb(217,239,139)}
+.heatmap .cell2 {background-color:rgb(166,217,106)}
+.heatmap .cell1 {background-color:rgb(102,189,99)}
+.heatmap .cell0 {background-color:rgb(26,152,80)}
+
 #heatmap {
   padding: 20px;
   height: 500px;
