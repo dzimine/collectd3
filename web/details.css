@@ -1,7 +1,8 @@
 .canvas {
-	height: 600px;
+	height: 550px;
 	display: block;
 	position: relative;
+	font-size: 0.8em;
 }
 
 .left-canvas {
@@ -23,7 +24,7 @@
 }
 
 .top-canvas {
-	height: 250px;
+	height: 220px;
 	position: relative;
 }
 
@@ -45,7 +46,7 @@
 
 .kpi-group {
 	width: 180px;
-	height: 100%;
+	height: 90%;
 	font-size: 3.5em;
 	line-height: 80%;
 	position: relative;
@@ -59,6 +60,7 @@
 
 .donut-chart svg {
 	margin: 20px;
+	margin-top: 0;
 }
 
 .stat-label { 
@@ -89,6 +91,10 @@
 
 .load-1 {
     fill: #EEEEEE;
+}
+
+.dark-arc {
+	fill: #555555;
 }
 
 .vcpu-stats {
@@ -152,7 +158,7 @@
 
 .bar-label {
 	color: #CCCCCC;
-	font-size: 0.6em;
+	font-size: 0.8em;
 }
 
 .storage-allocation {
