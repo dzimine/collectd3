@@ -177,4 +177,49 @@
 
 .timeline {
 	background-color: #EEEEEE;
+   position: relative;
+   cursor: default;
+}
+
+.timeline .periods {
+   position: absolute;
+   top: 10px;
+   left: 10px;
+   background-color: rgba(128, 128, 128, 0.2);
+   padding: 2px 10px;
+   border-radius: 12px;
+   line-height: 20px;
+}
+
+.timeline .period {
+   margin: -2px 6px;
+   padding: 2px 4px;
+   cursor: pointer;
+}
+
+.timeline .period.active {
+   font-weight: bold;
+}
+
+.timeline .graph {
+   stroke-width: 2;
+   fill: none;
+}
+
+.timeline .load {
+   stroke: steelblue;
+}
+
+.timeline .memory {
+   stroke: red;
+}
+
+.timeline .meridian {
+   stroke: black;
+   stroke-width: 1px;
+   margin: 10px;
+}
+
+.timeline .meridian.active {
+   stroke: red;
 }
