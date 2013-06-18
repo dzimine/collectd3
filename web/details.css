@@ -93,6 +93,10 @@
     fill: #EEEEEE;
 }
 
+.dark-arc {
+	fill: #555555;
+}
+
 .vcpu-stats {
 	margin-top: 75px;
 	margin-left: 45px;
