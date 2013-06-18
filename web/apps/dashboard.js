@@ -34,11 +34,11 @@ function DashboardCtrl($s, $http, $location) {
    
    function render() {
 
-      var cellSize = 70; // default size when space is adequate
+      var cellSize = 45; // default size when space is adequate
           
-      if ($("#heatmap").width() < minWidth) { 
-         cellSize = Math.ceil($("#heatmap").width() / 10); 
-      } 
+ //     if ($("#heatmap").width() < minWidth) { 
+ //        cellSize = Math.ceil($("#heatmap").width() / 10); 
+ //     } 
       
       var width = $("#heatmap").width() - cellSize, //leave padding space for one cell
           nColumns = Math.floor(width / cellSize); //number of columns
@@ -72,8 +72,8 @@ function DashboardCtrl($s, $http, $location) {
           .attr("height", cellSize - 2)
           .attr("x", function(d, i) { return (i % nColumns) * cellSize; })
           .attr("y", function(d, i) { return (Math.floor(i / nColumns)) * cellSize; })
-          .attr("rx", 5)
-          .attr("ry", 5)
+//          .attr("rx", 5)
+//          .attr("ry", 5)
           .on("click", function (d) { $location.path('/details/' + d[0]); $s.$apply(); })
           .on("mouseover", function(d) { 
              return tooltip

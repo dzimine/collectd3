@@ -37,8 +37,31 @@ body {
   shape-rendering: crispEdges;
 }
 
+
+.right {
+  position: absolute;
+  right: 15px;
+  float: right;
+  display: inline;
+  height: 100%;
+}
+
+.left {
+  position: absolute;
+  left: 15px;
+  float: left;
+  display: inline;
+  height: 100%;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 15px;
+  clear: both;
+}
+
 #cardgroup {
-  height: 260px;
+  height: 240px;
   background-color: white;
   font-size: 0.8em;
 }
@@ -92,7 +115,7 @@ body {
 
 
 .card-header {
-  height: 80px;
+  height: 70px;
   padding-bottom: 20px;
 }
 
@@ -210,9 +233,13 @@ body {
   margin-left: 50px;
 }
 
+.card-nav-group {
+  background-color: #333;
+  height: 40px;
+}
+
 .card-nav {
   float: left;
-  height: 40px;
   width: 25%;
   background-color: transparent;
 }
@@ -227,8 +254,34 @@ body {
 }
 
 .content {
-  background-color: #333333;
-  padding: 50px 30px;
+  background-color: #333;
+  padding: 30px 30px;
+  position: relative;
+  height: 450px;
+}
+
+.content-labels {
+  width: 20%;
+/*   border-width: 1px;
+  -o-border-image: -o-linear-gradient(bottom, #333333 15%, #AAAAAA 60%, #333333 90%) 1 100%;
+  -moz-border-image: -moz-linear-gradient(bottom, #333333 15%, #AAAAAA 60%, #333333 90%) 1 100%;
+  -ms-border-image: -ms-linear-gradient(bottom, #333333 15%, #AAAAAA 60%, #333333 90%) 1 100%;
+  -webkit-border-image: -webkit-linear-gradient(bottom, #333333 15%, #AAAAAA 60%, #333333 90%) 1 100%; 
+  border-left-width: 0px;
+  border-top-width: 0px;
+  border-bottom: 0px;*/
+  border-right: solid 1px #999;
+}
+
+.content-labels p{
+  color: #AAAAAA;
+  font-size: 1.2em;
+  text-align: right;
+  padding: 15px 15px 200px 60px;
+}
+
+.content-charts {
+  width: 75%;
 }
 
 .content:empty:after {
@@ -287,31 +340,8 @@ body {
 
 .timestamp {
   font-family: "Arial", Gadget, sans-serif;
-  font-size: 1em;
-  color: #AAAAAA;
-  padding: 10px;
-}
-
-.right {
-  position: absolute;
-  right: 15px;
-  float: right;
-  display: inline;
-  height: 100%;
-}
-
-.left {
-  position: absolute;
-  left: 15px;
-  float: left;
-  display: inline;
-  height: 100%;
-}
-
-.bottom {
-  position: absolute;
-  bottom: 15px;
-  clear: both;
+  font-size: 0.8em;
+  color: #777777;
 }
 
 .host-url { 
