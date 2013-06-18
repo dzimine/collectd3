@@ -27,15 +27,16 @@ angular.module('main')
                
                var keys = scope.scheme.split(" ");
 
+               var x = d3.scale.linear()
+                  .domain([val[keys[0]][0][0], val[keys[0]][val[keys[0]].length-1][0]])
+                  .range([0 + margin, w - margin]);
+
                keys.forEach(function (key, i) {
                   var data = val[key];
 
                   var y = d3.scale.linear()
                         .domain([0, d3.max(data, function (e) { return e[1]; })])
-                        .range([0 + margin, h - margin]),
-                      x = d3.scale.linear()
-                        .domain([data[0][0], data[data.length-1][0]])
-                        .range([0 + margin, w - margin]);
+                        .range([0 + margin, h - margin]);
 
                   vis.attr("height", h*(i+1));
 
@@ -50,48 +51,34 @@ angular.module('main')
                      .attr("class", "graph " + key)
                      .attr("d", line(data));
                });
-               
-               // First approach to interactivity
-               // -------------------------------
-               // Idea was to draw a bunch of lines, hide them by css and show only one
-               // that hovered. Approach had failed due small mouseover area of svg:line.
-               // Wee need something like padding for svg:line to make it happens.
-               //
-               // var data = val[scope.scheme.split(" ")[0]];
-               //          
-               // var x = d3.scale.linear().domain([data[0][0], data[data.length-1][0]]).range([0 + margin, w - margin]);
-               //          
-               // var meridianGrp = vis.append("svg:g");
-               //             
-               // meridianGrp.selectAll("line")
-               //    .data(data)
-               //    .enter().append('svg:line')
-               //    .attr("class", "meridian")
-               //    .attr("x1", function (d) { return x(d[0]); })
-               //    .attr("x2", function (d) { return x(d[0]); })
-               //    .attr("y1", margin)
-               //    .attr("y2", scope.scheme.split(" ").length * h - margin)
-               //    .on("mouseover", function() { console.log(1);d3.select(this).classed("active", true ) })
-               //    .on("mouseout", function() { d3.select(this).classed("active", false ) })
 
-               // Second approach to interactivity
-               // --------------------------------
-               // Idea was to intercept mousemove coordinates and find nearest data 
-               // point to show. We need something like spartial array to make it happens
-               // and i don't see one in d3. Also, it's quite cpu intence approach due 
-               // to mousemove event flood.
-               //
-               // var x = d3.scale.linear().domain([val[keys[0]][0][0], val[keys[0]][val[keys[0]].length-1][0]]).range([0 + margin, w - margin]);
-               // 
-               // vis.append("svg:rect")
-               //    .attr("x", margin )
-               //    .attr("y", margin )
-               //    .attr("width", w - margin*2 )
-               //    .attr("height", h * keys.length - margin*2 )
-               //    .attr("fill", "transparent")
-               //    .on("mousemove", function () {
-               //       console.log(x.invert(d3.mouse(this)[0]));
-               //    })
+               var meridianGrp = vis.append("svg:g");
+
+               var medians = meridianGrp.selectAll("g")
+                  .data(val[keys[0]])
+                  .enter()
+                  .append('svg:g')
+                  .on("mouseover", function() { 
+                     d3.select(this).classed("active", true );
+                  })
+                  .on("mouseout", function() { 
+                     d3.select(this).classed("active", false ); 
+                  });
+
+               medians.append('svg:line')
+                  .attr("class", "meridian-bg")
+                  .attr("x1", function (d) { return x(d[0]); })
+                  .attr("x2", function (d) { return x(d[0]); })
+                  .attr("y1", margin)
+                  .attr("y2", scope.scheme.split(" ").length * h - margin);
+
+               medians.append('svg:line')
+                  .attr("class", "meridian")
+                  .attr("x1", function (d) { return x(d[0]); })
+                  .attr("x2", function (d) { return x(d[0]); })
+                  .attr("y1", margin)
+                  .attr("y2", scope.scheme.split(" ").length * h - margin);
+
             });
          }
       };

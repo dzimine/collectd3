@@ -217,11 +217,16 @@
 }
 
 .timeline .meridian {
-   stroke: black;
+   stroke: #ccc;
    stroke-width: 1px;
-   margin: 10px;
+   visibility: hidden;
 }
 
-.timeline .meridian.active {
-   stroke: red;
+.timeline .meridian-bg {
+   stroke: transparent;
+   stroke-width: 10px;
+}
+
+.timeline .active .meridian {
+   visibility: visible;
 }
