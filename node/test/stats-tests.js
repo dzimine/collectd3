@@ -221,14 +221,16 @@ exports['test getMemoryHeatmap'] = function(done) {
    resmock.assertCallback = function(data) {
       try {
          //console.log(JSON.stringify(data, null, 3));
-         assert.equal(3, data.length);
-         //check if data contains array with a giveh host host name
-         assert.ok(data
+         var heatmap = data["heatmap"];
+         assert.ok(heatmap, "Should contain heatmap");
+         assert.equal(3, heatmap.length);
+         //check if heatmap contains array with a giveh host host name
+         assert.ok(heatmap
             .reduce(function(a, b){
                return (b[0] == "localhost") ?  true : a;
             }, false), 
             "Data should contain 'localhost'");
-         assert.equal(data[2][1], 121649971200, "Should have correct value");
+         assert.equal(heatmap[2][1], 121649971200, "Should have correct value");
          done();
       } catch (err) { done (err); }
    }

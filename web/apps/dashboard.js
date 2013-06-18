@@ -9,6 +9,7 @@ function DashboardCtrl($s, $http, $location, statusOf) {
    
    $s.switchCard = function (name) {
       tab = name;
+      $s.fetchView(name);
    };
    
    $s.isCard = function (name) {
@@ -28,11 +29,11 @@ function DashboardCtrl($s, $http, $location, statusOf) {
       $s.$apply();
    }
    
-   $s.showTooltip = function (host, value) {
-      $s.tooltip.text = "Host ID: " + host + " | Load Average: " + value.toFixed(2);
+   $s.showTooltip = function (host, value, label) {
+      $s.tooltip.text = "Host ID: " + host + " | " + label + ': ' + value.toFixed(2);
       $s.$apply();
    }
-   
+
    $s.hideTooltip = function (host, value) {
       $s.tooltip = {};
       $s.$apply();
@@ -44,19 +45,23 @@ function DashboardCtrl($s, $http, $location, statusOf) {
       $s.$apply();
    }
 
+   $s.fetchView = function(view) {
+      var t1 = new Date();
+      $s.context.status = "Loading...";
+      $http.get("/data/" + view)
+         .success(function(res) {
+            $s[view] = res;
+            $s.context.status = "Done in " + (new Date() - t1) + " ms";
+         }).error(function(err) {
+            $s[view] = {};
+            $s.context.status = "Error getting data. Check the log.";
+         });
+   }
+
    $s.fetch = function(){
       var t1 = new Date();
       $s.context.status = "Loading...";
-
-      $http.get("/data/load")
-         .success(function(res) {
-            $s.load = res;
-            $s.context.status = "Done in " + (new Date() - t1) + " ms";
-         }).error(function(err) {
-            $s.load = {};
-            $s.context.status = "Error getting data. Check the log.";
-         });
-         
+      
       $http.get("/data/aggregate")
          .success(function(res) {
             $s.aggregate = res;
@@ -65,12 +70,15 @@ function DashboardCtrl($s, $http, $location, statusOf) {
             $s.aggregate = {};
             $s.context.status = "Error getting data. Check the log.";
          });
+
    };
-   
-   $s.fetch();
+
+   $s.fetch();   
+   $s.fetchView("load");
    
    $(window).resize(function() {
-      render();
+      //TODO: figure why it doesn't work...
+      //render();
    }); 
 
 } DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf'];

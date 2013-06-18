@@ -61,7 +61,8 @@ var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
          if (err) {
             next(err);
          } else {
-            res.json(data);
+            var output = { heatmap:data };
+            res.json(output);
          }
       });
 }
