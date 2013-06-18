@@ -4,7 +4,7 @@ angular.module('main')
    .directive('d3Donut', ['statusOf', 'bytesToSize', function (statusOf, bytesToSize) {
       var w = 220, h = 220,
           r = Math.min(w, h) / 2,
-          arc = d3.svg.arc().innerRadius(r - 12.5).outerRadius(r - 39.5),
+          arc = d3.svg.arc().innerRadius(r - 34).outerRadius(r - 46),
           markers = [
               { domain: 0, range: 0 },
               { domain: 100, range: 360 }
