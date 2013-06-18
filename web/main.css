@@ -336,6 +336,10 @@ body {
   font-size: 1em;
 }
 
+svg {
+   shape-rendering: geometricPrecision;
+}
+
 svg text {
     font-family: Century Gothic, sans-serif;
     color: #CCCCCC;
