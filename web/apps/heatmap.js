@@ -49,7 +49,13 @@ angular.module('main')
                    .data(val);
 
                boxes.enter().append("div")
-                   .attr("class", function (d) { return "box "+colorScale(d.value); })
+                   .attr("class", function (d) {
+                      if (d === null) {
+                         return "box"
+                      } else {
+                         return "box "+colorScale(d.value); 
+                      }
+                   })
                    .on("click", function (d) { scope.d3Click(d); })
                    .on("mouseover", function (d) { scope.d3Mouseover(d); })
                    .on("mouseout", function (d) { scope.d3Mouseout(d); })
