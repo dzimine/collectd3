@@ -64,7 +64,7 @@
       <span class="period" ng-click="period = 'week'" ng-class="(period == 'week') && 'active'">W</span>
       <span class="period" ng-click="period = 'month'" ng-class="(period == 'month') && 'active'">M</span>
     </div>
-    <d3-timeseries val="graph" scheme="load memory"></d3-timeseries>
+    <d3-timeseries val="graph" scheme="load memory" period="period"></d3-timeseries>
   </div>
 
 

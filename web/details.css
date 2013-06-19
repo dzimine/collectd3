@@ -230,3 +230,7 @@
 .timeline .active .meridian {
    visibility: visible;
 }
+
+.timeline .x-axis {
+  color: #888;
+}
