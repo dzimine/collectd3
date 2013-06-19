@@ -10,7 +10,8 @@ angular.module('main')
          restrict: 'E',
          scope: {
            val: '=',
-           scheme: '@'
+           scheme: '@',
+           d3Click: '&'
          },
          link: function postLink(scope, element, attrs) {
             var vis = d3.select(element[0]).append("svg:svg")
@@ -58,6 +59,8 @@ angular.module('main')
                   .data(val[keys[0]])
                   .enter()
                   .append('svg:g')
+                  .on("click", function (d, i) { 
+                    console.log(d, val); scope.d3Click({i:i}); })
                   .on("mouseover", function() { 
                      d3.select(this).classed("active", true );
                   })

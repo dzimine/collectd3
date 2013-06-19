@@ -227,9 +227,9 @@ var hostInfoLoad = function (host) {
    return function (cb) {
       async.waterfall([
          extractRRD(host, "load/load.rrd", {
-            shortterm: "ds[shortterm].value", 
-            midterm: "ds[midterm].value", 
-            longterm: "ds[longterm].value", 
+            shortterm: "ds[shortterm].last_ds", 
+            midterm: "ds[midterm].last_ds", 
+            longterm: "ds[longterm].last_ds", 
             last_update: "last_update"
          }),
          // KI: Quite unpleasant workaround. Haven't figured out a way to overcome few 
@@ -240,7 +240,6 @@ var hostInfoLoad = function (host) {
                data.shortterm, 
                data.midterm, 
                data.longterm, 
-               data.last_update
             ]]);
          },
          wrap(normalizeLoad, [[1,2,3]])
@@ -248,7 +247,7 @@ var hostInfoLoad = function (host) {
          cb(null, {
             shortterm: data[0][1],
             midterm: data[0][2],
-            longterm: data[0][3],
+            longterm: data[0][3],          
             last_update: data[0][4]
          });
       });
@@ -278,6 +277,22 @@ var hostInfoMemory = function (host) {
          }),
          buffered: extractRRD(host, "memory/memory-buffered.rrd", {
             value: "ds[value].value", 
+            last_update: "last_update"
+         }),
+         used_ds: extractRRD(host, "memory/memory-used.rrd", {
+            value: "ds[value].last_ds", 
+            last_update: "last_update"
+         }),
+         free_ds: extractRRD(host, "memory/memory-free.rrd", {
+            value: "ds[value].last_ds", 
+            last_update: "last_update"
+         }),
+         cached_ds: extractRRD(host, "memory/memory-cached.rrd", {
+            value: "ds[value].last_ds", 
+            last_update: "last_update"
+         }),
+         buffered_ds: extractRRD(host, "memory/memory-buffered.rrd", {
+            value: "ds[value].last_ds", 
             last_update: "last_update"
          })
       }, cb);
@@ -372,6 +387,11 @@ var getHostGraph = exports.getHostGraph = function (req, res, next) {
    var host = req.params.id;
    
    var query = {
+      hour: {
+         from: 1370640060,
+         to: 1370643660,
+         resolution: 10
+      },
       day: {
          from: 1370557260,
          to: 1370643660,
@@ -410,7 +430,7 @@ var getHostGraph = exports.getHostGraph = function (req, res, next) {
  */
 var hostGraphLoad = function (host, query) {
    return function (cb) {
-      fetchRRD(host, "load/load.rrd", "MAX", query, function (err, data) {
+      fetchRRD(host, "load/load.rrd", "AVERAGE", query, function (err, data) {
          cb(err, data.shortterm );
       });
    };
