@@ -86,11 +86,11 @@ angular.module('main')
                   .append('svg:g')
                   .on("mouseover", function(d, i) {
                      d3.select(this).classed("active", true );
-                     scope.d3Mouseover({ time: d[0], load: val.load[i][1], memory: val.memory[i][1] });
+                     scope.d3Mouseover({ time: d[0], load: val.load[i][1], memory: val.memory[i][1], memoryUsed: val.memory[i][2], memoryFree: val.memory[i][3] });
                   })
                   .on("mouseout", function(d, i) {
                      d3.select(this).classed("active", false );
-                     scope.d3Mouseout({ time: d[0], load: val.load[i][1], memory: val.memory[i][1] });
+                     scope.d3Mouseout({ time: d[0], load: val.load[i][1], memory: val.memory[i][1], memoryUsed: val.memory[i][2], memoryFree: val.memory[i][3] });
                   })
                   .on("mousemove", function () { 
                      scope.d3Mousemove({x: event.x, y: event.y}); 

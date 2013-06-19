@@ -13,8 +13,12 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp)
 
    $s.tooltip = {};
 
-   $s.showTooltip = function (time, load, memory) {
-      $s.tooltip.text = $filter('date')(time*1000, 'EEE, MMM d HH:mm') + " | Load: " + load.toFixed(2)  + " | Memory: " + memory.toFixed(2) + '%';
+   $s.showTooltip = function (time, load, memory, memoryUsed, memoryFree) {
+      $s.tooltip.text = $filter('date')(time*1000, 'EEE, MMM d HH:mm');
+      $s.tooltip.details = { 
+         'Load': load.toFixed(2),
+         'Memory': bytesToSize(memoryUsed).value + ' ' + bytesToSize(memoryUsed).multi + ' of ' + bytesToSize(memoryFree).value + ' ' + bytesToSize(memoryFree).multi + ' (' + memory.toFixed(2) + '%)'
+      };
       $s.$apply();
    }
 

@@ -32,13 +32,16 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp)
    }
    
    $s.showTooltip = function (host, value, label) {
-      $s.tooltip.text = host + " | " + label + ' ' + value.toFixed(2);
+      $s.tooltip.text = host;
+      $s.tooltip.details = {};
+      $s.tooltip.details[label] = value.toFixed(2);
       $s.$apply();
    }
    
    $s.showMemoryTooltip = function (host, details, label) {
-      $s.tooltip.text = "Host ID: " + host + " | " + label + ': ' + 
-         bytesToSize(details.used).value + ' ' + bytesToSize(details.used).multi + ' of ' + 
+      $s.tooltip.text = host;
+      $s.tooltip.details = {};
+      $s.tooltip.details[label] = bytesToSize(details.used).value + ' ' + bytesToSize(details.used).multi + ' of ' + 
          bytesToSize(details.used + details.free).value + ' ' + bytesToSize(details.used + details.free).multi;
       $s.$apply();
    }

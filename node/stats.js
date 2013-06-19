@@ -473,7 +473,9 @@ var hostGraphMemory = function (host, query) {
                       // + data.buffered.value[i][1] + data.cached.value[i][1];
             return [ 
                data.used.value[i][0],              // timestamp
-               data.used.value[i][1] / total * 100 // percentage used
+               data.used.value[i][1] / total * 100,
+               data.used.value[i][1],
+               data.free.value[i][1] // percentage used
             ]; 
          });
    
