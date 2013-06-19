@@ -165,13 +165,36 @@
 		</div>
 		<div class="content-charts right">
 			<div class="load-by-host">
+				<div class="heatmap-stats">
+					<p class="hot">9 <span class="temp-label">Hot</span></p>
+					<p class="warm">5 <span class="temp-label">Warm</span></p>
+					<p class="cold">7 <span class="temp-label">Cold</span></p>
+				</div>
 				<div id="heatmap">
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showTooltip(key, value, 'Load average')" 
 						d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" val="load.heatmap">
 					</d3-heatmap>
 				</div>
-				<div class="heatmap-stats"></div>
+				<div class="heatmap-legend">
+					<div class="numbers">
+						<p>10</p>
+						<p>5</p>
+						<p>0</p>
+					</div>
+					<div class="legend-line">
+						<div class="cell9"></div>
+						<div class="cell8"></div>
+						<div class="cell7"></div>
+						<div class="cell6"></div>
+						<div class="cell5"></div>
+						<div class="cell4"></div>
+						<div class="cell3"></div>
+						<div class="cell2"></div>
+						<div class="cell1"></div>
+						<div class="cell0"></div>
+					</div>
+				</div>
 			</div>
 			<div class="row-fluid average">
 				<div class="span4">
