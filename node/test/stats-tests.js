@@ -227,10 +227,10 @@ exports['test getMemoryHeatmap'] = function(done) {
          //check if heatmap contains array with a giveh host host name
          assert.ok(heatmap
             .reduce(function(a, b){
-               return (b[0] == "localhost") ?  true : a;
+               return (b.key == "localhost") ?  true : a;
             }, false), 
             "Data should contain 'localhost'");
-         assert.equal(heatmap[2][1], 121649971200, "Should have correct value");
+         assert.equal(heatmap[2].value, 0.5115414739797925, "Should have correct value");
          done();
       } catch (err) { done (err); }
    }

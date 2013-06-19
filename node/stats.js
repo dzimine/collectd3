@@ -55,16 +55,47 @@ var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
  */
 
 var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
-   getInfoForAllHosts("memory/memory-used.rrd", 
-      ["ds[value].value", "last_update"], 
-      function(err, data) {
-         if (err) {
-            next(err);
-         } else {
-            var output = { heatmap:data };
-            res.json(output);
+   async.parallel({
+      used: wrap(getInfoForAllHosts, ["memory/memory-used.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]]),
+      free: wrap(getInfoForAllHosts, ["memory/memory-free.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]]),
+      cached: wrap(getInfoForAllHosts, ["memory/memory-cached.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]]),
+      buffered: wrap(getInfoForAllHosts, ["memory/memory-buffered.rrd", [
+         "ds[value].value", 
+         "last_update"
+      ]])
+   }, function (err, data) {
+      if (err) {
+         cb(err)
+      } else {
+         var hash = {},
+             result = []
+
+         data.used.forEach(function (e) { 
+            hash[e[0]] = hash[e[0]] || {};
+            hash[e[0]].used = e[1]; 
+         });
+         data.free.forEach(function (e) { 
+            hash[e[0]] = hash[e[0]] || {};
+            hash[e[0]].free = e[1]; 
+         });
+
+         for (var key in hash) {
+            result.push({ key: key, value: hash[key].used / (hash[key].used + hash[key].free)});
          }
-      });
+
+         var output = { heatmap:result };
+         res.json(output);
+      }
+   });
 }
 
 /**

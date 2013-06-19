@@ -75,10 +75,5 @@ function DashboardCtrl($s, $http, $location, statusOf) {
 
    $s.fetch();   
    $s.fetchView("load");
-   
-   $(window).resize(function() {
-      //TODO: figure why it doesn't work...
-      //render();
-   }); 
 
 } DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf'];
