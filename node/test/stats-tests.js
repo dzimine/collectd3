@@ -231,6 +231,8 @@ exports['test getMemoryHeatmap'] = function(done) {
             }, false), 
             "Data should contain 'localhost'");
          assert.equal(heatmap[2].value, 0.5115414739797925, "Should have correct value");
+         assert.equal(heatmap[2].details.used, 121649971200, "Should have correct value");
+         assert.equal(heatmap[2].details.free, 116160602112, "Should have correct value");
          done();
       } catch (err) { done (err); }
    }

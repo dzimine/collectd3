@@ -2,7 +2,7 @@
 /*global d3*/
 'use strict';
 
-function DashboardCtrl($s, $http, $location, statusOf) {
+function DashboardCtrl($s, $http, $location, statusOf, bytesToSize) {
 
    var tab = '',
        minWidth = 800; // minimal width to maintain default cell size
@@ -31,6 +31,13 @@ function DashboardCtrl($s, $http, $location, statusOf) {
    
    $s.showTooltip = function (host, value, label) {
       $s.tooltip.text = "Host ID: " + host + " | " + label + ': ' + value.toFixed(2);
+      $s.$apply();
+   }
+   
+   $s.showMemoryTooltip = function (host, details, label) {
+      $s.tooltip.text = "Host ID: " + host + " | " + label + ': ' + 
+         bytesToSize(details.used).value + ' ' + bytesToSize(details.used).multi + ' of ' + 
+         bytesToSize(details.used + details.free).value + ' ' + bytesToSize(details.used + details.free).multi;
       $s.$apply();
    }
 
@@ -76,4 +83,4 @@ function DashboardCtrl($s, $http, $location, statusOf) {
    $s.fetch();   
    $s.fetchView("load");
 
-} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf'];
+} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf', 'bytesToSize'];

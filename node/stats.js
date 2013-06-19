@@ -89,7 +89,14 @@ var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
          });
 
          for (var key in hash) {
-            result.push({ key: key, value: hash[key].used / (hash[key].used + hash[key].free)});
+            result.push({ 
+               key: key, 
+               value: hash[key].used / (hash[key].used + hash[key].free),
+               details: {
+                  used: hash[key].used,
+                  free: hash[key].free
+               }
+            });
          }
 
          var output = { heatmap:result };
