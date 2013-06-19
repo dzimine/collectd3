@@ -30,7 +30,7 @@ function DashboardCtrl($s, $http, $location, statusOf) {
    }
    
    $s.showTooltip = function (host, value, label) {
-      $s.tooltip.text = "Host ID: " + host + " | " + label + ': ' + value.toFixed(2);
+      $s.tooltip.text = host + " | " + label + ' ' + value.toFixed(2);
       $s.$apply();
    }
 

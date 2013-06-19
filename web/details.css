@@ -69,7 +69,7 @@
 }
 
 .chart-kpi {
-  font-size: 4em;
+    font-size: 4em;
 }
 
 .chart-label {
@@ -178,9 +178,10 @@
 }
 
 .timeline {
-	background-color: #EEEEEE;
+   background-color: #EEEEEE;
    position: relative;
    cursor: default;
+   padding-top: 30px;
 }
 
 .timeline .periods {

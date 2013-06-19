@@ -326,18 +326,18 @@ body {
     float:left;
 }
 
-.load-by-host .cell9 {background-color:rgb(165,0,38)}
-.load-by-host .cell8 {background-color:rgb(215,48,39)}
-.load-by-host .cell7 {background-color:rgb(244,109,67)}
-.load-by-host .cell6 {background-color:rgb(253,174,97)}
-.load-by-host .cell5 {background-color:rgb(254,224,139)}
-.load-by-host .cell4 {background-color:rgb(255,255,191)}
-.load-by-host .cell3 {background-color:rgb(217,239,139)}
-.load-by-host .cell2 {background-color:rgb(166,217,106)}
-.load-by-host .cell1 {background-color:rgb(102,189,99)}
-.load-by-host .cell0 {background-color:rgb(26,152,80)}
+.heatmap .cell9, .heatmap-legend .cell9 {background-color: #ff3500;}
+.heatmap .cell8, .heatmap-legend .cell8 {background-color: #ff6f00;}
+.heatmap .cell7, .heatmap-legend .cell7 {background-color: #ffa800;}
+.heatmap .cell6, .heatmap-legend .cell6 {background-color: #cdb400;}
+.heatmap .cell5, .heatmap-legend .cell5 {background-color: #8bc400;}
+.heatmap .cell4, .heatmap-legend .cell4 {background-color: #6acc00;}
+.heatmap .cell3, .heatmap-legend .cell3 {background-color: #49d400;}
+.heatmap .cell2, .heatmap-legend .cell2 {background-color: #0dd15f;}
+.heatmap .cell1, .heatmap-legend .cell1 {background-color: #08c98e;}
+.heatmap .cell0, .heatmap-legend .cell0 {background-color: #01bfce;}
 
-#heatmap {
+.chart-heatmap {
   position: absolute;
   left: 100px;
   padding: 20px;
@@ -345,7 +345,7 @@ body {
   width: 75%;
 }
 
-#heatmap .box {
+.chart-heatmap .box {
   cursor: pointer;
 }
 
