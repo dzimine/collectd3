@@ -2,11 +2,13 @@
 /*global d3*/
 'use strict';
 
-function DashboardCtrl($s, $http, $location, statusOf, bytesToSize) {
+function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp) {
 
    var tab = '',
        minWidth = 800; // minimal width to maintain default cell size
-   
+
+   $s.countByTemp = countByTemp;
+
    $s.switchCard = function (name) {
       tab = name;
       $s.fetchView(name);
@@ -83,4 +85,4 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize) {
    $s.fetch();   
    $s.fetchView("load");
 
-} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf', 'bytesToSize'];
+} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf', 'bytesToSize', 'countByTemp'];

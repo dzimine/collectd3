@@ -166,9 +166,9 @@
 		<div class="content-charts right">
 			<div class="load-by-host">
 				<div class="heatmap-stats">
-					<p class="hot">9 <span class="temp-label">Hot</span></p>
-					<p class="warm">5 <span class="temp-label">Warm</span></p>
-					<p class="cold">7 <span class="temp-label">Cold</span></p>
+					<p class="hot">{{countByTemp('hot', load.heatmap)}} <span class="temp-label">Hot</span></p>
+					<p class="warm">{{countByTemp('warm', load.heatmap)}} <span class="temp-label">Warm</span></p>
+					<p class="cold">{{countByTemp('cold', load.heatmap)}} <span class="temp-label">Cold</span></p>
 				</div>
 				<div class="chart-heatmap">
 					<d3-tooltip message="tooltip"></d3-tooltip>

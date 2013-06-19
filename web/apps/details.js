@@ -1,24 +1,11 @@
 'use strict';
 
-function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter) {
+function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp) {
 
    $s.$routeParams = $routeParams;
    $s.bytesToSize = bytesToSize;
 
-   $s.countByTemp = function (temp, vcpus) {
-      var levels = {
-         hot: function (e) {
-            return e > 0.8;
-         },
-         warm: function (e) {
-            return e > 0.5 && e <= 0.8;
-         },
-         cold: function (e) {
-            return e <= 0.5;
-         }
-      }
-      return (vcpus || []).filter(levels[temp]).length;
-   }
+   $s.countByTemp = countByTemp;
 
    $s.x=0;
    $s.useMock = false;
@@ -85,4 +72,4 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter) {
    })
 
 
-} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize', '$filter'];
+} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize', '$filter', 'countByTemp'];
