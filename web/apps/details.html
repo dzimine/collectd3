@@ -64,7 +64,10 @@
       <span class="period" ng-click="period = 'week'" ng-class="(period == 'week') && 'active'">W</span>
       <span class="period" ng-click="period = 'month'" ng-class="(period == 'month') && 'active'">M</span>
     </div>
-    <d3-timeseries val="graph" scheme="load memory" period="period"></d3-timeseries>
+    <d3-tooltip message="tooltip"></d3-tooltip>
+    <d3-timeseries val="graph" scheme="load memory" period="period" 
+      d3-mouseover="showTooltip(time, load, memory)" 
+      d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" ></d3-timeseries>
   </div>
 
 

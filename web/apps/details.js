@@ -1,6 +1,6 @@
 'use strict';
 
-function DetailsCtrl($s, $http, $routeParams, bytesToSize) {
+function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter) {
 
    $s.$routeParams = $routeParams;
    $s.bytesToSize = bytesToSize;
@@ -23,6 +23,24 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize) {
    $s.x=0;
    $s.useMock = false;
    $s.period = 'day';
+
+   $s.tooltip = {};
+
+   $s.showTooltip = function (time, load, memory) {
+      $s.tooltip.text = $filter('date')(time*1000, 'EEE, MMM d HH:mm') + " | Load: " + load.toFixed(2)  + " | Memory: " + memory.toFixed(2) + '%';
+      $s.$apply();
+   }
+
+   $s.hideTooltip = function (host, value) {
+      $s.tooltip = {};
+      $s.$apply();
+   }
+
+   $s.moveTooltip = function (x,y) {
+      $s.tooltip.x = x;
+      $s.tooltip.y = y;
+      $s.$apply();
+   }
 
    $s.fetch = function (){
       var t1 = new Date();
@@ -60,4 +78,4 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize) {
    })
 
 
-} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize'];
+} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize', '$filter'];

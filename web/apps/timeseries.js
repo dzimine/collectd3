@@ -29,7 +29,10 @@ angular.module('main')
          scope: {
            val: '=',
            scheme: '@',
-           period: '='
+           period: '=',
+           d3Mouseover: '&',
+           d3Mouseout: '&',
+           d3Mousemove: '&'
          },
          link: function postLink(scope, element, attrs) {
             var vis = d3.select(element[0]).append("svg:svg")
@@ -77,11 +80,16 @@ angular.module('main')
                   .data(val[keys[0]])
                   .enter()
                   .append('svg:g')
-                  .on("mouseover", function() { 
+                  .on("mouseover", function(d, i) {
                      d3.select(this).classed("active", true );
+                     scope.d3Mouseover({ time: d[0], load: val.load[i][1], memory: val.memory[i][1] });
                   })
-                  .on("mouseout", function() { 
-                     d3.select(this).classed("active", false ); 
+                  .on("mouseout", function(d, i) {
+                     d3.select(this).classed("active", false );
+                     scope.d3Mouseout({ time: d[0], load: val.load[i][1], memory: val.memory[i][1] });
+                  })
+                  .on("mousemove", function () { 
+                     scope.d3Mousemove({x: event.x, y: event.y}); 
                   });
 
                medians.append('svg:line')
