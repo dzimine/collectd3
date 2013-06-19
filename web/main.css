@@ -293,6 +293,11 @@ body {
    padding: 3em 2em;
 }
 
+.load-by-host {
+  position: relative;
+  height: 270px;
+}
+
 .heatmap rect {
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
@@ -313,32 +318,92 @@ body {
 }
 
 .box {
-    width: 43px;
-    height: 43px;
+    width: 40px;
+    height: 40px;
     display: block;
     background-color: gray;
     margin: 0 2px 2px 0;
     float:left;
 }
 
-.heatmap .cell9 {background-color:rgb(165,0,38)}
-.heatmap .cell8 {background-color:rgb(215,48,39)}
-.heatmap .cell7 {background-color:rgb(244,109,67)}
-.heatmap .cell6 {background-color:rgb(253,174,97)}
-.heatmap .cell5 {background-color:rgb(254,224,139)}
-.heatmap .cell4 {background-color:rgb(255,255,191)}
-.heatmap .cell3 {background-color:rgb(217,239,139)}
-.heatmap .cell2 {background-color:rgb(166,217,106)}
-.heatmap .cell1 {background-color:rgb(102,189,99)}
-.heatmap .cell0 {background-color:rgb(26,152,80)}
+.heatmap .cell9, .heatmap-legend .cell9 {background-color: #ff3500;}
+.heatmap .cell8, .heatmap-legend .cell8 {background-color: #ff6f00;}
+.heatmap .cell7, .heatmap-legend .cell7 {background-color: #ffa800;}
+.heatmap .cell6, .heatmap-legend .cell6 {background-color: #cdb400;}
+.heatmap .cell5, .heatmap-legend .cell5 {background-color: #8bc400;}
+.heatmap .cell4, .heatmap-legend .cell4 {background-color: #6acc00;}
+.heatmap .cell3, .heatmap-legend .cell3 {background-color: #49d400;}
+.heatmap .cell2, .heatmap-legend .cell2 {background-color: #0dd15f;}
+.heatmap .cell1, .heatmap-legend .cell1 {background-color: #08c98e;}
+.heatmap .cell0, .heatmap-legend .cell0 {background-color: #01bfce;}
 
-#heatmap {
+.chart-heatmap {
+  position: absolute;
+  left: 100px;
   padding: 20px;
   height: 200px;
+  width: 75%;
 }
 
-#heatmap .box {
+.chart-heatmap .box {
   cursor: pointer;
+}
+
+.heatmap-stats {
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 100px;
+  height: 150px;
+  line-height: 2em;
+  text-align: right;
+}
+
+.heatmap-stats .hot {
+  font-size: 2em; 
+  color: #FF7000;
+}
+
+.heatmap-stats .cold, .warm{
+  font-size: 1.5em;
+  color: #CCC;
+}
+
+.heatmap-stats .temp-label {
+  font-size: 0.5em;
+  color: #AAA;
+}
+
+.heatmap-legend {
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  width: 60px;
+  height: 100px;
+}
+
+.heatmap-legend .numbers {
+  float: right;
+  width: 48px;
+  height: 100%;
+}
+
+.heatmap-legend .numbers > p {
+  color: #AAA;
+  font-size: 0.7em;
+  line-height: 65px;
+  margin-top: -23px;
+}
+
+.heatmap-legend .legend-line {
+  float: left;
+  width: 5px;
+  height: 100%;
+}
+
+.heatmap-legend .legend-line > div {
+  height: 10%;
+  width: 100%;
 }
 
 .mytooltip {
