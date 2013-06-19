@@ -39,7 +39,7 @@
           </div>
         </div>         
       </div>
-      <div class="bottom-canvas">
+      <div class="bottom-canvas" ng-show="!(isEmptyObject(info.storage) || info.storage.used == '0' || info.storage.free == '0')">
          <p class="canvas-label">Storage</p>
          <div class="storage-stats">
            <p class="right"><span class="stat-label">Capacity </span> {{bytesToSize(info.storage.used + info.storage.free).value}}<span class="stat-label"> {{bytesToSize(info.storage.used + info.storage.free).multi}}</span></p>

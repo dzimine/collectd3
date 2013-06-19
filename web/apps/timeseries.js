@@ -57,7 +57,11 @@ angular.module('main')
 
                keys.forEach(function (key, i) {
                   var data = val[key];
-
+                  
+                  if (data[data.length - 1][1] === null) {
+                     data.pop();
+                  }
+                  
                   var y = d3.scale.linear()
                         .domain([0, d3.max(data, function (e) { return e[1]; })])
                         .range([0, h - margin]);
