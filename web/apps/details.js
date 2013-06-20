@@ -17,9 +17,9 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp)
       $s.tooltip.text = $filter('date')(time*1000, 'EEE, MMM d HH:mm');
       $s.tooltip.details = { 
          'Load': load ? load.toFixed(2) : "?" ,
-         'Memory': memory? 
-            bytesToSize(memoryUsed).value + ' ' + bytesToSize(memoryUsed).multi + ' of ' + bytesToSize(memoryFree).value + ' ' + bytesToSize(memoryFree).multi + ' (' + memory.toFixed(2) + '%)'
-            : "?"
+         'Memory used': memory ? bytesToSize(memoryUsed).value + ' ' + bytesToSize(memoryUsed).multi : "?",
+         'Memory free': memory ? bytesToSize(memoryFree).value + ' ' + bytesToSize(memoryFree).multi : "?",
+         'Memory %': memory ? memory.toFixed(2) : "?"
       };
       $s.$apply();
    }
