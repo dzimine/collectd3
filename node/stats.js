@@ -19,11 +19,19 @@ var collectDataRoot = __dirname + "/sampledata";
 var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
    async.waterfall([
       wrap(getInfoForAllHosts, ["load/load.rrd", [
-         "ds[shortterm].value", 
-         "ds[midterm].value", 
-         "ds[longterm].value", 
+         "ds[shortterm].last_ds", 
+         "ds[midterm].last_ds", 
+         "ds[longterm].last_ds", 
          "last_update"
       ]]),
+      function (data, cb) {
+         data.forEach(function (e) {
+            e[1] = parseFloat(e[1]);
+            e[2] = parseFloat(e[2]);
+            e[3] = parseFloat(e[3]);
+         })
+         cb(null, data);
+      },
       wrap(normalizeLoad, [[1,2,3]])
    ], function (err, data) {
       if (err) {
@@ -57,19 +65,19 @@ var getLoadInfo = exports.getLoadInfo = function(req, res, next) {
 var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
    async.parallel({
       used: wrap(getInfoForAllHosts, ["memory/memory-used.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]]),
       free: wrap(getInfoForAllHosts, ["memory/memory-free.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]]),
       cached: wrap(getInfoForAllHosts, ["memory/memory-cached.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]]),
       buffered: wrap(getInfoForAllHosts, ["memory/memory-buffered.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]])
    }, function (err, data) {
@@ -81,11 +89,11 @@ var getMemoryHeatmap = exports.getMemoryHeatmap = function(req, res, next) {
 
          data.used.forEach(function (e) { 
             hash[e[0]] = hash[e[0]] || {};
-            hash[e[0]].used = e[1]; 
+            hash[e[0]].used = parseInt(e[1]); 
          });
          data.free.forEach(function (e) { 
             hash[e[0]] = hash[e[0]] || {};
-            hash[e[0]].free = e[1]; 
+            hash[e[0]].free = parseInt(e[1]); 
          });
 
          for (var key in hash) {
@@ -130,7 +138,7 @@ var getAggregateInfo = exports.getAggregateInfo = function (req, res, next) {
  */
 var aggregateLoad = function (cb) {
    getInfoForAllHosts("load/load.rrd", 
-      ["ds[shortterm].value", "last_update"], 
+      ["ds[shortterm].last_ds", "last_update"], 
       function(err, data) {
          if (err) {
             cb(err);
@@ -158,19 +166,19 @@ var aggregateLoad = function (cb) {
 var aggregateMemory = function (cb) {
    async.parallel([
       wrap(getInfoForAllHosts, ["memory/memory-used.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]]),
       wrap(getInfoForAllHosts, ["memory/memory-free.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]]),
       wrap(getInfoForAllHosts, ["memory/memory-cached.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]]),
       wrap(getInfoForAllHosts, ["memory/memory-buffered.rrd", [
-         "ds[value].value", 
+         "ds[value].last_ds", 
          "last_update"
       ]])
    ], function (err, data) {
@@ -179,13 +187,13 @@ var aggregateMemory = function (cb) {
       } else {
          var total = []
             .concat.apply([], data)                   // flattening all results into one array
-            .map(function (e) { return e[1] })        // extract values
+            .map(function (e) { return parseInt(e[1]) }) // extract values
             .reduce(function(a, b) { return a + b }); // sum all values
-      
+
          var used = data[0]
-            .map(function (e) { return e[1] })        // extract values
+            .map(function (e) { return parseInt(e[1]) }) // extract values
             .reduce(function(a, b) { return a + b }); // sum all values
-   
+
          cb(null, {
             allocated: 28,                            // not enough information for that, mock
             committed: used / total * 100
@@ -201,18 +209,18 @@ var aggregateMemory = function (cb) {
  */
 var aggregateStorage = function (cb) {
    getInfoForAllHosts( "df/df-var-lib-nova-instances.rrd", [
-      'ds[used].value', 
-      'ds[free].value'
+      'ds[used].last_ds', 
+      'ds[free].last_ds'
    ], function (err, data) {
       if (err) {
          cb(err);
       } else {
          var total = data
-            .map(function (e) { return e[1] + e[2] })
+            .map(function (e) { return parseInt(e[1]) + parseInt(e[2]); })
             .reduce(function(a, b) { return a + b });
 
          var used = data
-            .map(function (e) { return e[1] })
+            .map(function (e) { return parseInt(e[1]); })
             .reduce(function(a, b) { return a + b });
 
          cb(null, {
@@ -265,9 +273,9 @@ var hostInfoLoad = function (host) {
    return function (cb) {
       async.waterfall([
          extractRRD(host, "load/load.rrd", {
-            shortterm: "ds[shortterm].value", 
-            midterm: "ds[midterm].value", 
-            longterm: "ds[longterm].value", 
+            shortterm: "ds[shortterm].last_ds", 
+            midterm: "ds[midterm].last_ds", 
+            longterm: "ds[longterm].last_ds", 
             last_update: "last_update"
          }),
          // KI: Quite unpleasant workaround. Haven't figured out a way to overcome few 
@@ -303,22 +311,27 @@ var hostInfoMemory = function (host) {
    return function (cb) {
       async.parallel({
          used: extractRRD(host, "memory/memory-used.rrd", {
-            value: "ds[value].value", 
+            value: "ds[value].last_ds", 
             last_update: "last_update"
          }),
          free: extractRRD(host, "memory/memory-free.rrd", {
-            value: "ds[value].value", 
+            value: "ds[value].last_ds", 
             last_update: "last_update"
          }),
          cached: extractRRD(host, "memory/memory-cached.rrd", {
-            value: "ds[value].value", 
+            value: "ds[value].last_ds", 
             last_update: "last_update"
          }),
          buffered: extractRRD(host, "memory/memory-buffered.rrd", {
-            value: "ds[value].value", 
+            value: "ds[value].last_ds", 
             last_update: "last_update"
          })
-      }, cb);
+      }, function (err, data) {
+         for (var key in data) {
+            data[key].value = parseInt(data[key].value);
+         }
+         cb(err, data);
+      });
    };
 };
 
@@ -328,11 +341,17 @@ var hostInfoMemory = function (host) {
  * @return Set of used, free and last_update
  */
 var hostInfoStorage = function (host) {
-   return extractRRD(host, "df/df-var-lib-nova-instances.rrd", {
-      used: 'ds[used].value', 
-      free: 'ds[free].value',
-      last_update: 'last_update'
-   });
+   return function (cb) {
+      extractRRD(host, "df/df-var-lib-nova-instances.rrd", {
+         used: 'ds[used].last_ds', 
+         free: 'ds[free].last_ds',
+         last_update: 'last_update'
+      })(function (err, data) {
+         data.used = parseInt(data.used);
+         data.free = parseInt(data.free);
+         cb(err, data);
+      });
+   }
 };
 
 /**
@@ -356,45 +375,45 @@ var hostInfoVcpu = function (host) {
             async.parallel(listCpus.map(function (e) {
                return wrap(async.parallel, [{
                   idle: extractRRD(host, e + '/cpu-idle.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   interrupt: extractRRD(host, e + '/cpu-interrupt.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   nice: extractRRD(host, e + '/cpu-nice.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   softirq: extractRRD(host, e + '/cpu-softirq.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   steal: extractRRD(host, e + '/cpu-steal.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   system: extractRRD(host, e + '/cpu-system.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   user: extractRRD(host, e + '/cpu-user.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   }),
                   wait: extractRRD(host, e + '/cpu-wait.rrd', {
-                     value: "ds[value].value",
+                     value: "ds[value].last_ds",
                      last_update: "last_update"
                   })
                }]);
             }), function (err, data) {
                cb(err, data.map(function (e) {
                   var total = Object.keys(e)
-                     .map(function (k) { return e[k].value; })
+                     .map(function (k) { return parseInt(e[k].value); })
                      .reduce(function(a, b) { return a + b });
-                  
-                  return (1 - (e.idle.value / total)) * 100;
+
+                  return (1 - (parseInt(e.idle.value) / total));
                }));
             })
          }

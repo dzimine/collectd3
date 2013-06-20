@@ -35,13 +35,6 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp)
       $s.$apply();
    }
 
-   $s.isEmptyObject = function (obj) {
-      for (var key in obj) {
-          if (hasOwnProperty.call(obj, key)) return false;
-      }
-      return true;
-   }
-
    $s.fetch = function (){
       var t1 = new Date();
       // TODO: get the parameters from hour/3 hours/day/week/year selector

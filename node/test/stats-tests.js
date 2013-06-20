@@ -40,8 +40,8 @@ exports['test aggregateLoad'] = function(done) {
    stats.__get__('aggregateLoad')(function(err, data) {
       if (err) return done(err);
       assert.equal(Object.keys(data).length, 2, "Should have 2 parameters");
-      assert.equal(data.average, 4.38, "Should get correct value of average");
-      assert.equal(data.peak, 4.38, "Should get correct value of peak");
+      assert.equal(data.average, 0.73, "Should get correct value of average");
+      assert.equal(data.peak, 0.73, "Should get correct value of peak");
       done();
    });
 }
@@ -96,9 +96,9 @@ exports['test hostInfoLoad'] = function(done) {
    stats.__get__('hostInfoLoad')("localhost")(function(err, data) {
       if (err) return done(err);
       assert.equal(Object.keys(data).length, 4, "Should have 4 parameters");
-      assert.equal(data.shortterm, 4.38, "Should get correct value of shortterm");
-      assert.equal(data.midterm, 5.34, "Should get correct value of midterm");
-      assert.equal(data.longterm, 6.540000000000001, "Should get correct value of longterm");
+      assert.equal(data.shortterm, 0.73, "Should get correct value of shortterm");
+      assert.equal(data.midterm, 0.89, "Should get correct value of midterm");
+      assert.equal(data.longterm, 1.09, "Should get correct value of longterm");
       assert.equal(data.last_update, 1370643146, "Should get correct value of last_update");
       done();
    });
@@ -108,10 +108,10 @@ exports['test hostInfoMemory'] = function(done) {
    stats.__get__('hostInfoMemory')("localhost")(function(err, data) {
       if (err) return done(err);
       assert.equal(Object.keys(data).length, 4, "Should have 4 parameters");
-      assert.equal(data.cached.value, 367812894720, "Should get correct value of cached");
-      assert.equal(data.free.value, 116160602112, "Should get correct value of free");
-      assert.equal(data.used.value, 121649971200, "Should get correct value of used");
-      assert.equal(data.buffered.value, 2606309376, "Should get correct value of buffered");
+      assert.equal(data.cached.value, 61302149120, "Should get correct value of cached");
+      assert.equal(data.free.value, 19360100352, "Should get correct value of free");
+      assert.equal(data.used.value, 20274995200, "Should get correct value of used");
+      assert.equal(data.buffered.value, 434384896, "Should get correct value of buffered");
       done();
    });
 }
@@ -120,8 +120,8 @@ exports['test hostInfoStorage'] = function(done) {
    stats.__get__('hostInfoStorage')("localhost")(function(err, data) {
       if (err) return done(err);
       assert.equal(Object.keys(data).length, 3, "Should have 3 parameters");
-      assert.equal(data.used, 21799214972928, "Should get correct value of used");
-      assert.equal(data.free, 27678808276992, "Should get correct value of free");
+      assert.equal(data.used, 2422134996992, "Should get correct value of used");
+      assert.equal(data.free, 3075423141888, "Should get correct value of free");
       assert.equal(data.last_update, 1370643629, "Should get correct value of last_update");
       done();
    });
@@ -131,7 +131,7 @@ exports['test hostInfoVcpu'] = function(done) {
    stats.__get__('hostInfoVcpu')("localhost")(function(err, data) {
       if (err) return done(err);
       assert.equal(Array.isArray( data ), true, "Should be array");
-      assert.equal(data[0], 7.2575250836120375, "Should get correct value");
+      assert.equal(data[0], 0.10110609675666826, "Should get correct value");
       done();
    });
 }
@@ -231,8 +231,8 @@ exports['test getMemoryHeatmap'] = function(done) {
             }, false), 
             "Data should contain 'localhost'");
          assert.equal(heatmap[2].value, 0.5115414739797925, "Should have correct value");
-         assert.equal(heatmap[2].details.used, 121649971200, "Should have correct value");
-         assert.equal(heatmap[2].details.free, 116160602112, "Should have correct value");
+         assert.equal(heatmap[2].details.used, 20274995200, "Should have correct value");
+         assert.equal(heatmap[2].details.free, 19360100352, "Should have correct value");
          done();
       } catch (err) { done (err); }
    }
