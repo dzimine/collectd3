@@ -622,41 +622,41 @@ var getInfoForAllHosts = function (path, keys, callback) {
       if (err) {
          callback(err);
       } else {
-         var d =[];
          // CAREFUL! make sure cb() is called for each item!
          // Using async.each is prone to missing cb() call on some code paths,
          // which results in no call to a final callback 
-         async.each(filenames, function(host, cb) {
-            var dir = collectDataRoot + "/" + host;
-            var filepath = [collectDataRoot, host, path].join("/");
+         async.parallel(filenames.map(function (host) {
+            return function(cb) {
+               var dir = collectDataRoot + "/" + host;
+               var filepath = [collectDataRoot, host, path].join("/");
 
-            fs.stat(dir, function(err, stat){
-               if(stat.isFile()) {
-                  console.log("WARNING: [%s] not a directory, ignoring...", host);
-                  cb();
-               } else {
-                  fs.exists(filepath, function(exists){
-                     if (!exists) {
-                        console.log("WARNING: %s doesn't exist", filepath);
-                        cb();
-                     } else {
-                        infoRRD(path, host, function(info) {
-                           var data = [host];
-                           // infoRRD returns empty data on error - ingore and send no-data
-                           keys.forEach(function(key, i) {
-                              if (info.hasOwnProperty(key)) {
-                                 data.push(info[key]);
-                              }
-                           });
-                           d.push(data);
+               fs.stat(dir, function(err, stat){
+                  if(stat.isFile()) {
+                     console.log("WARNING: [%s] not a directory, ignoring...", host);
+                     cb();
+                  } else {
+                     fs.exists(filepath, function(exists){
+                        if (!exists) {
+                           console.log("WARNING: %s doesn't exist", filepath);
                            cb();
-                        });
-                     }
-                  });
-               }
-            })
-         }, function (err, data) {
-            callback(err, d);
+                        } else {
+                           infoRRD(path, host, function(info) {
+                              var data = [host];
+                              // infoRRD returns empty data on error - ingore and send no-data
+                              keys.forEach(function(key, i) {
+                                 if (info.hasOwnProperty(key)) {
+                                    data.push(info[key]);
+                                 }
+                              });
+                              cb(null, data);
+                           });
+                        }
+                     });
+                  }
+               })
+            }
+         }), function (err, data) {
+            callback(err, data.filter(function (e) { return e !== undefined; }));
          });
       }
    });
