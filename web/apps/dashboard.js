@@ -1,26 +1,19 @@
 /*jshint globalstrict:true, jquery:true, browser:true */
-/*global d3*/
 'use strict';
 
 function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp) {
 
-   var tab = '',
-       minWidth = 800; // minimal width to maintain default cell size
-
    $s.countByTemp = countByTemp;
 
    $s.switchCard = function (name) {
-      tab = name;
-      $s.fetchView(name);
+      $location.hash(name).replace();
    };
-   
-   $s.isCard = function (name) {
-      var current = tab;
-      if (current === '' && name === "load") {
-         return true;
-      }
-      return current === name;
-   }
+
+   $s.card = $location.hash() || "load";
+
+   $s.$on('$routeChangeSuccess', function () {
+      $s.fetchView($s.card);
+   });
    
    $s.statusOf = statusOf;
    
@@ -29,14 +22,14 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp)
    $s.moveTo = function (host) {
       $location.path('/details/' + host);
       $s.$apply();
-   }
+   };
    
    $s.showTooltip = function (host, value, label) {
       $s.tooltip.text = host;
       $s.tooltip.details = {};
       $s.tooltip.details[label] = value.toFixed(2);
       $s.$apply();
-   }
+   };
    
    $s.showMemoryTooltip = function (host, details, label) {
       $s.tooltip.text = host;
@@ -44,18 +37,18 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp)
       $s.tooltip.details[label] = bytesToSize(details.used).value + ' ' + bytesToSize(details.used).multi + ' of ' + 
          bytesToSize(details.used + details.free).value + ' ' + bytesToSize(details.used + details.free).multi;
       $s.$apply();
-   }
+   };
 
-   $s.hideTooltip = function (host, value) {
+   $s.hideTooltip = function () {
       $s.tooltip = {};
       $s.$apply();
-   }
+   };
    
    $s.moveTooltip = function (x,y) {
       $s.tooltip.x = x;
       $s.tooltip.y = y;
       $s.$apply();
-   }
+   };
 
    $s.fetchView = function(view) {
       var t1 = new Date();
@@ -64,11 +57,11 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp)
          .success(function(res) {
             $s[view] = res;
             $s.context.status = "Done in " + (new Date() - t1) + " ms";
-         }).error(function(err) {
+         }).error(function() {
             $s[view] = {};
             $s.context.status = "Error getting data. Check the log.";
          });
-   }
+   };
 
    $s.fetch = function(){
       var t1 = new Date();
@@ -78,14 +71,13 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp)
          .success(function(res) {
             $s.aggregate = res;
             $s.status = "Done in " + (new Date() - t1) + " ms";
-         }).error(function(err) {
+         }).error(function() {
             $s.aggregate = {};
             $s.context.status = "Error getting data. Check the log.";
          });
 
    };
 
-   $s.fetch();   
-   $s.fetchView("load");
+   $s.fetch();
 
 } DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf', 'bytesToSize', 'countByTemp'];

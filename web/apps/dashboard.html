@@ -1,7 +1,7 @@
 <div>
 	<div id="cardgroup">
 		<div class="card-area" ng-click="switchCard('load')">
-			<div id="cpu-card" class="card" ng-class="isCard('load') && 'active'">
+			<div id="cpu-card" class="card" ng-class="card == 'load' && 'active'">
 				<div class="card-header">
 					<div class="card-name">
 						<p>Load</p>
@@ -37,7 +37,7 @@
 			</div>
 		</div>
 		<div class="card-area" ng-click="switchCard('memory')">
-			<div id="memory-card" class="card" ng-class="isCard('memory') && 'active'">
+			<div id="memory-card" class="card" ng-class="card == 'memory' && 'active'">
 				<div class="card-header">
 					<div class="card-name">
 						<p>Memory</p>
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		<div class="card-area" ng-click="switchCard('storage')">
-			<div id="storage-card" class="card" ng-class="isCard('storage') && 'active'">
+			<div id="storage-card" class="card" ng-class="card == 'storage' && 'active'">
 				<div class="card-header">
 					<div class="card-name">
 						<p>Storage</p>
@@ -109,7 +109,7 @@
 			</div>
 		</div>
 		<div class="card-area" ng-click="switchCard('ip')">
-			<div id="ip-card" class="card" ng-class="isCard('ip') && 'active'">
+			<div id="ip-card" class="card" ng-class="card == 'ip' && 'active'">
 				<div class="card-header">
 					<div class="card-name">
 						<p>IPs</p>
@@ -144,21 +144,21 @@
 		</div>
 	</div>
 	<div class="card-nav-group">
-		<div class="card-nav" ng-style="{ visibility: isCard('load') && 'visible' || 'hidden' }">	
+		<div class="card-nav" ng-style="{ visibility: card == 'load' && 'visible' || 'hidden' }">	
 			<div class="triangle-pointer"></div>
 		</div>
-		<div class="card-nav" ng-style="{ visibility: isCard('memory') && 'visible' || 'hidden' }">	
+		<div class="card-nav" ng-style="{ visibility: card == 'memory' && 'visible' || 'hidden' }">	
 			<div class="triangle-pointer"></div>
 		</div>
-		<div class="card-nav" ng-style="{ visibility: isCard('storage') && 'visible' || 'hidden' }">	
+		<div class="card-nav" ng-style="{ visibility: card == 'storage' && 'visible' || 'hidden' }">	
 			<div class="triangle-pointer"></div>
 		</div>
-		<div class="card-nav" ng-style="{ visibility: isCard('ip') && 'visible' || 'hidden' }">	
+		<div class="card-nav" ng-style="{ visibility: card == 'ip' && 'visible' || 'hidden' }">	
 			<div class="triangle-pointer"></div>
 		</div>
 	</div>
 	
-	<div class="content" ng-show="isCard('load')">
+	<div class="content" ng-show="card == 'load'">
 		<div class="content-labels left">
 			<p>Realtime Load by Host</p>
 			<p>Average Load in Near Past</p>
@@ -210,7 +210,7 @@
 		</div>
 	</div>
 	
-	<div class="content" ng-show="isCard('memory')">
+	<div class="content" ng-show="card == 'memory'">
 		<div class="content-labels left">
 			<p>Memory<br>by Host</p>
 		</div>
@@ -250,10 +250,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="content" ng-show="isCard('storage')"></div>
-	<div class="content" ng-show="isCard('ip')"></div>
+	<div class="content" ng-show="card == 'storage'"></div>
+	<div class="content" ng-show="card == 'ip'"></div>
 	
 </div>
-<script src="lib/nvd3/nv.d3.js"></script>
-
-
