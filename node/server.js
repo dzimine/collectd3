@@ -26,7 +26,7 @@ app.use(express.static(static_dir));
 app.use(express.errorHandler({dumpExceptions: true }));
 
 app.get('/data/load', stats.getLoadInfo);
-app.get('/data/memory', stats.getMemoryHeatmap);
+app.get('/data/memory', stats.getMemoryInfo);
 app.get('/data/aggregate', stats.getAggregateInfo);
 app.get('/data/:id/info', stats.getHostInfo);
 app.get('/data/:id/graph', stats.getHostGraph);
