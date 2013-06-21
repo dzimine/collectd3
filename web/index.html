@@ -34,6 +34,7 @@
       <script src="apps/statusof.js"></script>
       <script src="apps/bytestosize.js"></script>
       <script src="apps/countbytemp.js"></script>
+      <script src="apps/logger.js"></script>
    </head>
 
    <body ng-app="main" ng-controller="MainCtrl">
@@ -50,7 +51,7 @@
                   <a href={{"#/details/"+context.host}}> {{ context.host }}</a>
                </li>
             </ul>
-            <p class="navbar-text pull-right timestamp">{{ context.status }}</p>
+            <p class="navbar-text pull-right timestamp"><ss-logger></ss-logger></p>
          </div>
       </div>
    </div>

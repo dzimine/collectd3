@@ -463,3 +463,28 @@ svg text {
     font-family: Century Gothic, sans-serif;
     color: #CCCCCC;
 }
+
+.logger .last-time {
+  cursor: pointer;
+}
+
+.logger .records {
+  position: absolute;
+  background-color: #111;
+  padding: 0 15px 10px;
+  margin: 0;
+  text-align: left;
+  width: 250px;
+  margin-left: -15px;
+  line-height: 20px;
+}
+
+.logger .reset {
+  border-top: 1px solid #888;
+}
+
+.logger .reset-button {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+}

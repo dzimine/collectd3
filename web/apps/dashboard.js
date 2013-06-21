@@ -1,7 +1,7 @@
 /*jshint globalstrict:true, jquery:true, browser:true */
 'use strict';
 
-function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp) {
+function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp, $log) {
 
    $s.countByTemp = countByTemp;
 
@@ -51,33 +51,31 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp)
    };
 
    $s.fetchView = function(view) {
-      var t1 = new Date();
-      $s.context.status = "Loading...";
+      $log.time("Loading " + view.toUpperCase() + " data.")
       $http.get("/data/" + view)
          .success(function(res) {
             $s[view] = res;
-            $s.context.status = "Done in " + (new Date() - t1) + " ms";
+            $log.time("Data for " + view.toUpperCase() + " has been loaded.");
          }).error(function() {
             $s[view] = {};
-            $s.context.status = "Error getting data. Check the log.";
+            $log.time("Data for " + view.toUpperCase() + " has been failed.");
          });
    };
 
    $s.fetch = function(){
-      var t1 = new Date();
-      $s.context.status = "Loading...";
-      
+      $log.time("Loading Aggregate data.")      
       $http.get("/data/aggregate")
          .success(function(res) {
             $s.aggregate = res;
-            $s.status = "Done in " + (new Date() - t1) + " ms";
+            $log.time("Aggregate data has been loaded.");
          }).error(function() {
             $s.aggregate = {};
-            $s.context.status = "Error getting data. Check the log.";
+            $log.time("Aggregate data has been failed.");
          });
 
    };
 
+   $log.resetTime();
    $s.fetch();
 
-} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf', 'bytesToSize', 'countByTemp'];
+} DashboardCtrl.$inject = ['$scope', '$http', '$location', 'statusOf', 'bytesToSize', 'countByTemp', '$log'];

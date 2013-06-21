@@ -1,6 +1,6 @@
 'use strict';
 
-function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp) {
+function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp, $log) {
 
    $s.$routeParams = $routeParams;
    $s.bytesToSize = bytesToSize;
@@ -36,21 +36,20 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp)
    }
 
    $s.fetch = function (){
-      var t1 = new Date();
       // TODO: get the parameters from hour/3 hours/day/week/year selector
       var params = { period: $s.period };
-      $s.context.status = "Loading..."
+      $log.time("Loading details data");
 
       var urlInfo = $s.useMock ? "/host-info.json" 
                 : "/data/" + $routeParams.host + "/info";
       $http.get(urlInfo)
          .success(function (res) {
             $s.info = res;
-            $s.context.status = "Done in " + (new Date() - t1) + " ms";
+            $log.time("Info data loaded");
          })
          .error(function (err) {
             $s.info = {}
-            $s.context.status = "Error getting data. Check the log.";
+            $log.time("Info data failed");
          });
 
       var urlGraph = $s.useMock ? "/graph.json" 
@@ -58,17 +57,18 @@ function DetailsCtrl($s, $http, $routeParams, bytesToSize, $filter, countByTemp)
       $http.get(urlGraph, {params : params})
          .success(function(res) {
             $s.graph = res;
-            $s.context.status = "Done in " + (new Date() - t1) + " ms";
+            $log.time("Graph data loaded");
          }).error(function(err) {
             $s.graph = {};
-            $s.context.status = "Error getting data. Check the log.";
+            $log.time("Graph data failed");
          });
         
    }
 
    $s.$watch('period', function () {
+      $log.resetTime();
       $s.fetch();
    })
 
 
-} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize', '$filter', 'countByTemp'];
+} DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'bytesToSize', '$filter', 'countByTemp', '$log'];
