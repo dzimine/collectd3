@@ -32,10 +32,13 @@ function DashboardCtrl($s, $http, $location, statusOf, bytesToSize, countByTemp,
    };
    
    $s.showMemoryTooltip = function (host, details, label) {
+      var total = details.used + details.free + details.cached + details.buffered;
+      
       $s.tooltip.text = host;
       $s.tooltip.details = {};
-      $s.tooltip.details[label] = bytesToSize(details.used).value + ' ' + bytesToSize(details.used).multi + ' of ' + 
-         bytesToSize(details.used + details.free).value + ' ' + bytesToSize(details.used + details.free).multi;
+      $s.tooltip.details[label] = bytesToSize(details.used).value + ' ' + 
+                                  bytesToSize(details.used).multi + ' of ' + 
+                                  bytesToSize(total).value + ' ' + bytesToSize(total).multi;
       $s.$apply();
    };
 

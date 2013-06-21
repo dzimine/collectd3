@@ -96,10 +96,12 @@ exports.getMemoryInfo = function (req, res, next) {
             heatmap: _(hash).map(function (value, key) {
                return {
                   key: key,
-                  value: value.used / (value.used + value.free),
+                  value: value.used / (value.used + value.free + value.cached + value.buffered),
                   details: {
                      used: value.used,
-                     free: value.free
+                     free: value.free,
+                     cached: value.cached,
+                     buffered: value.buffered
                   }
                };
             }).sortBy(function (e) {
@@ -458,8 +460,8 @@ var hostGraphMemory = function (host, query) {
          cached: fetchRRD(host, "memory/memory-cached.rrd", "AVERAGE", query)
       }, function (err, data) {
          var results = _.map(data.used.value, function (e, i) {
-            var total = data.used.value[i][1] + data.free.value[i][1];
-                      // + data.buffered.value[i][1] + data.cached.value[i][1];
+            var total = data.used.value[i][1] + data.free.value[i][1] +
+                        data.buffered.value[i][1] + data.cached.value[i][1];
             return [
                data.used.value[i][0],              // timestamp
                data.used.value[i][1] / total * 100,

@@ -37,7 +37,7 @@ angular.module('main')
                  return;
                }
                
-               var total = val.used.value + val.free.value,
+               var total = val.used.value + val.free.value + val.cached.value + val.buffered.value,
                    used = val.used.value,
                    percent = used/total*100;
 
