@@ -1,0 +1,4 @@
+server:
+  port: 9000
+  static-directory: ../web
+  data-directory: sampledata
