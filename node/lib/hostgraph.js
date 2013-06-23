@@ -51,7 +51,9 @@ module.exports = function (req, res, next) {
 var hostGraphLoad = function (host, query) {
   return function (cb) {
     rrdhelpers.fetch(host, "load/load.rrd", "MAX", query)(function (err, data) {
-      cb(err, data.shortterm);
+      cb(err, _.map(data, function (e) {
+        return [e._time, e.shortterm];
+      }));
     });
   };
 };
@@ -70,14 +72,14 @@ var hostGraphMemory = function (host, query) {
       buffered: rrdhelpers.fetch(host, "memory/memory-buffered.rrd", "AVERAGE", query),
       cached: rrdhelpers.fetch(host, "memory/memory-cached.rrd", "AVERAGE", query)
     }, function (err, data) {
-      var results = _.map(data.used.value, function (e, i) {
-        var total = data.used.value[i][1] + data.free.value[i][1] +
-                data.buffered.value[i][1] + data.cached.value[i][1];
+      var results = _.map(data.used, function (e, i) {
+        var total = data.used[i].value + data.free[i].value +
+                data.buffered[i].value + data.cached[i].value;
         return [
-          data.used.value[i][0],          // timestamp
-          data.used.value[i][1] / total * 100,
-          data.used.value[i][1],
-          data.free.value[i][1] // percentage used
+          data.used[i]._time, // timestamp
+          data.used[i].value / total * 100,
+          data.used[i].value,
+          data.free[i].value // percentage used
         ];
       });
 
@@ -98,12 +100,12 @@ var hostGraphStorage = function (host, query) {
       if (err) {
         cb(null, null); // do not throw an error when there is no file to parse
       } else {
-        var results = _.map(data.used, function (e, i) {
-          var total = data.used[i][1] + data.free[i][1];
+        var results = _.map(data, function (e, i) {
+          var total = data[i].used + data[i].free;
 
           return [
-            data.used[i][0],          // timestamp
-            data.used[i][1] / total * 100 // percentage used
+            data[i]._time,          // timestamp
+            data[i].used / total * 100 // percentage used
           ];
         });
 

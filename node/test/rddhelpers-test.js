@@ -20,7 +20,7 @@ describe('RRD Helpers', function () {
     
     it('should return non empty object', function (ok) {
       from(function (err, data) {
-        expect(data).to.be.an('object');
+        expect(data).to.be.an('array');
         expect(data).not.to.be.empty();
         ok();
       });
@@ -28,17 +28,16 @@ describe('RRD Helpers', function () {
     
     it('should have certain structure', function (ok) {
       from(function (err, data) {
-        expect(data).to.have.property('shortterm');
-        expect(data.shortterm).to.have.length(3);
-        expect(data.shortterm[1]).to.have.length(2);
+        expect(data).to.have.length(3);
+        expect(data[1]).to.only.have.keys('shortterm', 'midterm', 'longterm', '_time');
         ok();
       });
     });
     
     it('should return correct values', function (ok) {
       from(function (err, data) {
-        expect(data.shortterm[1][0]).to.be(1370642500);
-        expect(data.shortterm[1][1]).to.be(1.80364);
+        expect(data[1]._time).to.be(1370642500);
+        expect(data[1].shortterm).to.be(1.8036400000000004);
         ok();
       });
     });

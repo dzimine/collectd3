@@ -4,9 +4,7 @@ var _ = require('lodash')
   , async = require('async')
   , config = require('config').server
   , fs = require('fs')
-  , execFile = require('child_process').execFile
-  , rrd = require("rrd")
-  , rrdtool = "rrdtool";
+  , rrd = require("rrd");
 
 /**
  * fetchRRD: Calls rrdtool and returns the data.
@@ -19,51 +17,26 @@ var _ = require('lodash')
  * If the buffer is bigger, one can switch to spawn,
  * but think again: why returning big data to the client?
  */
-var fetch = function (host, rrd_file, cf, query) {
+var fetch = function (host, file, cf, query) {
   return function (callback) {
-    var rrd_file_path = [config['data-directory'], host, rrd_file].join('/');
-    var params = [];
-    //TODO: set good defaults to avoid buffer overflow
-    if (query.from) { params.push("--start", query.from); }
-    if (query.to) { params.push("--end", query.to); }
-    if (query.resolution) { params.push("-r", query.resolution); }
+    var path = [config['data-directory'], host, file].join('/')
+      , options = {
+      cf: cf,
+      start: query.from,
+      end: query.to,
+      resolution: query.resolution
+    };
 
-    var args = ["fetch", rrd_file_path, cf].concat(params);
-    if (config['log-info']) {
-      console.info("Running: ", rrdtool, args.join(" "));
-    }
-
-    execFile(rrdtool, args, function (err, data) {
+    rrd.fetch(path, options, function (err, data) {
       if (err) {
         callback(err);
       } else {
-        // split by lines
-        var lines = data.split('\n');
-
-        // parse out the keys from the header line
-        var keys = lines[0].split(/[\s,]+/).splice(1);
-
-        // create d3 friendly output data structure
-        var res = {};
-        for (var k = 0; k < keys.length; k++) {
-          res[keys[k]] = [];
+        if (_.some(data[data.length - 1], function (e) {
+          return _.isNaN(e);
+        })) {
+          data.pop();
         }
-
-        // Loop lines and fill up the data points
-        // TODO: figure better way to handle [nan, nan, nan]?
-        // For now: assuming that 1) last line is empty, 2) the prev is time [nan,nan,nan...]
-        for (var i = 2; i < (lines.length - 2); i++) {
-          var s1 = lines[i].split(/:\s+/);
-          var t = s1[0];
-          if (s1[1] === null) {
-            continue;
-          }
-          var values = s1[1].split(/\s+/);
-          for (var v = 0; v < values.length; v++) {
-            res[keys[v]].push([parseInt(t, 10), parseFloat(values[v].split(',').join('.'))]);
-          }
-        }
-        callback(null, res);
+        callback(null, data);
       }
     });
   };

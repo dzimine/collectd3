@@ -61,7 +61,7 @@ describe('Host Graph', function () {
       it('should return correct values', function (next) {
         var expected = function (data) {
           expect(data.memory[1][0]).to.be(1370558000);
-          expect(data.memory[1][1]).to.be(20.628898301842415);
+          expect(data.memory[1][1]).to.be(20.628898302047595);
           next();
         };
         hostGraph(req, res(expected), next);
@@ -83,7 +83,7 @@ describe('Host Graph', function () {
       it('should return correct values', function (next) {
         var expected = function (data) {
           expect(data.storage[1][0]).to.be(1370558000);
-          expect(data.storage[1][1]).to.be(42.973356681457616);
+          expect(data.storage[1][1]).to.be(42.97335668087005);
           next();
         };
         hostGraph(req, res(expected), next);
