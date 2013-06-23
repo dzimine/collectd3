@@ -1,0 +1,3 @@
+server:
+  data-directory: testdata
+  log-info: false

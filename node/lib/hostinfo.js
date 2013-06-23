@@ -136,7 +136,7 @@ var hostInfoVcpu = function (host) {
 
 module.exports = function (req, res, next) {
 
-  var host = req.route.params.id;
+  var host = req.params.id;
 
   async.parallel({
     load: hostInfoLoad(host),

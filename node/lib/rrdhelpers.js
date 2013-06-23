@@ -29,7 +29,9 @@ var fetch = function (host, rrd_file, cf, query) {
     if (query.resolution) { params.push("-r", query.resolution); }
 
     var args = ["fetch", rrd_file_path, cf].concat(params);
-    console.log("Running: ", rrdtool, args.join(" "));
+    if (config['log-info']) {
+      console.info("Running: ", rrdtool, args.join(" "));
+    }
 
     execFile(rrdtool, args, function (err, data) {
       if (err) {
