@@ -1,7 +1,7 @@
-/*global angular*/
+'use strict';
 angular.module('main')
-  .config(function($provide) {
-    $provide.decorator('$log', ['$delegate', function($delegate) {
+  .config(function ($provide) {
+    $provide.decorator('$log', ['$delegate', function ($delegate) {
       var time = new Date(),
           lastTime,
           records = [];
@@ -13,7 +13,7 @@ angular.module('main')
         records.push({ time: 0, message: "Time reset", reset: true });
       };
 
-      $delegate.time = function(message) {
+      $delegate.time = function (message) {
         var now = new Date() - time;
 
         lastTime = now;
