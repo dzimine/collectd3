@@ -23,6 +23,7 @@ app.use(express.errorHandler({dumpExceptions: true }));
 
 app.get('/data/load', require('./lib/loadinfo.js'));
 app.get('/data/memory', require('./lib/memoryinfo.js'));
+app.get('/data/network', require('./lib/networkinfo.js'));
 app.get('/data/aggregate', require('./lib/aggregate.js'));
 app.get('/data/:id/info', require('./lib/hostinfo.js'));
 app.get('/data/:id/graph', require('./lib/hostgraph.js'));

@@ -2,14 +2,11 @@
 
 angular.module('main')
   .directive('d3Heatmap', function () {
-    var colorScale = d3.scale.quantize()
-        .domain([0, 1])
-        .range(d3.range(10).map(function (d) { return "cell" + d; }));
-
     return {
       restrict: 'E',
       scope: {
         val: '=',
+        domain: '@',
         d3Click: '&',
         d3Mouseover: '&',
         d3Mouseout: '&',
@@ -19,26 +16,18 @@ angular.module('main')
         var vis = d3.select(element[0]);
 
         scope.$watch('val', function (val) {
+          var colorScale = d3.scale.quantize()
+              .domain(scope.domain.split(',').map(function (e) {
+                return parseFloat(e, 10);
+              }))
+              .range(d3.range(10).map(function (d) { return "cell" + d; }));
+
           // clear the elements inside of the directive
           vis.selectAll('*').remove();
 
           // if 'val' is undefined, exit
           if (!val) {
             return;
-          }
-
-          //TODO: change output of vcpu to [{ key: 'cpu-1', value: 1.11}]
-          if (angular.isNumber(val[0])) {
-            val = val.map(function (e, i) {
-              return { key: i, value: e };
-            });
-          }
-
-          //TODO: change output of heatmap to [{ key: 'localhost', value: 1.11}]
-          if (angular.isArray(val[0])) {
-            val = val.map(function (e) {
-              return { key: e[0], value: e[1] };
-            });
           }
 
           // ARC Group

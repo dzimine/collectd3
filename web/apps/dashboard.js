@@ -43,6 +43,14 @@ function DashboardCtrl($s, $http, $location, helpers, $log) {
     $s.$apply();
   };
 
+  $s.showNetworkTooltip = function (host, value, label) {
+    $s.tooltip.text = host;
+    $s.tooltip.details = {};
+    $s.tooltip.details[label] = helpers.bytesToSize(value).value + ' ' +
+                       helpers.bytesToSize(value).multi;
+    $s.$apply();
+  };
+
   $s.hideTooltip = function () {
     $s.tooltip = {};
     $s.$apply();
