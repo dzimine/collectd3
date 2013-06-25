@@ -9,7 +9,8 @@ angular.module('main')
       if (bytes !== 0) {
         i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
       }
-      return { value: Math.round(bytes / Math.pow(1024, i), 2), multi: sizes[i] };
+      var value = bytes / Math.pow(1024, i);
+      return { value: value.toFixed(3 - value.toString().split('.')[0].length), multi: sizes[i] };
     },
     statusOf: function (type, value) {
       if (type === 'load') {
