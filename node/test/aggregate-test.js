@@ -72,15 +72,15 @@ describe('Aggregate Info', function () {
       });
 
     });
-    
+
     describe('storage', function () {
       it('should have certain structure', function (next) {
         var expected = function (data) {
           expect(data).to.have.property('storage');
-          expect(data.storage).to.have.property('allocated');
-          expect(data.storage).to.have.property('committed');
-          expect(data.storage.allocated).to.be.a('number');
-          expect(data.storage.committed).to.be.a('number');
+          expect(data.storage).to.have.property('average');
+          expect(data.storage).to.have.property('peak');
+          expect(data.storage.average).to.be.a('number');
+          expect(data.storage.peak).to.be.a('number');
           next();
         };
         aggregate(req, res(expected), next);
@@ -88,15 +88,15 @@ describe('Aggregate Info', function () {
 
       it('should return correct values', function (next) {
         var expected = function (data) {
-          expect(data.storage.allocated).to.be(79);
-          expect(data.storage.committed).to.be(44.05837893486023);
+          expect(data.storage.average).to.be(0);
+          expect(data.storage.peak).to.be(0);
           next();
         };
         aggregate(req, res(expected), next);
       });
 
     });
-    
+
     describe('network', function () {
       it('should have certain structure', function (next) {
         var expected = function (data) {

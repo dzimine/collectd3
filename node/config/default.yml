@@ -2,4 +2,38 @@ server:
   port: 9000
   static-directory: ../web
   data-directory: sampledata
-  log-info: false 
+  log-info: false
+
+client:
+  node-types:
+    storage: 
+      host: ^u[a,s]-s
+      disks:
+        - md0
+        - md2
+    compute: 
+      host: ^u[a,s]-c
+      disks:
+        - md0
+        - md2
+    control: 
+      host: ^u[a,s]-p
+      disks:
+        - md0
+        - md2
+    nova: 
+      host: ^nova
+      disks:
+        - md0
+        - md2
+    swift: 
+      host: ^swift
+      disks:
+        - md0
+        - md2
+  aggregate-storage:
+    - storage
+    - compute
+    - control
+    - nova
+    - swift

@@ -21,6 +21,7 @@ app.use(express['static'](__dirname + '/' + config['static-directory']));
 
 app.use(express.errorHandler({dumpExceptions: true }));
 
+app.get('/config', require('./lib/configinfo.js'));
 app.get('/data/load', require('./lib/loadinfo.js'));
 app.get('/data/memory', require('./lib/memoryinfo.js'));
 app.get('/data/network', require('./lib/networkinfo.js'));

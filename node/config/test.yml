@@ -1,3 +1,19 @@
 server:
   data-directory: testdata
   log-info: false
+
+client:
+  node-types:
+    hosts: 
+      host: ^host-
+      disks:
+        - md0
+        - md2
+    local: 
+      host: ^localhost
+      disks:
+        - md0
+        - md2
+  aggregate-storage:
+    - hosts
+    - local

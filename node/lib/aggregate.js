@@ -2,6 +2,7 @@
 
 var _ = require('lodash')
   , async = require('async')
+  , config = require('config')
   , rrdhelpers = require('./rrdhelpers.js');
 
 /**
@@ -86,26 +87,50 @@ var aggregateMemory = function (cb) {
  * @return Set of allocated and committed parameters.
  */
 var aggregateStorage = function (cb) {
-  rrdhelpers.extractAll("df/df-var-lib-nova-instances.rrd", {
-    used: 'ds[used].last_ds',
-    free: 'ds[free].last_ds'
-  })(function (err, data) {
-    if (err) {
-      cb(err);
-    } else {
-      var total = _(data)
-        .map(function (e) { return e.used + e.free; })
-        .reduce(function (a, b) { return a + b; });
+  var period = {
+    from: 1370557260,
+    to: 1370643660,
+    resolution: 86400
+  };
 
-      var used = _(data)
-        .map(function (e) { return e.used; })
-        .reduce(function (a, b) { return a + b; });
-
-      cb(null, {
-        allocated: 79,
-        committed: used / total * 100
-      });
-    }
+  var list = _(config.client['aggregate-storage'].map(function (h) {
+    var type = config.client['node-types'][h];
+    return _.map(type.disks, function (d) {
+      return { match: type.host, disk: "disk-" + d };
+    });
+  })).flatten().value(); // Flattened list of all [node-types] X all its [disks]
+  
+  async.parallel({
+    average: _.partial(async.parallel, list.map(function (e) {
+      return rrdhelpers.fetchAll(e.disk + '/disk_octets.rrd', 'AVERAGE', period, e.match);
+    })),
+    peak: _.partial(async.parallel, list.map(function (e) {
+      return rrdhelpers.fetchAll(e.disk + '/disk_octets.rrd', 'MAX', period, e.match);
+    }))
+  }, function (err, data) {
+    var average = _(data.average).map(function (type) { // For all types of node and its disks
+      return _(type).map(function (host) {              // of all hosts
+        return _(host).map(function (e) {               // of all types of operation
+          return e.read + e.write;
+        }).reduce(function (a, b) {                     // sum all operations
+          return a + b;
+        }) / host.length;
+      }).reduce(function (a, b) {                       // sum all hosts
+        return a + b;
+      }) / _.keys(type).length;
+    }).reduce(function (a, b) {                         // sum them all
+      return a + b;
+    }) / _.keys(data.average).length;
+    
+    var peak = _(data.peak).map(function (type) {
+      return _(type).map(function (host) {
+        return _(host).map(function (e) {
+          return e.read + e.write;
+        }).max().value();
+      }).max().value();
+    }).max().value();
+    
+    cb(null, { average: average, peak: peak });
   });
 };
 

@@ -91,16 +91,16 @@
 				</div>
 				<div class="card-body">
 					<div class="stat-big">
-						<p class="{{ statusOf( 'storage', aggregate.storage.allocated ).status }}">
-							{{ aggregate.storage.allocated | number:0 }}<span class="unit">%</span>
+						<p class="{{ statusOf( 'storage', aggregate.storage.average ).status }}">
+							{{ b2s(aggregate.storage.average).value | number:0 }}<span class="unit">{{ b2s(aggregate.storage.average).multi }}</span>
 						</p>
-						<p class="kpi-label">capacity allocated</p>
+						<p class="kpi-label">average octets<br>24 hours</p>
 					</div>
 					<div class="stat-small">
-						<p class="{{ statusOf( 'storage', aggregate.storage.committed ).status }}">
-							{{ aggregate.storage.committed | number:0 }}<span class="unit">%</span>
+						<p class="{{ statusOf( 'storage', aggregate.storage.peak ).status }}">
+							{{ b2s(aggregate.storage.peak).value  | number:0 }}<span class="unit">{{ b2s(aggregate.storage.peak).multi }}</span>
 						</p>
-						<p class="kpi-label">committed</p>
+						<p class="kpi-label">peak</p>
 					</div>
 				</div>
 				<div class="trend">
@@ -126,13 +126,13 @@
 				<div class="card-body">
 					<div class="stat-big">
 						<p class="{{ statusOf( 'network', aggregate.network.average ).status }}">
-							{{ b2s(aggregate.network.average).value }}<span class="unit">{{ b2s(aggregate.network.average).multi }}</span>
+							{{ b2s(aggregate.network.average).value | number:0 }}<span class="unit">{{ b2s(aggregate.network.average).multi }}</span>
 						</p>
 						<p class="kpi-label">average octets<br>24 hours</p>
 					</div>
 					<div class="stat-small">
 						<p class="{{ statusOf( 'network', aggregate.network.peak ).status }}">
-							{{ b2s(aggregate.network.peak).value }}<span class="unit">{{ b2s(aggregate.network.peak).multi }}</span>
+							{{ b2s(aggregate.network.peak).value | number:0 }}<span class="unit">{{ b2s(aggregate.network.peak).multi }}</span>
 						</p>
 						<p class="kpi-label">peak</p>
 					</div>

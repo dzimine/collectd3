@@ -6,7 +6,7 @@ var _ = require('lodash')
   , fs = require('fs')
   , rrd = require("rrd");
 
-var forAll = function (path, func) {
+var forAll = function (path, func, match) {
   return function (callback) {
     var local = {
       readHostsDirectory: _.partial(fs.readdir, config['data-directory']),
@@ -14,7 +14,7 @@ var forAll = function (path, func) {
       filterDirectories: function (hosts, cb) {
         async.filter(hosts, function (host, callback) {
           fs.stat([config['data-directory'], host].join("/"), function (err, stat) {
-            callback(!stat.isFile());
+            callback(!stat.isFile() && (match ? host.match(match) : true));
           });
         }, function (data) {
           cb(null, data);
@@ -79,10 +79,10 @@ var fetch = function (host, file, cf, query) {
   };
 };
 
-var fetchAll = function (file, cf, query) {
+var fetchAll = function (file, cf, query, match) {
   return forAll(file, function (host) {
     return fetch(host, file, cf, query);
-  });
+  }, match);
 };
 
 /**
