@@ -108,33 +108,33 @@
 				</div>
 			</div>
 		</div>
-		<div class="card-area" ng-click="switchCard('ip')">
-			<div id="ip-card" class="card" ng-class="card == 'ip' && 'active'">
+		<div class="card-area" ng-click="switchCard('network')">
+			<div id="network-card" class="card" ng-class="card == 'network' && 'active'">
 				<div class="card-header">
 					<div class="card-name">
-						<p>IPs</p>
+						<p>Network</p>
 					</div>
 					<div class="status-area">
 						<div class="status-icon">
 							<svg>
-								<circle class="{{ statusOf( 'ips', aggregate.ips.allocated ).status }}" cx="7" cy="7" r="7"></circle>
+								<circle class="{{ statusOf( 'network-errors', aggregate.network.errors ).status }}" cx="7" cy="7" r="7"></circle>
 							</svg>
 						</div>
-						<p class="status">{{ statusOf( 'ips', aggregate.ips.allocated ).text }}</p>
+						<p class="status">{{ statusOf( 'network-errors', aggregate.network.errors ).text }}</p>
 					</div>
 				</div>
 				<div class="card-body">
 					<div class="stat-big">
-						<p class="{{ statusOf( 'ips', aggregate.ips.allocated ).status }}">
-							{{ aggregate.ips.allocated | number:0 }}<span class="unit">%</span>
+						<p class="{{ statusOf( 'network', aggregate.network.average ).status }}">
+							{{ b2s(aggregate.network.average).value }}<span class="unit">{{ b2s(aggregate.network.average).multi }}</span>
 						</p>
-						<p class="kpi-label">addresses allocated</p>
+						<p class="kpi-label">average octets<br>24 hours</p>
 					</div>
 					<div class="stat-small">
-						<p class="{{ statusOf( 'ips', aggregate.ips.committed ).status }}">
-							{{ aggregate.ips.committed | number:0 }}<span class="unit">%</span>
+						<p class="{{ statusOf( 'network', aggregate.network.peak ).status }}">
+							{{ b2s(aggregate.network.peak).value }}<span class="unit">{{ b2s(aggregate.network.peak).multi }}</span>
 						</p>
-						<p class="kpi-label">committed</p>
+						<p class="kpi-label">peak</p>
 					</div>
 				</div>
 				<div class="trend">
@@ -153,7 +153,7 @@
 		<div class="card-nav" ng-style="{ visibility: card == 'storage' && 'visible' || 'hidden' }">	
 			<div class="triangle-pointer"></div>
 		</div>
-		<div class="card-nav" ng-style="{ visibility: card == 'ip' && 'visible' || 'hidden' }">	
+		<div class="card-nav" ng-style="{ visibility: card == 'network' && 'visible' || 'hidden' }">	
 			<div class="triangle-pointer"></div>
 		</div>
 	</div>
@@ -251,6 +251,6 @@
 		</div>
 	</div>
 	<div class="content" ng-show="card == 'storage'"></div>
-	<div class="content" ng-show="card == 'ip'"></div>
+	<div class="content" ng-show="card == 'network'"></div>
 	
 </div>

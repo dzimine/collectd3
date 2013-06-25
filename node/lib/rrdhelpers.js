@@ -6,6 +6,43 @@ var _ = require('lodash')
   , fs = require('fs')
   , rrd = require("rrd");
 
+var forAll = function (path, func) {
+  return function (callback) {
+    var local = {
+      readHostsDirectory: _.partial(fs.readdir, config['data-directory']),
+
+      filterDirectories: function (hosts, cb) {
+        async.filter(hosts, function (host, callback) {
+          fs.stat([config['data-directory'], host].join("/"), function (err, stat) {
+            callback(!stat.isFile());
+          });
+        }, function (data) {
+          cb(null, data);
+        });
+      },
+
+      filterFileExist: function (hosts, cb) {
+        async.filter(hosts, function (host, callback) {
+          fs.exists([config['data-directory'], host, path].join("/"), callback);
+        }, function (data) {
+          cb(null, data);
+        });
+      }
+    };
+
+    async.waterfall([
+      _.partial(async.waterfall, [
+        local.readHostsDirectory,
+        local.filterDirectories,
+        local.filterFileExist
+      ]),
+      function (hosts, cb) {
+        async.parallel(_.zipObject(hosts, _.map(hosts, func)), cb);
+      }
+    ], callback);
+  };
+};
+
 /**
  * fetchRRD: Calls rrdtool and returns the data.
  * @param host - name of the host to fetch
@@ -42,6 +79,12 @@ var fetch = function (host, file, cf, query) {
   };
 };
 
+var fetchAll = function (file, cf, query) {
+  return forAll(file, function (host) {
+    return fetch(host, file, cf, query);
+  });
+};
+
 /**
  * Async-compatible wrapper around infoRRD to extract only specific set of keys.
  * @param host - name of host to extract
@@ -73,42 +116,9 @@ var extract = function (host, file, keys) {
 * where data is an array of info outputs.
 */
 var extractAll = function (path, keys) {
-  return function (callback) {
-    var local = {
-      readHostsDirectory: _.partial(fs.readdir, config['data-directory']),
-
-      filterDirectories: function (hosts, cb) {
-        async.filter(hosts, function (host, callback) {
-          fs.stat([config['data-directory'], host].join("/"), function (err, stat) {
-            callback(!stat.isFile());
-          });
-        }, function (data) {
-          cb(null, data);
-        });
-      },
-
-      filterFileExist: function (hosts, cb) {
-        async.filter(hosts, function (host, callback) {
-          fs.exists([config['data-directory'], host, path].join("/"), callback);
-        }, function (data) {
-          cb(null, data);
-        });
-      }
-    };
-  
-    async.waterfall([
-      _.partial(async.waterfall, [
-        local.readHostsDirectory,
-        local.filterDirectories,
-        local.filterFileExist
-      ]),
-      function (hosts, cb) {
-        async.parallel(_.zipObject(hosts, _.map(hosts, function (host) {
-          return extract(host, path, keys);
-        })), cb);
-      }
-    ], callback);
-  };
+  return forAll(path, function (host) {
+    return extract(host, path, keys);
+  });
 };
 
 /**
@@ -150,6 +160,7 @@ var normalizeLoad = function (cols, host) {
 };
 
 module.exports = { fetch: fetch
+                 , fetchAll: fetchAll
                  , extract: extract
                  , extractAll: extractAll
                  , normalizeLoad: normalizeLoad

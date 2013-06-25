@@ -97,14 +97,16 @@ describe('Aggregate Info', function () {
 
     });
     
-    describe('ips', function () {
+    describe('network', function () {
       it('should have certain structure', function (next) {
         var expected = function (data) {
-          expect(data).to.have.property('ips');
-          expect(data.ips).to.have.property('allocated');
-          expect(data.ips).to.have.property('committed');
-          expect(data.ips.allocated).to.be.a('number');
-          expect(data.ips.committed).to.be.a('number');
+          expect(data).to.have.property('network');
+          expect(data.network).to.have.property('average');
+          expect(data.network).to.have.property('peak');
+          expect(data.network).to.have.property('errors');
+          expect(data.network.average).to.be.a('number');
+          expect(data.network.peak).to.be.a('number');
+          expect(data.network.errors).to.be.a('boolean');
           next();
         };
         aggregate(req, res(expected), next);
@@ -112,8 +114,9 @@ describe('Aggregate Info', function () {
 
       it('should return correct values', function (next) {
         var expected = function (data) {
-          expect(data.ips.allocated).to.be(95);
-          expect(data.ips.committed).to.be(88);
+          expect(data.network.average).to.be(1156229.0346413667);
+          expect(data.network.peak).to.be(60239162.300000004);
+          expect(data.network.errors).to.be(false);
           next();
         };
         aggregate(req, res(expected), next);

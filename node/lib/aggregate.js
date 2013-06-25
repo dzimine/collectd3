@@ -110,13 +110,48 @@ var aggregateStorage = function (cb) {
 };
 
 /**
- * Aggregate IP info.
- * @return Set of allocated and committed parameters.
+ * Aggregate Network info.
+ * @return Set of average and peak octets per second.
  */
-var aggregateIPs = function (cb) {
-  cb(null, {
-    allocated: 95,
-    committed: 88
+var aggregateNetwork = function (cb) {
+  var period = {
+    from: 1370557260,
+    to: 1370643660,
+    resolution: 86400
+  };
+
+  async.parallel({
+    average: rrdhelpers.fetchAll("interface/if_octets-vlan11.rrd", "AVERAGE", period),
+    peak: rrdhelpers.fetchAll("interface/if_octets-vlan11.rrd", "MAX", period),
+    errors: rrdhelpers.fetchAll("interface/if_errors-vlan11.rrd", "MAX", period)
+  }, function (err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var average = _(data.average).map(function (e) {
+        return _(e).map(function (e) {
+          return e.rx + e.tx;
+        }).reduce(function (a, b) {
+          return a + b;
+        }) / e.length;
+      }).reduce(function (a, b) {
+        return a + b;
+      }) / _.keys(data.average).length;
+
+      var peak = _(data.peak).map(function (e) {
+        return _(e).map(function (e) {
+          return e.rx + e.tx;
+        }).max().value();
+      }).max().value();
+      
+      var errors = _(data.errors).map(function (e) {
+        return _(e).map(function (e) {
+          return e.rx + e.tx;
+        }).max().value();
+      }).max().value();
+
+      cb(null, { average: average, peak: peak, errors: !!errors });
+    }
   });
 };
 
@@ -129,7 +164,7 @@ module.exports = function (req, res, next) {
     load: aggregateLoad,
     memory: aggregateMemory,
     storage: aggregateStorage,
-    ips: aggregateIPs
+    network: aggregateNetwork
   }, function (err, data) {
     if (err) {
       next(err);

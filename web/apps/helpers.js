@@ -31,6 +31,8 @@ angular.module('main')
         if (value > 1) { return { status: 'warning', text: 'busy' }; }
         if (value > 0.7) { return { status: 'attention', text: 'warming' }; }
         return { status: 'normal' };
+      } else if (type === 'network-errors') {
+        return value ? { status: 'warning', text: 'errors' } : { status: 'normal' };
       } else {
         if (value > 95) { return { status: 'warning', text: 'run out' }; }
         if (value > 80) { return { status: 'attention', text: 'running out' }; }

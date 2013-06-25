@@ -4,6 +4,7 @@
 function DashboardCtrl($s, $http, $location, helpers, $log) {
 
   $s.countByTemp = helpers.countByTemp;
+  $s.b2s = helpers.bytesToSize;
 
   $s.switchCard = function (name) {
     $location.hash(name).replace();
