@@ -11,21 +11,6 @@ angular.module('main')
       }
       return { value: Math.round(bytes / Math.pow(1024, i), 2), multi: sizes[i] };
     },
-    countByTemp: function (temp, vcpus) {
-      if (!vcpus) { return; }
-      var levels = {
-        hot: function (e) {
-          return e.value > 0.8;
-        },
-        warm: function (e) {
-          return e.value > 0.5 && e <= 0.8;
-        },
-        cold: function (e) {
-          return e.value <= 0.5;
-        }
-      };
-      return (vcpus || []).filter(levels[temp]).length;
-    },
     statusOf: function (type, value) {
       if (type === 'load') {
         if (value > 1) { return { status: 'warning', text: 'busy' }; }
