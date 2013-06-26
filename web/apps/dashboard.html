@@ -165,7 +165,7 @@
 		</div>
 		<div class="content-charts right">
 			<div class="load-by-host">
-				<d3-temperature limits="0.5, 0.8" val="load.heatmap"></d3-temperature>
+				<d3-temperature limits="0.5, 0.8" val="load.heatmap" class="heatmap-stats"></d3-temperature>
 				<div class="chart-heatmap">
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showTooltip(key, value, 'Load average')" 
@@ -213,7 +213,7 @@
 		</div>
 		<div class="content-charts right">
 			<div class="memory-by-host">
-				<d3-temperature limits="0.5, 1" val="memory.heatmap"></d3-temperature>
+				<d3-temperature limits="0.5, 1" val="memory.heatmap" class="heatmap-stats"></d3-temperature>
 				<div class="chart-heatmap">
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showMemoryTooltip(key, details, 'Memory used')" 
@@ -249,7 +249,7 @@
 		</div>
 		<div class="content-charts right">
 			<div class="storage-by-host">
-				<d3-temperature limits="1024, 1048576" val="storage.heatmap"></d3-temperature>
+				<d3-temperature limits="1024, 1048576" val="storage.heatmap" class="heatmap-stats"></d3-temperature>
 				<div class="chart-heatmap">
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showNetworkTooltip(key, value, 'Storage Throughput')" 
@@ -285,7 +285,7 @@
 		</div>
 		<div class="content-charts right">
 			<div class="network-by-host">
-				<d3-temperature limits="1024, 1048576" val="network.heatmap"></d3-temperature>
+				<d3-temperature limits="1024, 1048576" val="network.heatmap" class="heatmap-stats"></d3-temperature>
 				<div class="chart-heatmap">
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showNetworkTooltip(key, value, 'Network Throughput')" 

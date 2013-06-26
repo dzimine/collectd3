@@ -58,6 +58,10 @@
 	padding-top: 12px;
 }
 
+.sub-stats p {
+	display: inline;
+}
+
 .donut-chart svg {
 	margin: 20px;
 	margin-top: 0;

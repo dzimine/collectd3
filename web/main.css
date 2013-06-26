@@ -364,7 +364,7 @@ body {
   color: #FF7000;
 }
 
-.heatmap-stats .cold, .warm{
+.heatmap-stats .cold, .heatmap-stats .warm{
   font-size: 1.5em;
   color: #CCC;
 }

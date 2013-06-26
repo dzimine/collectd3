@@ -18,7 +18,7 @@
       <div class="bottom-canvas">
         <div class="vcpu-stats">
             <p class="left">{{info.vcpu.length}}<span class="stat-label"> vCPUs</span></p>
-            <p class="sub-stats right">{{ countByTemp('hot', info.vcpu) }}<span class="stat-label"> hot</span> {{ countByTemp('warm', info.vcpu) }}<span class="stat-label"> warm</span> {{ countByTemp('cold', info.vcpu) }}<span class="stat-label"> cold</span></p>
+            <d3-temperature limits="0.5, 0.8" val="info.vcpu" class="sub-stats right"></d3-temperature>
         </div>
         <d3-heatmap val="info.vcpu" class="vcpus" domain="0,1"></d3-heatmap>
       </div>
