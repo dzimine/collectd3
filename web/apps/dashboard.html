@@ -243,7 +243,42 @@
 			</div>
 		</div>
 	</div>
-	<div class="content" ng-show="card == 'storage'"></div>
+	<div class="content" ng-show="card == 'storage'">
+		<div class="content-labels left">
+			<p>Storage Throughput<br>by Host</p>
+		</div>
+		<div class="content-charts right">
+			<div class="storage-by-host">
+				<d3-temperature limits="1024, 1048576" val="storage.heatmap"></d3-temperature>
+				<div class="chart-heatmap">
+					<d3-tooltip message="tooltip"></d3-tooltip>
+					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showNetworkTooltip(key, value, 'Storage Throughput')" 
+						d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" 
+						val="storage.heatmap" domain="0, 1024, 1048576">
+					</d3-heatmap>
+				</div>
+				<div class="heatmap-legend">
+					<div class="numbers">
+						<p>1 Mbit</p>
+						<p>1 Kbit</p>
+						<p>1 bit</p>
+					</div>
+					<div class="legend-line">
+						<div class="cell9"></div>
+						<div class="cell8"></div>
+						<div class="cell7"></div>
+						<div class="cell6"></div>
+						<div class="cell5"></div>
+						<div class="cell4"></div>
+						<div class="cell3"></div>
+						<div class="cell2"></div>
+						<div class="cell1"></div>
+						<div class="cell0"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="content" ng-show="card == 'network'">
 		<div class="content-labels left">
 			<p>Network Throughput<br>by Host</p>

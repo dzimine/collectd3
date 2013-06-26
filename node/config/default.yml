@@ -37,3 +37,9 @@ client:
     - control
     - nova
     - swift
+  heatmap-storage:
+    - storage
+    - compute
+    - control
+    - nova
+    - swift

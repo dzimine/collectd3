@@ -17,3 +17,6 @@ client:
   aggregate-storage:
     - hosts
     - local
+  heatmap-storage:
+    - hosts
+    - local
