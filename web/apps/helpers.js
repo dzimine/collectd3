@@ -6,7 +6,7 @@ angular.module('main')
     bytesToSize: function (bytes) {
       var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
           i = 0;
-      if (bytes !== 0) {
+      if (bytes >= 1) {
         i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
       }
       var value = bytes / Math.pow(1024, i);
