@@ -85,6 +85,15 @@ function DashboardCtrl($s, $http, $location, helpers, $log) {
         $log.time("Aggregate data has been failed.");
       });
 
+    $log.time("Loading Config data.");
+    $http.get("/config")
+      .success(function (res) {
+        $s.config = res;
+        $log.time("Config data has been loaded.");
+      }).error(function () {
+        $s.config = {};
+        $log.time("Config data has been failed.");
+      });
   };
 
   $log.resetTime();

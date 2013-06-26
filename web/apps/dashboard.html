@@ -170,7 +170,7 @@
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showTooltip(key, value, 'Load average')" 
 						d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" 
-						val="load.heatmap" domain="0,1">
+						val="load.heatmap" domain="0,1" config="config">
 					</d3-heatmap>
 				</div>
 				<div class="heatmap-legend">
@@ -218,7 +218,7 @@
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showMemoryTooltip(key, details, 'Memory used')" 
 						d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" 
-						val="memory.heatmap" domain="0,1">
+						val="memory.heatmap" domain="0,1" config="config">
 					</d3-heatmap>
 				</div>
 				<div class="heatmap-legend">
@@ -254,7 +254,7 @@
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showNetworkTooltip(key, value, 'Storage Throughput')" 
 						d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" 
-						val="storage.heatmap" domain="0, 1024, 1048576">
+						val="storage.heatmap" domain="0, 1024, 1048576" config="config">
 					</d3-heatmap>
 				</div>
 				<div class="heatmap-legend">
@@ -290,7 +290,7 @@
 					<d3-tooltip message="tooltip"></d3-tooltip>
 					<d3-heatmap d3-click="moveTo(key)" d3-mouseover="showNetworkTooltip(key, value, 'Network Throughput')" 
 						d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" 
-						val="network.heatmap" domain="0, 1024, 1048576">
+						val="network.heatmap" domain="0, 1024, 1048576" config="config">
 					</d3-heatmap>
 				</div>
 				<div class="heatmap-legend">

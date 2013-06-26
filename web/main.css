@@ -298,6 +298,22 @@ body {
   height: 270px;
 }
 
+.picker {
+  color: #999;
+  line-height: 30px;
+  background-color: #000;
+  display: inline-block;
+  border-radius: 15px;
+  padding: 0 5px 0 15px;
+  box-shadow: 0 6px 4px rgba(0,0,0,.2);
+  margin-bottom: 12px;
+}
+
+.picker .picker-choice {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 .heatmap rect {
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;
@@ -336,6 +352,10 @@ body {
 .heatmap .cell2, .heatmap-legend .cell2 {background-color: #0dd15f;}
 .heatmap .cell1, .heatmap-legend .cell1 {background-color: #08c98e;}
 .heatmap .cell0, .heatmap-legend .cell0 {background-color: #01bfce;}
+
+.heatmap .dimmed {
+  background-image: linear-gradient(0, rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+}
 
 .chart-heatmap {
   position: absolute;

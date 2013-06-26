@@ -6,31 +6,46 @@ server:
 
 client:
   node-types:
-    storage: 
+    storage:
+      name: Storage nodes
       host: ^u[a,s]-s
       disks:
         - md0
         - md2
-    compute: 
+    compute:
+      name: Compute nodes
       host: ^u[a,s]-c
       disks:
         - md0
         - md2
-    control: 
+    control:
+      name: Control
       host: ^u[a,s]-p
       disks:
         - md0
         - md2
-    nova: 
+    nova:
+      name: Nova
       host: ^nova
       disks:
         - md0
         - md2
-    swift: 
+    swift:
+      name: Swift
       host: ^swift
       disks:
         - md0
         - md2
+    all-compute:
+      name: Compute
+      host: ^u[a,s]-c|^nova
+    all-storage:
+      name: Storage
+      host: ^u[a,s]-s|^swift
+  heatmap-load:
+    - all-storage
+    - all-compute
+    - control
   aggregate-storage:
     - storage
     - compute
