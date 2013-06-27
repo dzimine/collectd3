@@ -359,71 +359,47 @@ body {
 
 .chart-heatmap {
   position: absolute;
-  left: 100px;
+  left: 25px;
   padding: 20px;
   height: 200px;
-  width: 75%;
+  width: 77%;
 }
 
 .chart-heatmap .box {
   cursor: pointer;
 }
 
-.heatmap-stats {
-  position: absolute;
-  left: 0;
-  top: 15px;
-  width: 100px;
-  height: 150px;
-  line-height: 2em;
-  text-align: right;
-}
-
-.heatmap-stats .hot {
-  font-size: 2em; 
-  color: #FF7000;
-}
-
-.heatmap-stats .cold, .heatmap-stats .warm{
-  font-size: 1.5em;
-  color: #CCC;
-}
-
-.heatmap-stats .temp-label {
-  font-size: 0.5em;
-  color: #AAA;
-}
-
 .heatmap-legend {
   position: absolute;
-  right: 20px;
-  top: 100px;
-  width: 60px;
+  right: 32px;
+  top: 63px;
+  width: 80px;
   height: 100px;
 }
 
 .heatmap-legend .numbers {
   float: right;
-  width: 48px;
+  width: 77px;
   height: 100%;
 }
 
-.heatmap-legend .numbers > p {
+.heatmap-legend .numbers p {
   color: #AAA;
-  font-size: 0.7em;
-  line-height: 65px;
-  margin-top: -23px;
+  font-size: 1em;
+  line-height: 20%;
+  padding: 20% 0 20% 10px;
+  border-bottom: 1px solid #aaa;
+}
+
+.heatmap-legend .numbers p:last-of-type {
+  border: 0;
 }
 
 .heatmap-legend .legend-line {
   float: left;
-  width: 5px;
+  width: 3px;
   height: 100%;
-}
-
-.heatmap-legend .legend-line > div {
-  height: 10%;
-  width: 100%;
+  background-image: linear-gradient(to top, #01bfce, #6acc00 50%, #ffa800 75%, #ff3500);
 }
 
 .mytooltip {
