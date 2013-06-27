@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('main')
-  .directive('d3Temperature', function () {
+  .directive('d3Legend', function () {
     return {
       restrict: 'E',
-      templateUrl: 'apps/temperature.html',
+      templateUrl: 'apps/legend.html',
       scope: {
         limits: '@',
         val: '='
