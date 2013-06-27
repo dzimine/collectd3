@@ -107,10 +107,22 @@
 }
 
 .vcpus {
-	margin: 0 60px;
-   display: block;
+  margin: 0 60px;
+  display: block;
+  position: relative;
+  height: 120px;
 }
 
+.vcpus .bar-chart {
+  position: absolute;
+  bottom: 0;
+}
+
+.vcpus .bar {
+  width: 12px;
+  margin-right: 2px;
+  display: inline-block;
+}
 
 .storage-stats {
 	position: relative;
