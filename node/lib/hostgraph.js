@@ -2,6 +2,7 @@
 
 var _ = require('lodash')
   , async = require('async')
+  , config = require('config')
   , rrdhelpers = require('./rrdhelpers.js');
 
 /**
@@ -32,7 +33,8 @@ module.exports = function (req, res, next) {
   async.parallel({
     load: hostGraphLoad(host, query),
     memory: hostGraphMemory(host, query),
-    storage: hostGraphStorage(host, query)
+    storage: hostGraphStorage(host, query),
+    network: hostGraphNetwork(host, query)
   }, function (err, data) {
     if (err) {
       next(err);
@@ -96,21 +98,43 @@ var hostGraphMemory = function (host, query) {
  */
 var hostGraphStorage = function (host, query) {
   return function (cb) {
-    rrdhelpers.fetch(host, "df/df-var-lib-nova-instances.rrd", "AVERAGE", query)(function (err, data) {
+    
+    var type = _(config.client['node-types']).filter(function (e) {
+      return host.match(e.host) && e.disks;
+    }).value()[0];
+    
+    async.parallel(_.zipObject(type.disks, _.map(type.disks, function (e) {
+      return rrdhelpers.fetch(host, 'disk-' + e + '/disk_octets.rrd', "AVERAGE", query);
+    })), function (err, data) {
       if (err) {
-        cb(null, null); // do not throw an error when there is no file to parse
+        cb(err);
       } else {
-        var results = _.map(data, function (e, i) {
-          var total = data[i].used + data[i].free;
-
-          return [
-            data[i]._time,          // timestamp
-            data[i].used / total * 100 // percentage used
-          ];
-        });
-
-        cb(err, results);
+        cb(null, _.map(data[type.disks[0]], function (e, i) {
+          return [e._time].concat(_(type.disks).map(function (e) {
+            return data[e][i].read + data[e][i].write;
+          }).reduce(function (a, b) {
+            return a + b;
+          }));
+        }));
       }
+    });
+  };
+};
+
+var hostGraphNetwork = function (host, query) {
+  return function (cb) {
+    async.parallel({
+      traffic: rrdhelpers.fetch(host, "interface/if_octets-vlan11.rrd", "AVERAGE", query),
+      errors: rrdhelpers.fetch(host, "interface/if_errors-vlan11.rrd", "MAX", query)
+    }, function (err, data) {
+      cb(err, {
+        traffic: _.map(data.traffic, function (e) {
+          return [e._time, e.rx + e.tx];
+        }),
+        errors: _.map(data.errors, function (e) {
+          return [e._time, e.rx + e.tx];
+        })
+      });
     });
   };
 };

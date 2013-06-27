@@ -83,7 +83,34 @@ describe('Host Graph', function () {
       it('should return correct values', function (next) {
         var expected = function (data) {
           expect(data.storage[1][0]).to.be(1370558000);
-          expect(data.storage[1][1]).to.be(42.97335668087005);
+          expect(data.storage[1][1]).to.be(0);
+          next();
+        };
+        hostGraph(req, res(expected), next);
+      });
+
+    });
+    
+    describe('network', function () {
+      it('should have certain structure', function (next) {
+        var expected = function (data) {
+          expect(data).to.have.property('network');
+          expect(data.network).to.only.have.keys('traffic', 'errors');
+          expect(data.network.traffic).to.have.length(173);
+          expect(data.network.traffic[1]).to.have.length(2);
+          expect(data.network.errors).to.have.length(173);
+          expect(data.network.errors[1]).to.have.length(2);
+          next();
+        };
+        hostGraph(req, res(expected), next);
+      });
+
+      it('should return correct values', function (next) {
+        var expected = function (data) {
+          expect(data.network.traffic[1][0]).to.be(1370558000);
+          expect(data.network.traffic[1][1]).to.be(1115834.2532);
+          expect(data.network.errors[1][0]).to.be(1370558000);
+          expect(data.network.errors[1][1]).to.be(0);
           next();
         };
         hostGraph(req, res(expected), next);
