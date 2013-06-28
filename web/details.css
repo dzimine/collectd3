@@ -1,5 +1,5 @@
 .canvas {
-	height: 550px;
+	height: 500px;
 	display: block;
 	position: relative;
 	font-size: 0.8em;
@@ -99,29 +99,46 @@
 
 .vcpu-stats {
 	margin-top: 75px;
-	margin-left: 45px;
-	margin-right: 60px;
+	margin-left: 20px;
+	margin-right: 20px;
 	height: 40px;
 	position: relative;
 	font-size: 3.5em;
 }
 
-.vcpus {
-  margin: 0 60px;
-  display: block;
-  position: relative;
-  height: 120px;
+.vcpu-stats .heatmap-legend {
+  left: 0;
+  top: 41px;
 }
 
-.vcpus .bar-chart {
-  position: absolute;
-  bottom: 0;
+.vcpu-stats .heatmap-legend .numbers {
+  float: left;
+  text-align: right;
+}
+
+.vcpu-stats .heatmap-legend .numbers p {
+  padding-left: 0;
+  padding-right: 10px;
+}
+
+.vcpus {
+  margin: 0 20px 0 110px;
+  display: block;
 }
 
 .vcpus .bar {
   width: 12px;
   margin-right: 2px;
+  position: relative;
   display: inline-block;
+  height: 100px;
+  background-color: #eee;
+}
+
+.vcpus .used {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .storage-stats {

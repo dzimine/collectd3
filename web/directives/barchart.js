@@ -10,9 +10,7 @@ angular.module('main')
       },
       link: function postLink(scope, element) {
         var vis = d3.select(element[0])
-          , bars
-          , chart = vis.append("div")
-            .attr("class", "bar-chart");
+          , bars;
 
         scope.$watch('val', function (val) {
           var colorScale = d3.scale.quantize()
@@ -25,19 +23,21 @@ angular.module('main')
             return;
           }
 
-          bars = chart.selectAll("div")
+          bars = vis.selectAll("div")
               .data(val);
 
           bars.enter().append("div")
+            .attr("class", "bar")
+            .append("div")
             .attr("class", function (d) {
-              var classes = ["bar"];
+              var classes = ["used"];
               if (d !== null) {
                 classes.push(colorScale(d.value));
               }
               return classes.join(" ");
             })
             .style("height", function (d) {
-              return (d.value * 120).toFixed(0) + "px";
+              return (d.value * 100).toFixed(0) + "px";
             });
             //.style("width", "10px");
         });

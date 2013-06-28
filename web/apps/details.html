@@ -18,7 +18,7 @@
       <div class="bottom-canvas">
         <div class="vcpu-stats">
             <p class="left">{{info.vcpu.length}}<span class="stat-label"> vCPUs</span></p>
-            <d3-legend limits="0.5, 0.8" val="info.vcpu" class="sub-stats right"></d3-legend>
+            <d3-legend limits="0.5, 0.8" val="info.vcpu" class="numbers"></d3-legend>
         </div>
         <d3-bar-chart val="info.vcpu" class="vcpus" domain="0,1"></d3-bar-chart>
       </div>
@@ -48,13 +48,6 @@
           <div class="storage-bar-usage" ng-style="{ width: 365*info.storage.used/(info.storage.used+info.storage.free)+'px' }"><p>{{bytesToSize(info.storage.used).value}}<span class="unit"> {{bytesToSize(info.storage.used).multi}}</span></p><p class="bar-label">Committed</p></div>
           <div class="storage-bar-free" ng-style="{ width: 365*info.storage.free/(info.storage.used+info.storage.free)+'px' }"><p>{{bytesToSize(info.storage.free).value}}<span class="unit"> {{bytesToSize(info.storage.free).multi}}</span></p><p class="bar-label">Free</p></div>
          </div>
-         <div class="storage-stats">
-           <p class="left">936<span class="stat-label"> GB Allocated</span></p>
-         </div>
-         <div class="storage-allocation">
-          <div class="storage-allocation-usage"></div>
-          <div class="storage-allocation-free"></div>
-         </div>         
       </div>
     </div>
   </div>
