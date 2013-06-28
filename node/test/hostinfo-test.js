@@ -86,9 +86,9 @@ describe('Host Info', function () {
 
       it('should return correct values', function (next) {
         var expected = function (data) {
-          expect(data.storage.used).to.be(2422134996992);
-          expect(data.storage.free).to.be(3075423141888);
-          expect(data.storage.last_update).to.be(1370643629);
+          expect(data.storage.used).to.be(10773864448);
+          expect(data.storage.free).to.be(31467298816);
+          expect(data.storage.last_update).to.be(1370643659);
           next();
         };
         hostInfo(req, res(expected), next);

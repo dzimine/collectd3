@@ -2,7 +2,7 @@
 
 var _ = require('lodash')
   , async = require('async')
-  , config = require('config').server
+  , config = require('config')
   , fs = require('fs')
   , rrdhelpers = require('./rrdhelpers.js');
 
@@ -56,7 +56,11 @@ var hostInfoMemory = function (host) {
  * @return Set of used, free and last_update
  */
 var hostInfoStorage = function (host) {
-  return rrdhelpers.extract(host, "df/df-var-lib-nova-instances.rrd", {
+  var type = _(config.client['node-types']).filter(function (e) {
+    return host.match(e.host) && e.partition;
+  }).value()[0] || { partition: '' };
+  
+  return rrdhelpers.extract(host, "df/df-" + type.partition + ".rrd", {
     used: 'ds[used].last_ds',
     free: 'ds[free].last_ds',
     last_update: 'last_update'
@@ -70,7 +74,7 @@ var hostInfoStorage = function (host) {
  */
 var hostInfoVcpu = function (host) {
   return function (cb) {
-    var dir = config['data-directory'] + '/' + host;
+    var dir = config.server['data-directory'] + '/' + host;
     var str = "cpu-";
 
     fs.readdir(dir, function (err, filenames) {

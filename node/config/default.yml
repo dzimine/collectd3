@@ -9,30 +9,35 @@ client:
     storage:
       name: Storage nodes
       host: ^u[a,s]-s
+      partition: root
       disks:
         - md0
         - md2
     compute:
       name: Compute nodes
       host: ^u[a,s]-c
+      partition: var-lib-nova-instances
       disks:
         - md0
         - md2
     control:
       name: Control
       host: ^u[a,s]-p
+      partition: root
       disks:
         - md0
         - md2
     nova:
       name: Nova
       host: ^nova
+      partition: root
       disks:
         - md0
         - md2
     swift:
       name: Swift
       host: ^swift
+      partition: root
       disks:
         - md0
         - md2

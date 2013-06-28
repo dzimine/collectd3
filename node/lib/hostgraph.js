@@ -101,7 +101,7 @@ var hostGraphStorage = function (host, query) {
     
     var type = _(config.client['node-types']).filter(function (e) {
       return host.match(e.host) && e.disks;
-    }).value()[0];
+    }).value()[0] || { disks: [] };
     
     async.parallel(_.zipObject(type.disks, _.map(type.disks, function (e) {
       return rrdhelpers.fetch(host, 'disk-' + e + '/disk_octets.rrd', "AVERAGE", query);
