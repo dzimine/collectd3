@@ -47,10 +47,13 @@ client:
     all-storage:
       name: Storage
       host: ^u[a,s]-s|^swift
-  heatmap-load:
+    all-control:
+      name: Control
+      host: ^u[a,s]-p|^u[a,s]-v|^collectd|^puppet
+  heatmap:
     - all-storage
     - all-compute
-    - control
+    - all-control
   aggregate-storage:
     - storage
     - compute

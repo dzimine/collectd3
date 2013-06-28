@@ -12,19 +12,21 @@ angular.module('main', [])
   }]);
 
 angular.module('main')
-  .controller('MainCtrl', ['$scope', '$location', function ($s, $loc) {
+  .controller('MainCtrl', ['$scope', '$rootScope', '$location', function ($s, $root, $loc) {
     // Notice an alternative way to trigger injection. But it generates jslint warning.
 
     // Spec: Show the hostname in nav bar.
     // Keep the selected host in navbar (greyed out) when route is back to dashboard.
-    $s.context = {
+    $s.root = $root;
+    
+    $root.context = {
       status : "",
       host: ""
     };
 
     $s.$on("$routeChangeStart", function (event, next) {
       if (next.params.host) {
-        $s.context.host = next.params.host;
+        $root.context.host = next.params.host;
       }
     });
 

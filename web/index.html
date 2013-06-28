@@ -47,9 +47,9 @@
                <li ng-class="{active:isActiveLocation('/dashboard')}">
                   <a href="#/dashboard">Dashboard</a>
                </li>
-               <li ng-class="{active:isActiveLocation('/details/'+context.host)}">
+               <li ng-class="{active:isActiveLocation('/details/'+root.context.host)}" ng-show="root.context.host">
                   <span>
-                    <a href={{"#/details/"+context.host}}> {{ context.host }}</a>
+                    <a href={{"#/details/"+root.context.host}}> {{ context.host }}</a>
                     <a href="http://randomcolour.com/" target="cgp"><i class="icon-share icon-white"></i></a>
                   </span>
                </li>

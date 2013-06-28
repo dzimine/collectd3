@@ -331,6 +331,10 @@ body {
   cursor: pointer;
 }
 
+.picker .picker-choice.active {
+  color: #82c0d3;
+}
+
 .heatmap rect {
   transition: all 0.2s ease-in-out;
   -webkit-transition: all 0.2s ease-in-out;

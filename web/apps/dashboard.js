@@ -1,18 +1,18 @@
 /*jshint globalstrict:true, jquery:true, browser:true */
 'use strict';
 
-function DashboardCtrl($s, $http, $location, helpers, $log) {
+function DashboardCtrl($s, $root, $http, $location, helpers, $log) {
 
   $s.countByTemp = helpers.countByTemp;
   $s.b2s = helpers.bytesToSize;
 
   $s.switchCard = function (name) {
-    $location.hash(name).replace();
+    $s.card = $root.card = name;
   };
 
-  $s.card = $location.hash() || "load";
+  $s.card = $root.card || "load";
 
-  $s.$on('$routeChangeSuccess', function () {
+  $root.$watch('card', function () {
     $s.fetchView($s.card);
   });
   
@@ -101,4 +101,4 @@ function DashboardCtrl($s, $http, $location, helpers, $log) {
 
 }
 
-DashboardCtrl.$inject = ['$scope', '$http', '$location', 'helpers', '$log'];
+DashboardCtrl.$inject = ['$scope', '$rootScope', '$http', '$location', 'helpers', '$log'];

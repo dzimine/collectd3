@@ -19,16 +19,17 @@ angular.module('main')
           , picker = vis.append("div")
             .attr("class", "picker")
           , heatmap = vis.append("div")
-            .attr("class", "heatmap");
+            .attr("class", "heatmap")
+          , selected = [];
 
         scope.$watch('config', function (config) {
           if (!config) {
             return;
           }
 
-          var pickList = [{ name: 'All', host: '.*' }].concat(config["heatmap-load"].map(function (e) {
+          var pickList = config["heatmap"].map(function (e) {
             return config['node-types'][e];
-          }));
+          });
 
           picker.selectAll("span")
             .data(pickList)
@@ -36,8 +37,24 @@ angular.module('main')
             .attr("class", "picker-choice")
             .text(function (d) { return d.name; })
             .on("click", function (d) {
+              var index = selected.indexOf(d.host),
+                  isSelected = index !== -1;
+              
+              d3.select(this).classed("active", !isSelected);
+              
+              if (isSelected) {
+                selected.splice(index, 1);
+              } else {
+                selected.push(d.host);
+              }
+              
               boxes.classed("dimmed", function (box) {
-                return !box.key.match(d.host);
+                var list = selected.map(function (host) {
+                  return box.key.match(host);
+                });
+                return list.length ? !list.reduce(function (a, b) {
+                  return a || b;
+                }) : false;
               });
             });
         });
