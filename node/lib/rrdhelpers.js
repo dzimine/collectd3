@@ -66,7 +66,8 @@ var fetch = function (host, file, cf, query) {
 
     rrd.fetch(path, options, function (err, data) {
       if (err) {
-        callback(err);
+        console.warn('Warning:', err);
+        callback(null);
       } else {
         if (_.some(data[data.length - 1], function (e) {
           return _.isNaN(e);

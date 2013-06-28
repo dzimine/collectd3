@@ -80,6 +80,7 @@ var hostGraphMemory = function (host, query) {
         return [
           data.used[i]._time, // timestamp
           data.used[i].value / total * 100,
+          null,
           data.used[i].value,
           data.free[i].value // percentage used
         ];
@@ -127,14 +128,9 @@ var hostGraphNetwork = function (host, query) {
       traffic: rrdhelpers.fetch(host, "interface/if_octets-vlan11.rrd", "AVERAGE", query),
       errors: rrdhelpers.fetch(host, "interface/if_errors-vlan11.rrd", "MAX", query)
     }, function (err, data) {
-      cb(err, {
-        traffic: _.map(data.traffic, function (e) {
-          return [e._time, e.rx + e.tx];
-        }),
-        errors: _.map(data.errors, function (e) {
-          return [e._time, e.rx + e.tx];
-        })
-      });
+      cb(err, _.map(data.traffic, function (e, i) {
+        return [e._time, e.rx + e.tx, data.errors[i].rx + data.errors[i].tx /*!!Math.round(Math.random()) && Math.round(Math.random() * 10) || 0*/];
+      }));
     });
   };
 };
