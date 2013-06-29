@@ -63,6 +63,7 @@ function DashboardCtrl($s, $root, $http, $location, helpers, $log) {
   };
 
   $s.fetchView = function (view) {
+    $log.resetTime();
     $log.time("Loading " + view.toUpperCase() + " data.");
     $http.get("/data/" + view)
       .success(function (res) {

@@ -485,6 +485,11 @@ svg text {
   cursor: pointer;
 }
 
+.logger .red {
+  /* TODO: (Sui) find better color */ 
+  color:#E23C3B;
+}
+
 .logger .records {
   position: absolute;
   background-color: #111;
