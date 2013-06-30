@@ -50,7 +50,7 @@
                <li ng-class="{active:isActiveLocation('/details/'+root.context.host)}" ng-show="root.context.host">
                   <span>
                     <a href={{"#/details/"+root.context.host}}> {{ context.host }}</a>
-                    <a href="http://randomcolour.com/" target="cgp"><i class="icon-share icon-white"></i></a>
+                    <a href={{config["cgp-url"]+"/host.php?h="+root.context.host}} target="cgp"><i class="icon-share icon-white"></i></a>
                   </span>
                </li>
             </ul>

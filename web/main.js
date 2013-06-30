@@ -12,7 +12,8 @@ angular.module('main', [])
   }]);
 
 angular.module('main')
-  .controller('MainCtrl', ['$scope', '$rootScope', '$location', function ($s, $root, $loc) {
+  .controller('MainCtrl', ['$scope', '$rootScope', '$location', '$http', '$log'
+    ,function ($s, $root, $loc, $http, $log) {
     // Notice an alternative way to trigger injection. But it generates jslint warning.
 
     // Spec: Show the hostname in nav bar.
@@ -33,5 +34,16 @@ angular.module('main')
     $s.isActiveLocation = function (route) {
       return route === $loc.path();
     };
+
+    $log.time("Loading Config data.");
+    $http.get("/config")
+      .success(function (res) {
+        $s.config = res;
+        console.log($s.config);
+        $log.time("Config data has been loaded.");
+      }).error(function () {
+        $s.config = {};
+        $log.time("Config data has been failed.");
+      });
 
   }]);

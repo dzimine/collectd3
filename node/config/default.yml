@@ -5,6 +5,7 @@ server:
   log-info: false
 
 client:
+  cgp-url: 'http://example.com'
   node-types:
     storage:
       name: Storage nodes

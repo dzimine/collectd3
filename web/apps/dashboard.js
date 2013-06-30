@@ -55,7 +55,7 @@ function DashboardCtrl($s, $root, $http, $location, helpers, $log) {
     $s.tooltip = {};
     $s.$apply();
   };
-  
+
   $s.moveTooltip = function (x, y) {
     $s.tooltip.x = x;
     $s.tooltip.y = y;
@@ -86,15 +86,7 @@ function DashboardCtrl($s, $root, $http, $location, helpers, $log) {
         $log.time("Aggregate data has been failed.");
       });
 
-    $log.time("Loading Config data.");
-    $http.get("/config")
-      .success(function (res) {
-        $s.config = res;
-        $log.time("Config data has been loaded.");
-      }).error(function () {
-        $s.config = {};
-        $log.time("Config data has been failed.");
-      });
+
   };
 
   $log.resetTime();
