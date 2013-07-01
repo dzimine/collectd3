@@ -3,6 +3,7 @@ server:
   log-info: false
 
 client:
+  ~override: true
   node-types:
     hosts: 
       host: ^host-

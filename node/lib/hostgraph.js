@@ -2,7 +2,7 @@
 
 var _ = require('lodash')
   , async = require('async')
-  , config = require('config')
+  , config = require('mech-config')
   , rrdhelpers = require('./rrdhelpers.js');
 
 /**

@@ -2,7 +2,7 @@
 
 var _ = require('lodash')
   , async = require('async')
-  , config = require('config').server
+  , config = require('mech-config').server
   , fs = require('fs')
   , rrd = require("rrd");
 
