@@ -2,7 +2,7 @@
 
 ## Install dependencies: 
 
-1. Install [rrdtool](http://oss.oetiker.ch/rrdtool). On Mac, [homebrew](http://mxcl.github.io/homebrew/) works. On Linux, use apt-get rrdtool. On Windows, figure this out yourself (and add instructions here). Make sure rrdtool is on the path (try $which rrdtool, $rrdtool).
+1. Install [rrdtool](http://oss.oetiker.ch/rrdtool). On Mac, [homebrew](http://mxcl.github.io/homebrew/) works. On Linux, use apt-get install rrdtool, apt-get install librrd-dev. On Windows, figure this out yourself (and add instructions here). Make sure rrdtool is on the path (try $which rrdtool, $rrdtool).
 
 1. Get node dependencies: 
 
