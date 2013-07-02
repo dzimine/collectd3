@@ -39,7 +39,6 @@ angular.module('main')
     $http.get("/config")
       .success(function (res) {
         $s.config = res;
-        console.log($s.config);
         $log.time("Config data has been loaded.");
       }).error(function () {
         $s.config = {};
