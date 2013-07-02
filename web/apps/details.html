@@ -1,5 +1,48 @@
 <div>
+  <div class="overlay row-fluid" ng-hide="hidden">
+    <div class="hosts span6">
+      <div class="host" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        abc1.example.com
+      </div>
+      <div class="host" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        abc2.example.com
+      </div>
+      <div class="host" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        abc3.example.com
+      </div>
+      <div class="host" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        abc4.example.com
+      </div>
+      <div class="host" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        abc5.example.com
+      </div>
+    </div>
+    <div class="vms span6">
+      <div class="vm" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        vm1.example.com
+      </div>
+      <div class="vm" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        vm2.example.com
+      </div>
+      <div class="vm" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        vm3.example.com
+      </div>
+      <div class="vm" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        vm4.example.com
+      </div>
+      <div class="vm" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        vm5.example.com
+      </div>
+      <div class="vm" ng-mouseover="onMouseOver()" ng-mouseout="onMouseLeave()">
+        vm6.example.com
+      </div>
+    </div>
+  </div>
+  
   <div class="details row-fluid">
+    <div class="hostinfo{{ !hidden && ' invert' || '' }}" ng-click="toggleVisibility()">
+      <span class="hostname">{{context.host}}<i class="icon-chevron-down{{ !hidden && ' icon-white' || '' }}"></i></span>
+    </div>
     
     <div class="left-canvas">
       

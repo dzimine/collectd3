@@ -1,9 +1,11 @@
 'use strict';
 
-function DetailsCtrl($s, $http, $routeParams, helpers, $filter, $log) {
+function DetailsCtrl($s, $http, $routeParams, helpers, $filter, $log, $root, $timeout) {
 
   $s.$routeParams = $routeParams;
   $s.bytesToSize = helpers.bytesToSize;
+  
+  $s.context = $root.context;
 
   $s.countByTemp = helpers.countByTemp;
 
@@ -80,7 +82,25 @@ function DetailsCtrl($s, $http, $routeParams, helpers, $filter, $log) {
     $s.fetch();
   });
 
+  var timer;
+  
+  $s.hidden = true;
+
+  $s.onMouseOver = function () {
+    timer = $timeout(function () {
+      $s.hidden = true;
+    }, 1000);
+  };
+
+  $s.onMouseLeave = function () {
+    $s.hidden = false;
+    $timeout.cancel(timer);
+  };
+
+  $s.toggleVisibility = function () {
+    $s.hidden = !$s.hidden;
+  };
 
 }
 
-DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'helpers', '$filter', '$log'];
+DetailsCtrl.$inject = ['$scope', '$http', '$routeParams', 'helpers', '$filter', '$log', '$rootScope', '$timeout'];
