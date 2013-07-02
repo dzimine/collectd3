@@ -3,3 +3,4 @@
 .Trashes
 .Thumbs.db
 npm-debug.log
+web/css/*.css

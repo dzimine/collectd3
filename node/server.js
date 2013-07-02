@@ -2,7 +2,7 @@
 
 // Node.js backend for the app
 var express = require('express')
-  , config = require('config').server
+  , config = require('mech-config').server
   , app = express();
 
 //body parser next, so we have req.body

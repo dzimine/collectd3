@@ -2,9 +2,9 @@
 
 angular.module('main')
   .directive('d3Speedometer', ['helpers', function (helpers) {
-    var w = 220, h = 220,
+    var w = 152, h = 152,
         r = Math.min(w, h) / 2,
-        arc = d3.svg.arc().innerRadius(r - 34).outerRadius(r - 46),
+        arc = d3.svg.arc().innerRadius(r).outerRadius(r - 12),
         markers = [ { domain: 0, range: -135 }
                   , { domain: 0.7, range: -45 }
                   , { domain: 1, range: 45 }
@@ -47,7 +47,7 @@ angular.module('main')
             .attr("d", arc.startAngle(scale(markers[0].domain)).endAngle(scale(val)));
 
           arcGroup.append("svg:path")
-            .attr("class", "load-1")
+            .attr("class", "svg-void")
             .attr("d", arc.startAngle(scale(val))
                           .endAngle(scale(markers[markers.length - 1].domain)));
 

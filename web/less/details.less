@@ -1,0 +1,249 @@
+.details {
+  display: block;
+  position: relative;
+  font-size: 0.8em;
+  background-color: white;
+
+  .left-canvas {
+    float: left;
+    width: 50%;
+    box-sizing:border-box;
+    border-width: 0;
+    -o-border-image: -o-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+    -moz-border-image: -moz-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+    -ms-border-image: -ms-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+    -webkit-border-image: -webkit-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+    border-right-width: 1px;
+    padding: 30px 35px;
+  }
+
+  .right-canvas {
+    float: right;
+    width: 50%;
+    box-sizing:border-box;
+    padding: 30px 35px;
+  }
+  
+  .name {
+    font-size: 2em;
+    margin-left: 10px;
+    color: #CCCCCC;
+  }
+  
+  .load {
+    .chart {
+      display: inline-block;
+      margin: 34px 49px 54px;
+    }
+    
+    .kpi-group {
+      margin: 0 22px;
+      font-size: 3.5em;
+      line-height: 80%;
+      display: inline-block;
+    }
+  }
+  
+  .memory {
+    .chart {
+      display: inline-block;
+      margin: 34px 49px 54px;
+    }
+    
+    .kpi-group {
+      margin: 0 12px;
+      font-size: 3.5em;
+      line-height: 80%;
+      display: inline-block;
+    }
+  }
+  
+  .sub-stats {
+    font-size: 0.5em;
+    color: #AAAAAA;
+    padding-top: 12px;
+
+    p {
+      display: inline;
+    }
+  }
+
+  .stat-label { 
+    font-size: 18px;
+    color: #CCCCCC;
+  }
+  
+  .vcpu {
+    .stats {
+      height: 40px;
+      margin-left: 10px;
+      position: relative;
+      font-size: 3.5em;
+    }
+    
+    .legend {
+      position: static;
+      display: inline-block;
+    
+      .numbers {
+        float: left;
+        text-align: right;
+      
+        p {
+          padding-left: 0;
+          padding-right: 10px;
+        }
+      }
+    }
+    
+    .chart {
+      margin-left: 4px;
+      display: inline-block;
+    
+      .bar {
+        width: 12px;
+        margin-right: 2px;
+        position: relative;
+        display: inline-block;
+        height: 100px;
+        background-color: #eee;
+      }
+
+      .used {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+      }
+    }
+  }
+  
+  .storage {
+    
+    .stats {
+      position: relative;
+      margin-top: 20px;
+      margin-right: 55px;
+      margin-left: 45px;
+      font-size: 3.5em;
+      height: 45px;
+      text-align: right;
+    }
+    
+    .bars {
+      margin-left: 30px;
+      padding-bottom: 20px;
+      height: 30px;
+      text-align: center;
+      font-size: 1.2em;
+      color: white;
+      
+      p {
+        padding-top: 4px; 
+      }
+      
+      .unit{
+        font-size: 0.8em;
+      }
+      
+      .usage {
+        width: 285px;
+        height: 100%;
+        background-color: #18E000;		
+        float: left;
+      }
+      
+      .free {
+        width: 80px;
+        height: 100%;
+        background-color: #EEEEEE;
+        float: left;
+        
+        p {
+          color: #CCCCCC;
+        }
+      }
+      
+      .kpi-label {
+        color: #CCCCCC;
+        font-size: 0.8em;
+      }
+    }
+  }
+
+}
+
+.timeline {
+  background-color: #EEEEEE;
+  position: relative;
+  cursor: default;
+  padding-top: 30px;
+   
+  .periods {
+    position: absolute;
+    top: -10px;
+    left: 20px;
+    background-color: #eee;
+    padding: 2px 10px;
+    border-radius: 12px;
+    line-height: 20px;
+  }
+   
+  .period {
+    margin: -2px 6px;
+    padding: 2px 4px;
+    cursor: pointer;
+    color: #888;
+    
+    &.active {
+      font-weight: bold;
+    }
+  }
+  
+  .graph-label {
+    fill: #888;
+  }
+  
+  .graph {
+    stroke-width: 2;
+    fill: none;
+  }
+  
+  .load {
+    stroke: steelblue;
+  }
+  
+  .memory {
+    stroke: red;
+  }
+  
+  .storage {
+    stroke: green;
+  }
+  
+  .network {
+    stroke: orange;
+  }
+  
+  .network-error {
+    fill: orange;
+  }
+  
+  .meridian {
+    stroke: #ccc;
+    stroke-width: 1px;
+    visibility: hidden;
+  }
+  
+  .meridian-bg {
+    stroke: transparent;
+    stroke-width: 10px;
+  }
+  
+  .active .meridian {
+    visibility: visible;
+  }
+  
+  .x-axis {
+    fill: #888;
+  }
+}

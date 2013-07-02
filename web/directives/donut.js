@@ -2,9 +2,9 @@
 
 angular.module('main')
   .directive('d3Donut', ['helpers', function (helpers) {
-    var w = 220, h = 220,
+    var w = 152, h = 152,
        r = Math.min(w, h) / 2,
-       arc = d3.svg.arc().innerRadius(r - 34).outerRadius(r - 46),
+       arc = d3.svg.arc().innerRadius(r).outerRadius(r - 12),
        markers = [ { domain: 0, range: 0 }
                  , { domain: 100, range: 360 }
                  ];
@@ -50,7 +50,7 @@ angular.module('main')
             .attr("d", arc.startAngle(scale(markers[0].domain)).endAngle(scale(percent)));
 
           arcGroup.append("svg:path")
-            .attr("class", "load-1")
+            .attr("class", "svg-void")
             .attr("d", arc.startAngle(scale(percent))
                           .endAngle(scale(markers[markers.length - 1].domain)));
 

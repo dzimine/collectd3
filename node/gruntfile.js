@@ -35,9 +35,20 @@ module.exports = function (grunt) {
           interrupt: true
         }
       },
-      client: {
+      clientjs: {
         files: ['../web/apps/**/*.js', '../web/directives/**/*.js', '../web/*.js'],
         tasks: ['jshint:client']
+      },
+      clientcss: {
+        files: ['../web/less/**/*.less'],
+        task: ['less:development']
+      }
+    },
+    less: {
+      development: {
+        files: {
+          '../web/css/style.css': '../web/less/style.less'
+        }
       }
     }
   });
@@ -45,7 +56,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-shell-spawn');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-less');
   
-  grunt.registerTask('default', ['jshint', 'shell:test', 'shell:run', 'watch']);
+  grunt.registerTask('default', ['jshint', 'less', 'shell:test', 'shell:run', 'watch']);
   
 };
