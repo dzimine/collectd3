@@ -2,7 +2,7 @@
 
 angular.module('main')
   .directive('d3Timeseries', function () {
-    var w = 1024,
+    var w = 860,
        h = 70,
        margin = { left: 150, right: 50, vertical: 20 };
 

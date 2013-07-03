@@ -41,7 +41,7 @@ module.exports = function (grunt) {
       },
       clientcss: {
         files: ['../web/less/**/*.less'],
-        task: ['less:development']
+        tasks: ['less:development']
       }
     },
     less: {
