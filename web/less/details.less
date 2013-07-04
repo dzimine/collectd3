@@ -137,35 +137,36 @@
       font-size: 1.2em;
       color: white;
       
-      p {
-        padding-top: 4px; 
-      }
-      
       .unit{
         font-size: 0.8em;
       }
       
-      .usage {
+      .usage, .free {
         width: 285px;
-        height: 100%;
-        background-color: #18E000;		
+        height: 40px;
         float: left;
+        position: relative;
+        white-space: nowrap;
+        
+        .bar {
+          padding-top: 4px; 
+          height: 30px;
+          box-sizing: border-box;
+          background-color: #18E000;
+          overflow-x: hidden;
+        }
       }
       
-      .free {
-        width: 80px;
-        height: 100%;
+      .free .bar {
         background-color: #EEEEEE;
-        float: left;
-        
-        p {
-          color: #CCCCCC;
-        }
+        color: #CCCCCC;
       }
       
       .kpi-label {
         color: #CCCCCC;
         font-size: 0.8em;
+        line-height: 12px;
+        box-sizing: border-box;
       }
     }
   }
