@@ -80,6 +80,15 @@ function DetailsCtrl($s, $http, $routeParams, helpers, $filter, $log) {
     $s.fetch();
   });
 
+  $s.overlay = false;
+
+  $s.showOverlay = function () {
+    $s.overlay = true;
+  };
+
+  $s.hideOverlay = function () {
+    $s.overlay = false;
+  };
 
 }
 

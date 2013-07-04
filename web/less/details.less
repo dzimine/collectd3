@@ -1,3 +1,106 @@
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: transparent;
+  z-index: 3;
+  //display: none;
+  overflow: hidden;
+  pointer-events: none;
+  
+  .ribbon {
+    width: 30px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .7);
+    position: relative;
+    float: left;
+    cursor: pointer;
+    
+    -webkit-transform: translateX(-30px);
+    -moz-transform: translateX(-30px);
+    -o-transform: translateX(-30px);
+    -ms-transform: translateX(-30px);
+    transform: translateX(-30px);
+    
+    -webkit-transition: all 0.4s linear 0s;
+    -moz-transition: all 0.4s linear 0s;
+    -o-transition: all 0.4s linear 0s;
+    -ms-transition: all 0.4s linear 0s;
+    transition: all 0.4s linear 0s;
+    
+    .hostname {
+      display: block;
+      color: white;
+      position: absolute;
+      top: 50%;
+      
+      -webkit-transform: rotate(-90deg);
+      -moz-transform: rotate(-90deg);
+      -ms-transform: rotate(-90deg);
+      -o-transform: rotate(-90deg);
+      transform: rotate(-90deg);
+
+      -webkit-transform-origin: 15px 50%;
+      -moz-transform-origin: 15px 50%;
+      -ms-transform-origin: 15px 50%;
+      -o-transform-origin: 15px 50%;
+      transform-origin: 15px 50%;
+    }
+  }
+  
+  .window {
+    width: 1250px;
+    background-color: white;
+    height: 100%;
+    display: table;
+    
+    -webkit-transform: translateX(1280px);
+    -moz-transform: translateX(1280px);
+    -o-transform: translateX(1280px);
+    -ms-transform: translateX(1280px);
+    transform: translateX(1280px);
+    
+    -webkit-transition: all 0.4s linear 0s;
+    -moz-transition: all 0.4s linear 0s;
+    -o-transition: all 0.4s linear 0s;
+    -ms-transition: all 0.4s linear 0s;
+    transition: all 0.4s linear 0s;
+  }
+  
+  &.visible {
+    //display: block;
+    pointer-events: all;
+    
+    .ribbon {
+      -webkit-transform: translateX(0);
+      -moz-transform: translateX(0);
+      -o-transform: translateX(0);
+      -ms-transform: translateX(0);
+      transform: translateX(0);
+    
+      -webkit-transition: all 0.4s linear 0s;
+      -moz-transition: all 0.4s linear 0s;
+      -o-transition: all 0.4s linear 0s;
+      -ms-transition: all 0.4s linear 0s;
+      transition: all 0.4s linear 0s;
+    }
+    
+    .window {
+      -webkit-transform: translateX(0);
+      -moz-transform: translateX(0);
+      -o-transform: translateX(0);
+      -ms-transform: translateX(0);
+      transform: translateX(0);
+    
+      -webkit-transition: all 0.4s linear 0s;
+      -moz-transition: all 0.4s linear 0s;
+      -o-transition: all 0.4s linear 0s;
+      -ms-transition: all 0.4s linear 0s;
+      transition: all 0.4s linear 0s;
+    }
+  }
+}
+
 .row {
   display: table-row;
 }
@@ -9,34 +112,17 @@
   vertical-align: top;
   background-color: #ccc;
   
-  .buttons {
-    position: absolute;
-    bottom: 0;
-    width: 212px;
-  }
-  
-  .button {
-    width: 33%;
-    box-sizing: border-box;
-    border: solid #ccc;
-    border-width: 1px 1px 0 0;
-    background-color: white;
-    float: left;
-    text-align: center;
-  }
-}
-
-.hosts, .vms {
-  width: 210px;
-  
   .source {
+    position: absolute;
     background-color: white;
     line-height: 20px;
     background-color: rgb(255, 255, 255);
-    line-height: 20px;
     padding: 4px 6px;
     border: solid #ccc;
     border-width: 0 1px 1px 0;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
     
     i {
       position: absolute;
@@ -46,7 +132,11 @@
   }
   
   .filter {
-    position: relative;
+    position: absolute;
+    top: 29px;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
     
     input {
       background-color: rgb(255, 255, 255);
@@ -71,13 +161,41 @@
     }
   }
   
+  .buttons {
+    position: absolute;
+    bottom: 0;
+    width: 212px;
+  }
+  
+  .button {
+    width: 33%;
+    box-sizing: border-box;
+    border: solid #ccc;
+    border-width: 1px 1px 0 0;
+    background-color: white;
+    float: left;
+    text-align: center;
+  }
+}
+
+.hosts, .vms {
+  width: 210px;
+}
+
+.scroller {
+  overflow-x: scroll;
+  height: 100%;
+  padding-top: 58px;
+  
   .list {
     margin: 0;
-    list-style: none;
-    
+    height: 100%;
+
     .item {
       margin-bottom: 1px;
       position: relative;
+      cursor: pointer;
+      list-style: none;
       
       .host {
         background-color: white;
@@ -102,23 +220,27 @@
         }
       }
       
+      &.active .host .status {
+        width: 10px;
+      }
+      
       &.active:after, &.active .host:after {
-        content: '\0000a0';
-        font-size: 0;
-        height: 0px;
-        width: 0px;
-        border-left: 20px solid #ccc;
-        border-top: 30px solid transparent;
-        border-bottom: 30px solid transparent;
-        position: absolute;
-        z-index: 1;
-        right: -20px;
-        top: 0;
+        // content: '\0000a0';
+        // font-size: 0;
+        // height: 0px;
+        // width: 0px;
+        // border-left: 20px solid #ccc;
+        // border-top: 30px solid transparent;
+        // border-bottom: 30px solid transparent;
+        // position: absolute;
+        // z-index: 1;
+        // right: -20px;
+        // top: 0;
       }
       
       &.active .host:after {
-        border-left-color: white;
-        z-index: 2;
+        // border-left-color: white;
+        // z-index: 2;
       }
     }
   }
@@ -132,25 +254,9 @@
   .host {
     margin-left: 1px;
     margin-right: 0 !important;
-    
-    .status {
-      float: right !important;
-    }
   }
   
-  .item.active {
-    &:after, & .host:after {
-      border-right: 20px solid #ccc;
-      border-left: 0 !important;
-      right: auto !important;
-      left: -20px;
-    }
-    & .host:after {
-      border-right-color: white;
-    }
-  }
-  
-  &~.buttons .button {
+  .buttons .button {
     border-width: 1px 0 0 1px;
   }
 }

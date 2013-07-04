@@ -1,14 +1,174 @@
 <div>
-  <div class="cell">
-    <div class="hosts">
-      <div class="source">
-        <i class="icon-chevron-down"></i>
-        Host in watch list
+  <div class="overlay" ng-class="{visible:overlay}">
+    <div class="ribbon" ng-click="hideOverlay()">
+      <span class="hostname"><i class="icon-chevron-up icon-white"></i> Hostname.com</span>
+    </div>
+    <div class="window">
+      <div class="cell hosts">
+        <div class="source">
+          VMs on this host
+        </div>
+        <div class="filter">
+          <i class="icon-search"></i>
+          <input type="text" placeholder="Find a vm...">
+        </div>
+        <div class="scroller">
+          <ul class="list">
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell2"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell3"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell9"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell5"></div>
+                <div class="name">vm.hostname.com</div>
+                <div class="power">offline</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell4"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell1"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell7"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell6"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell3"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell5"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell6"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+            <li class="item" ng-click="showOverlay()">
+              <div class="host">
+                <div class="status cell7"></div>
+                <div class="name">vm.hostname.com</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="buttons">
+          <div class="button"><i class="icon-th-list"></i></div>
+          <div class="button"><i class="icon-align-justify"></i></div>
+          <div class="button"><i class="icon-th"></i></div>
+        </div>
       </div>
-      <div class="filter">
-        <i class="icon-search"></i>
-        <input type="text" placeholder="Find a host...">
+
+      <div class="cell">
+        <div class="details row-fluid">
+    
+          <div class="left-canvas">
+      
+            <div class="load">
+              <p class="name">Load</p>
+              <d3-speedometer val="info.load.shortterm | number:2" title="Short" class="chart"></d3-speedometer>
+              <div class="kpi-group">
+                <p>{{info.load.midterm | number:2}}<span class="stat-label"> Mid</span></p>
+                <p>{{info.load.longterm | number:2}}<span class="stat-label"> Long</span></p>
+              </div>
+            </div>
+      
+            <div class="vcpu">
+              <p class="stats">{{info.vcpu.length}}<span class="stat-label"> vCPUs</span></p>
+              <d3-legend limits="0.5, 0.8" val="info.vcpu" class="numbers"></d3-legend>
+              <d3-bar-chart val="info.vcpu" class="chart" domain="0,1"></d3-bar-chart>
+            </div>
+      
+          </div>
+    
+          <div class="right-canvas">
+      
+            <div class="memory">
+              <p class="name">Memory</p>
+              <d3-donut val="info.memory" title="Used" class="chart"></d3-donut>
+              <div class="kpi-group">
+                <p>{{bytesToSize(info.memory.free.value).value}}<span class="stat-label"> {{bytesToSize(info.memory.free.value).multi}} Free</span></p>
+                <p class="sub-stats">{{bytesToSize(info.memory.buffered.value).value}}<span class="stat-label"> {{bytesToSize(info.memory.buffered.value).multi}} Buffered</span></p>
+                <p class="sub-stats">{{bytesToSize(info.memory.cached.value).value}}<span class="stat-label"> {{bytesToSize(info.memory.cached.value).multi}} Cached</span></p>
+              </div>         
+            </div>
+      
+            <div class="storage" ng-show="info.storage.used && info.storage.free">
+              <p class="name">Storage</p>
+              <div class="stats">
+                <span class="stat-label">Capacity </span> {{bytesToSize(info.storage.used + info.storage.free).value}}<span class="stat-label"> {{bytesToSize(info.storage.used + info.storage.free).multi}}</span>
+              </div>
+              <div class="bars">
+                <div class="usage" ng-style="{ width: 365*info.storage.used/(info.storage.used+info.storage.free)+'px' }"><p>{{bytesToSize(info.storage.used).value}}<span class="unit"> {{bytesToSize(info.storage.used).multi}}</span></p><p class="kpi-label">Committed</p></div>
+                <div class="free" ng-style="{ width: 365*info.storage.free/(info.storage.used+info.storage.free)+'px' }"><p>{{bytesToSize(info.storage.free).value}}<span class="unit"> {{bytesToSize(info.storage.free).multi}}</span></p><p class="kpi-label">Free</p></div>
+              </div>
+            </div>
+      
+          </div>
+    
+        </div>
+  
+        <div class="timeline">
+          <div class="periods">
+            <span class="period" ng-click="period = 'day'" ng-class="(period == 'day') && 'active'">D</span>
+            <span class="period" ng-click="period = 'week'" ng-class="(period == 'week') && 'active'">W</span>
+            <span class="period" ng-click="period = 'month'" ng-class="(period == 'month') && 'active'">M</span>
+          </div>
+          <d3-tooltip message="tooltip"></d3-tooltip>
+          <d3-timeseries val="graph" scheme="load memory storage network" period="period" 
+            d3-mouseover="showTooltip(time, data)" 
+            d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" ></d3-timeseries>
+        </div>
       </div>
+    </div>
+  </div>
+  <div class="cell hosts">
+    <div class="source">
+      <i class="icon-chevron-down"></i>
+      Host in watch list
+    </div>
+    <div class="filter">
+      <i class="icon-search"></i>
+      <input type="text" placeholder="Find a host...">
+    </div>
+    <div class="scroller">
       <ul class="list">
         <li class="item">
           <div class="host">
@@ -74,6 +234,12 @@
         <li class="item">
           <div class="host">
             <div class="status cell6"></div>
+            <div class="name">Hostname.com</div>
+          </div>
+        </li>
+        <li class="item">
+          <div class="host">
+            <div class="status cell7"></div>
             <div class="name">Hostname.com</div>
           </div>
         </li>
@@ -152,84 +318,84 @@
         d3-mouseout="hideTooltip()" d3-mousemove="moveTooltip(x,y)" ></d3-timeseries>
     </div>
   </div>
-  <div class="cell">
-    <div class="vms">
-      <div class="source">
-        VMs on this host
-      </div>
-      <div class="filter">
-        <i class="icon-search"></i>
-        <input type="text" placeholder="Find a vm...">
-      </div>
+  <div class="cell vms">
+    <div class="source">
+      VMs on this host
+    </div>
+    <div class="filter">
+      <i class="icon-search"></i>
+      <input type="text" placeholder="Find a vm...">
+    </div>
+    <div class="scroller">
       <ul class="list">
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell2"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell3"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell9"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell5"></div>
             <div class="name">vm.hostname.com</div>
             <div class="power">offline</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell4"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell1"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell7"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item active">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell6"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell3"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell5"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell6"></div>
             <div class="name">vm.hostname.com</div>
           </div>
         </li>
-        <li class="item">
+        <li class="item" ng-click="showOverlay()">
           <div class="host">
             <div class="status cell7"></div>
             <div class="name">vm.hostname.com</div>
