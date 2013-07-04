@@ -1,8 +1,118 @@
+.row {
+  display: table-row;
+}
+
+.cell {
+  position: relative;
+  height: 100%;
+  display: table-cell;
+  vertical-align: top;
+  background-color: #ccc;
+  border-left: 1px solid #ddd;
+}
+
+.hosts, .vms {
+  width: 210px;
+  height: 50%;
+  position: relative;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  
+  &:last-of-type {
+    border: 0;
+  }
+  
+  .source {
+    background-color: white;
+    line-height: 20px;
+    background-color: #eee;
+    padding: 4px 6px;
+    border: solid #ccc;
+    border-width: 0 1px 1px 0;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+    
+    i {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+  
+  .filter {
+    position: absolute;
+    top: 29px;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
+    
+    input {
+      background-color: #eee;
+      line-height: 20px;
+      padding: 4px 26px 4px 6px;
+      box-sizing: border-box;
+      box-shadow: none;
+      -webkit-box-shadow: none;
+      border: solid #ccc;
+      border-radius: 0;
+      width: 100%;
+      display: block;
+      height: auto;
+      border-width: 0 1px 1px 0;
+      margin: 0;
+    }
+    
+    i {
+      position: absolute;
+      top: 7px;
+      right: 7px;
+    }
+  }
+  
+  .list {
+    margin: 0;
+    list-style: none;
+    padding-top: 58px;
+    
+    .item {
+      margin-bottom: 1px;
+      position: relative;
+      
+      .host {
+        background-color: white;
+        height: 30px;
+        margin-right: 1px;
+        box-sizing: border-box;
+        position: relative;
+        
+        .status {
+          width: 5px;
+          height: 100%;
+          float: left;
+        }
+        
+        .name {
+          padding: 5px 15px;
+        }
+        
+        .power {
+          color: #888;
+          padding: 0 15px 10px;
+        }
+      }
+    }
+  }
+}
+
 .details {
   display: block;
   position: relative;
   font-size: 0.8em;
   background-color: white;
+  width: 860px;
 
   .left-canvas {
     float: left;
@@ -14,26 +124,25 @@
     -ms-border-image: -ms-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
     -webkit-border-image: -webkit-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
     border-right-width: 1px;
-    padding: 30px 35px;
+    padding: 30px 25px;
   }
 
   .right-canvas {
     float: right;
     width: 50%;
     box-sizing:border-box;
-    padding: 30px 35px;
+    padding: 30px 25px;
   }
   
   .name {
     font-size: 2em;
-    margin-left: 10px;
     color: #CCCCCC;
   }
   
   .load {
     .chart {
       display: inline-block;
-      margin: 34px 49px 54px;
+      margin: 34px 36px 54px;
     }
     
     .kpi-group {
@@ -47,7 +156,7 @@
   .memory {
     .chart {
       display: inline-block;
-      margin: 34px 49px 54px;
+      margin: 34px 26px 54px;
     }
     
     .kpi-group {
@@ -76,7 +185,6 @@
   .vcpu {
     .stats {
       height: 40px;
-      margin-left: 10px;
       position: relative;
       font-size: 3.5em;
     }
@@ -101,7 +209,7 @@
       display: inline-block;
     
       .bar {
-        width: 12px;
+        width: 10px;
         margin-right: 2px;
         position: relative;
         display: inline-block;
@@ -122,7 +230,7 @@
     .stats {
       position: relative;
       margin-top: 20px;
-      margin-right: 55px;
+      margin-right: 16px;
       margin-left: 45px;
       font-size: 3.5em;
       height: 45px;
@@ -130,7 +238,6 @@
     }
     
     .bars {
-      margin-left: 30px;
       padding-bottom: 20px;
       height: 30px;
       text-align: center;
@@ -173,6 +280,7 @@
 }
 
 .timeline {
+  width: 860px;
   background-color: #EEEEEE;
   position: relative;
   cursor: default;
