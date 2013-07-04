@@ -8,35 +8,32 @@
   display: table-cell;
   vertical-align: top;
   background-color: #ccc;
-  
-  .buttons {
-    position: absolute;
-    bottom: 0;
-    width: 212px;
-  }
-  
-  .button {
-    width: 33%;
-    box-sizing: border-box;
-    border: solid #ccc;
-    border-width: 1px 1px 0 0;
-    background-color: white;
-    float: left;
-    text-align: center;
-  }
+  border-left: 1px solid #ddd;
 }
 
 .hosts, .vms {
   width: 210px;
+  height: 50%;
+  position: relative;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+  
+  &:last-of-type {
+    border: 0;
+  }
   
   .source {
     background-color: white;
     line-height: 20px;
-    background-color: rgb(255, 255, 255);
-    line-height: 20px;
+    background-color: #eee;
     padding: 4px 6px;
     border: solid #ccc;
     border-width: 0 1px 1px 0;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
     
     i {
       position: absolute;
@@ -46,10 +43,14 @@
   }
   
   .filter {
-    position: relative;
+    position: absolute;
+    top: 29px;
+    z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
     
     input {
-      background-color: rgb(255, 255, 255);
+      background-color: #eee;
       line-height: 20px;
       padding: 4px 26px 4px 6px;
       box-sizing: border-box;
@@ -74,6 +75,7 @@
   .list {
     margin: 0;
     list-style: none;
+    padding-top: 58px;
     
     .item {
       margin-bottom: 1px;
@@ -81,7 +83,7 @@
       
       .host {
         background-color: white;
-        height: 60px;
+        height: 30px;
         margin-right: 1px;
         box-sizing: border-box;
         position: relative;
@@ -93,7 +95,7 @@
         }
         
         .name {
-          padding: 10px 15px 0;
+          padding: 5px 15px;
         }
         
         .power {
@@ -101,57 +103,7 @@
           padding: 0 15px 10px;
         }
       }
-      
-      &.active:after, &.active .host:after {
-        content: '\0000a0';
-        font-size: 0;
-        height: 0px;
-        width: 0px;
-        border-left: 20px solid #ccc;
-        border-top: 30px solid transparent;
-        border-bottom: 30px solid transparent;
-        position: absolute;
-        z-index: 1;
-        right: -20px;
-        top: 0;
-      }
-      
-      &.active .host:after {
-        border-left-color: white;
-        z-index: 2;
-      }
     }
-  }
-}
-
-.vms {
-  .source, .filter input {
-    border-width: 0 0 1px 1px;
-  }
-  
-  .host {
-    margin-left: 1px;
-    margin-right: 0 !important;
-    
-    .status {
-      float: right !important;
-    }
-  }
-  
-  .item.active {
-    &:after, & .host:after {
-      border-right: 20px solid #ccc;
-      border-left: 0 !important;
-      right: auto !important;
-      left: -20px;
-    }
-    & .host:after {
-      border-right-color: white;
-    }
-  }
-  
-  &~.buttons .button {
-    border-width: 1px 0 0 1px;
   }
 }
 
