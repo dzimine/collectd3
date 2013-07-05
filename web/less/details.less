@@ -1,7 +1,7 @@
 .details {
   display: block;
   position: relative;
-  font-size: 0.8em;
+  font-size: 0.6em;
   background-color: white;
 
   .left-canvas {
@@ -27,31 +27,32 @@
   .name {
     font-size: 2em;
     margin-left: 10px;
+    margin-bottom: 25px;
     color: #CCCCCC;
   }
   
   .load {
     .chart {
       display: inline-block;
-      margin: 34px 49px 54px;
+      margin: 0 49px 10px 50px;
     }
     
     .kpi-group {
-      margin: 0 22px;
       font-size: 3.5em;
-      line-height: 80%;
-      display: inline-block;
+      line-height: 100%;
+      display: inline-block;   
+      padding-bottom: 20px;
     }
+
   }
   
   .memory {
     .chart {
       display: inline-block;
-      margin: 34px 49px 54px;
+      margin: 0 49px 50px 50px;
     }
     
     .kpi-group {
-      margin: 0 12px;
       font-size: 3.5em;
       line-height: 80%;
       display: inline-block;
@@ -59,7 +60,7 @@
   }
   
   .sub-stats {
-    font-size: 0.5em;
+    font-size: 0.6em;
     color: #AAAAAA;
     padding-top: 12px;
 
@@ -69,11 +70,14 @@
   }
 
   .stat-label { 
-    font-size: 18px;
+    font-size: 12px;
     color: #CCCCCC;
   }
   
   .vcpu {
+    margin-left: 50px;
+    padding-bottom: 30px;
+
     .stats {
       height: 40px;
       margin-left: 10px;
@@ -84,6 +88,7 @@
     .legend {
       position: static;
       display: inline-block;
+      font-size: 1.5em;
     
       .numbers {
         float: left;
@@ -101,11 +106,11 @@
       display: inline-block;
     
       .bar {
-        width: 12px;
+        width: 10px;
         margin-right: 2px;
         position: relative;
         display: inline-block;
-        height: 100px;
+        height: 80px;
         background-color: #eee;
       }
 
@@ -117,6 +122,19 @@
     }
   }
   
+  .network {
+      .kpi-group {
+        font-size: 3.5em;
+        line-height: 100%;
+        display: inline-block;
+        margin-left: 150px;
+        float:right;
+        p {
+          display: inline;
+        }
+      }
+  }
+
   .storage {
     
     .stats {
@@ -134,7 +152,7 @@
       padding-bottom: 20px;
       height: 30px;
       text-align: center;
-      font-size: 1.2em;
+      font-size: 1.5em;
       color: white;
       
       .unit{
@@ -164,7 +182,7 @@
       
       .kpi-label {
         color: #CCCCCC;
-        font-size: 0.8em;
+        font-size: 1em;
         line-height: 12px;
         box-sizing: border-box;
       }
@@ -177,7 +195,7 @@
   background-color: #EEEEEE;
   position: relative;
   cursor: default;
-  padding-top: 30px;
+  padding-top: 15px;
    
   .periods {
     position: absolute;
@@ -205,24 +223,24 @@
   }
   
   .graph {
-    stroke-width: 2;
-    fill: none;
+    stroke-width: 1;
+    fill: none;  
   }
   
   .load {
-    stroke: steelblue;
+    stroke: #3E64FF;
   }
   
   .memory {
-    stroke: red;
+    stroke: #E839CC;
   }
   
   .storage {
-    stroke: green;
+    stroke: #FF9B4B;
   }
   
   .network {
-    stroke: orange;
+    stroke: #2E9E5E;
   }
   
   .network-error {
@@ -245,6 +263,7 @@
   }
   
   .x-axis {
-    fill: #888;
+    fill: #AAA;
+    font-size: 0.8em;
   }
 }
