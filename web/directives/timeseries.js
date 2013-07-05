@@ -3,7 +3,7 @@
 angular.module('main')
   .directive('d3Timeseries', function () {
     var w = 1024,
-       h = 70,
+       h = 50,
        margin = { left: 150, right: 50, vertical: 20 };
 
     var periods = {

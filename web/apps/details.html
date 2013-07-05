@@ -11,13 +11,20 @@
           <p>{{info.load.longterm | number:2}}<span class="stat-label"> Long</span></p>
         </div>
       </div>
-      
       <div class="vcpu">
         <p class="stats">{{info.vcpu.length}}<span class="stat-label"> vCPUs</span></p>
         <d3-legend limits="0.5, 0.8" val="info.vcpu" class="numbers"></d3-legend>
         <d3-bar-chart val="info.vcpu" class="chart" domain="0,1"></d3-bar-chart>
       </div>
+      <div class="network">
+        <p class="name">Network</p>
+        <div class="kpi-group">
+            <p>{{info.load.midterm | number:2}}<span class="stat-label"> Avg. octets</span></p>
+            <p>{{info.load.longterm | number:2}}<span class="stat-label"> Peak octets</span></p>
+        </div>
+      </div>
       
+
     </div>
     
     <div class="right-canvas">
