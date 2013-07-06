@@ -63,7 +63,7 @@ angular.module('main')
             .text(val);
 
           ctrGroup.append("svg:text")
-            .attr("dy", "2em")
+            .attr("dy", "3em")
             .attr("text-anchor", "middle")
             .attr("class", "chart-label")
             .text(scope.title);
