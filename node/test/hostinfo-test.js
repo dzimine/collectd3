@@ -78,7 +78,7 @@ describe('Host Info', function () {
         var expected = function (data) {
           expect(data).to.have.property('storage');
           expect(data.storage).to.be.an('object');
-          expect(data.storage).to.only.have.keys('used', 'free', 'last_update');
+          expect(data.storage).to.only.have.keys('name', 'used', 'free', 'last_update');
           next();
         };
         hostInfo(req, res(expected), next);
@@ -86,6 +86,7 @@ describe('Host Info', function () {
 
       it('should return correct values', function (next) {
         var expected = function (data) {
+          expect(data.storage.name).to.be('root');
           expect(data.storage.used).to.be(10773864448);
           expect(data.storage.free).to.be(31467298816);
           expect(data.storage.last_update).to.be(1370643659);
@@ -111,6 +112,49 @@ describe('Host Info', function () {
         var expected = function (data) {
           expect(data.vcpu[0].value).to.be(0.10110609675666826);
           expect(data.vcpu[1].value).to.be(0.10110609675666826);
+          next();
+        };
+        hostInfo(req, res(expected), next);
+      });
+
+    });
+    
+    describe('storage IO', function () {
+      it('should have certain structure', function (next) {
+        var expected = function (data) {
+          expect(data).to.have.property('storageio');
+          expect(data.storageio).to.only.have.keys('average', 'peak');
+          next();
+        };
+        hostInfo(req, res(expected), next);
+      });
+
+      it('should return correct values', function (next) {
+        var expected = function (data) {
+          expect(data.storageio.average).to.be(0);
+          expect(data.storageio.peak).to.be(0);
+          next();
+        };
+        hostInfo(req, res(expected), next);
+      });
+
+    });
+    
+    describe('network IO', function () {
+      it('should have certain structure', function (next) {
+        var expected = function (data) {
+          expect(data).to.have.property('networkio');
+          expect(data.networkio).to.only.have.keys('average', 'peak', 'errors');
+          next();
+        };
+        hostInfo(req, res(expected), next);
+      });
+
+      it('should return correct values', function (next) {
+        var expected = function (data) {
+          expect(data.networkio.average).to.be(3468687.1039241);
+          expect(data.networkio.peak).to.be(60239162.300000004);
+          expect(data.networkio.errors).to.be(0);
           next();
         };
         hostInfo(req, res(expected), next);

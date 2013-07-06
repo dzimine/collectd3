@@ -16,18 +16,18 @@ function DetailsCtrl($s, $http, $routeParams, helpers, $filter, $log) {
   $s.showTooltip = function (time, data) {
     $s.tooltip.text = $filter('date')(time * 1000, 'EEE, MMM d HH:mm');
     $s.tooltip.details = {
-      'Load': data.load[1] !== null ? data.load[1].toFixed(2) : "?",
-      'Memory %': data.memory[1] !== null ? data.memory[1].toFixed(2) : "?",
-      'Memory used': data.memory[3] !== null ?
+      'Load': data.load && data.load[1] !== null ? data.load[1].toFixed(2) : "?",
+      'Memory %': data.memory && data.memory[1] !== null ? data.memory[1].toFixed(2) : "?",
+      'Memory used': data.memory && data.memory[3] !== null ?
         helpers.bytesToSize(data.memory[3]).value + ' ' +
         helpers.bytesToSize(data.memory[3]).multi : "?",
-      'Memory free': data.memory[4] !== null ?
+      'Memory free': data.memory && data.memory[4] !== null ?
         helpers.bytesToSize(data.memory[4]).value + ' ' +
         helpers.bytesToSize(data.memory[4]).multi : "?",
-      'Storage IO': data.storage[1] !== null ?
+      'Storage IO': data.storage && data.storage[1] !== null ?
         helpers.bytesToSize(data.storage[1]).value + ' ' +
         helpers.bytesToSize(data.storage[1]).multi : "?",
-      'Network IO': data.network[1] !== null ?
+      'Network IO': data.network && data.network[1] !== null ?
         helpers.bytesToSize(data.network[1]).value + ' ' +
         helpers.bytesToSize(data.network[1]).multi : "?"
     };
