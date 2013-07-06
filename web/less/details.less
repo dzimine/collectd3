@@ -1,3 +1,5 @@
+@light-gray: #CCC;
+
 .details {
   display: block;
   position: relative;
@@ -6,21 +8,24 @@
 
   .left-canvas {
     float: left;
-    width: 50%;
-    box-sizing:border-box;
+    width: 60%;
+    height: 285px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
     border-width: 0;
-    -o-border-image: -o-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
-    -moz-border-image: -moz-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
-    -ms-border-image: -ms-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
-    -webkit-border-image: -webkit-linear-gradient(bottom, white 0%, #CCCCCC 60%, white 100%) 1 100%;
+    -o-border-image: -o-linear-gradient(bottom, white 0%, @light-gray 60%, white 100%) 1 100%;
+    -moz-border-image: -moz-linear-gradient(bottom, white 0%, @light-gray 60%, white 100%) 1 100%;
+    -ms-border-image: -ms-linear-gradient(bottom, white 0%, @light-gray 60%, white 100%) 1 100%;
+    -webkit-border-image: -webkit-linear-gradient(bottom, white 0%, @light-gray 60%, white 100%) 1 100%;
     border-right-width: 1px;
     padding: 30px 35px;
   }
 
   .right-canvas {
     float: right;
-    width: 50%;
-    box-sizing:border-box;
+    width: 40%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;    
     padding: 30px 35px;
   }
   
@@ -28,20 +33,19 @@
     font-size: 2em;
     margin-left: 10px;
     margin-bottom: 25px;
-    color: #CCCCCC;
+    color: @light-gray;
   }
   
   .load {
     .chart {
       display: inline-block;
-      margin: 0 49px 10px 50px;
+      margin: 0 15px 10px 35px;
     }
-    
+
     .kpi-group {
-      font-size: 3.5em;
+      font-size: 1.5em;
       line-height: 100%;
       display: inline-block;   
-      padding-bottom: 20px;
     }
 
   }
@@ -49,12 +53,12 @@
   .memory {
     .chart {
       display: inline-block;
-      margin: 0 49px 50px 50px;
+      margin: 0 15px 10px 35px;
     }
     
     .kpi-group {
-      font-size: 3.5em;
-      line-height: 80%;
+      font-size: 3em;
+      line-height: 100%;
       display: inline-block;
     }
   }
@@ -62,8 +66,6 @@
   .sub-stats {
     font-size: 0.6em;
     color: #AAAAAA;
-    padding-top: 12px;
-
     p {
       display: inline;
     }
@@ -71,12 +73,12 @@
 
   .stat-label { 
     font-size: 12px;
-    color: #CCCCCC;
+    color: @light-gray;
   }
   
   .vcpu {
-    margin-left: 50px;
-    padding-bottom: 30px;
+    margin-left: 20px;
+    display: inline-block;
 
     .stats {
       height: 40px;
@@ -121,18 +123,41 @@
       }
     }
   }
+
+}
+
+.details-2 {  
+  background-color: #EEE;
   
-  .network {
-      .kpi-group {
-        font-size: 3.5em;
-        line-height: 100%;
-        display: inline-block;
-        margin-left: 150px;
-        float:right;
-        p {
-          display: inline;
-        }
+  .left-canvas {
+    width: 30%;
+    height: 230px;
+    -o-border-image: -o-linear-gradient(bottom, #EEE 0%, @light-gray 60%, #EEE 100%) 1 100%;
+    -moz-border-image: -moz-linear-gradient(bottom, #EEE 0%, @light-gray 60%, #EEE 100%) 1 100%;
+    -ms-border-image: -ms-linear-gradient(bottom, #EEE 0%, @light-gray 60%, #EEE 100%) 1 100%;
+    -webkit-border-image: -webkit-linear-gradient(bottom, #EEE 0%, @light-gray 60%, #EEE 100%) 1 100%;
+  }
+
+  .middle-canvas {
+    width: 45%;
+  }
+
+  .right-canvas {
+    width: 25%;
+  }
+  
+  .throughput {
+
+    .kpi-group {
+      font-size: 3.5em;
+      line-height: 100%;
+      display: inline-block;
+      margin-left: 150px;
+      float:right;
+      p {
+        display: inline;
       }
+    }
   }
 
   .storage {
@@ -177,22 +202,22 @@
       
       .free .bar {
         background-color: #EEEEEE;
-        color: #CCCCCC;
+        color: @light-gray;
       }
       
       .kpi-label {
-        color: #CCCCCC;
+        color: @light-gray;
         font-size: 1em;
         line-height: 12px;
         box-sizing: border-box;
       }
     }
   }
-
 }
 
+
 .timeline {
-  background-color: #EEEEEE;
+  background-color: #333;
   position: relative;
   cursor: default;
   padding-top: 15px;
@@ -201,10 +226,11 @@
     position: absolute;
     top: -10px;
     left: 20px;
-    background-color: #eee;
+    background-color: #333;
     padding: 2px 10px;
     border-radius: 12px;
     line-height: 20px;
+    font-size: 0.8em;
   }
    
   .period {
@@ -214,7 +240,7 @@
     color: #888;
     
     &.active {
-      font-weight: bold;
+      color: #82c0d3;
     }
   }
   
